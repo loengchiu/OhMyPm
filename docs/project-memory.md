@@ -72,6 +72,10 @@
 - Added `docs/formal-interface-spec.md`
 - Added `docs/formal-acceptance-spec.md`
 - Added `docs/prototype-handoff-note.md`
+- Added `docs/prototype-v1-draft.md`
+- Added `docs/prototype-v1-structure.md`
+- Added `deliverables/prototype-v1/index.html`
+- Added `deliverables/prd-v1/PRD-v1.md`
 
 ## 14. Review Summary
 - Review concluded as `conditional_pass`
@@ -100,3 +104,21 @@
 ## 19. Prototype Handoff Progress
 - A first delivery-prototype handoff note is now available.
 - The current prototype handoff defines what the prototype should show, how it should inherit the aligned conclusions, and what must stay in PRD instead of prototype.
+
+## 20. Prototype Draft Progress
+- A first prototype draft is now available.
+- The current draft defines the minimum page coverage and flow coverage for the approval-path expansion.
+- The minimum page coverage is: entry/list, detail/handling, flow history, and notification touchpoints.
+- The minimum flow coverage is: main flow, key branch flow, exception flow, and linkage flow.
+
+## 21. Prototype Structure Progress
+- A first prototype structure file is now available.
+- The current structure connects page layout, numbered annotations, and flow relationships into one review-oriented outline.
+
+## 22. Prototype Body Progress
+- A real HTML prototype body is now available.
+- The current prototype body already covers four pages and the minimum main, branch, exception, and linkage flows for the approval-path expansion.
+
+## 23. PRD Skeleton Progress
+- A first real PRD skeleton is now available.
+- The current skeleton already covers document info, background, scope, overall approach, page explanation, business rules, exceptions and boundaries, roles and data impact, and acceptance and delivery notes.
