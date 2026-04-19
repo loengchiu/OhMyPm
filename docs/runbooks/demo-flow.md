@@ -5,6 +5,7 @@
 Run a minimal OhMyPm demo chain from first response to alignment, then branch into:
 
 - formal delivery preparation
+- formal review and fix
 - reopen alignment after preflight failure
 - confirmed post-delivery change handling
 
@@ -68,6 +69,38 @@ Expected state:
 
 - current plan is ready for formal delivery
 - next step can be `omp-deliver-prototype`
+
+### 4. Delivery prototype
+
+```powershell
+powershell -File .\scripts\status-apply.ps1 -PayloadPath .\docs\examples\prototype-status.sample.json
+```
+
+### 5. Formal PRD
+
+```powershell
+powershell -File .\scripts\status-apply.ps1 -PayloadPath .\docs\examples\prd-status.sample.json
+```
+
+### 6. Review
+
+```powershell
+powershell -File .\scripts\review-apply.ps1 -ReviewJsonPath .\docs\examples\review-result.sample.json
+powershell -File .\scripts\memory-apply.ps1 -PayloadPath .\docs\examples\review-memory.sample.json
+```
+
+### 7. Fix and overwrite
+
+```powershell
+powershell -File .\scripts\overwrite-apply.ps1 -JudgeJsonPath .\docs\examples\overwrite-result.sample.json
+powershell -File .\scripts\memory-apply.ps1 -PayloadPath .\docs\examples\fix-memory.sample.json
+```
+
+Expected result:
+
+- review blockers are recorded
+- overwrite queue is updated
+- next action points back to alignment if the baseline was overturned
 
 ## Path B: Preflight Fail -> Reopen Alignment
 

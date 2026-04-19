@@ -17,6 +17,11 @@
 - 至少已有可评审版本
 - 当前评审对象已判清
 
+建议已有：
+
+- `stable_baselines.prototype`
+- `stable_baselines.prd`
+
 ### 2. 生成评审团 JSON
 
 ```powershell
@@ -35,8 +40,16 @@ powershell -File .\scripts\review-panel.ps1 `
 powershell -File .\scripts\review-apply.ps1 -ReviewJsonPath .\docs\cache\review-result.json
 ```
 
+这一步会更新：
+
+- `review_state.last_review_result`
+- `review_state.must_fix_before_next_stage`
+- `next_recommended`
+
 ### 4. 更新项目记忆
 
 ```powershell
-powershell -File .\scripts\memory-apply.ps1 -PayloadPath .\docs\examples\memory-apply.sample.json
+powershell -File .\scripts\memory-apply.ps1 -PayloadPath .\docs\examples\review-memory.sample.json
 ```
+
+若评审结论推翻基线，应转入 `omp-fix`。

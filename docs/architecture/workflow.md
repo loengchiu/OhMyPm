@@ -36,7 +36,7 @@ OhMyPm 运行在 AI IDE / AI CLI 中。
 - `omp-context-guard`：执行上下文规模评估与分块
 - `omp-memory-read`：读取项目记忆和系统记忆
 - `omp-memory-write`：回写项目记忆和系统记忆
-- `omp-review-panel`：执行多角色评审团
+- `omp-review-panel`：执行评审机制内的多角色评审团
 - `omp-overwrite-judge`：执行下游修正上游判定
 - `omp-estimate`：执行模块级粗工时判断
 - `omp-artifact-sync`：同步状态、基线和产物索引
@@ -84,6 +84,16 @@ OhMyPm 的主流程已定为：
 - `omp-deliver-prototype` 与 `omp-deliver-prd` 可根据交付策略并行或先后执行
 - `omp-review` 可以位于正式交付前后的关键节点，但必须带结论
 - `omp-change` 负责处理正式交付后的新增或修正，不允许直接污染当前稳定方案
+
+对应规则文件：
+
+- 门禁与回退：`contracts/gates.md`
+- 追问：`contracts/ask-back.md`
+- 记忆：`contracts/memory.md`
+- 上下文控制：`contracts/context-guard.md`
+- 正式交付边界：`contracts/delivery.md`
+- 评审：`contracts/review.md`
+- 复写：`contracts/overwrite.md`
 
 ## 5. 阶段说明
 
@@ -225,6 +235,8 @@ OhMyPm 的主流程已定为：
 
 ## 7. 多角色评审团在流程中的位置
 
+多角色评审团不是独立主机制，而是评审机制内部的默认审查方式。
+
 默认触发点：
 
 - `omp-preflight`：做小范围交付前审查
@@ -262,12 +274,13 @@ OhMyPm 的主流程已定为：
 2. 读项目记忆
 3. 按需读取外部知识主仓中的相关资料，并读取已存在的系统记忆卡
 4. 执行门禁
-5. 执行上下文风险判断
-6. 必要时追问
-7. 执行当前阶段 skill
-8. 必要时执行多角色评审团
-9. 必要时执行复写判定
-10. 回写状态和记忆
+5. 执行当前阶段内置的方法论规则
+6. 执行上下文风险判断
+7. 必要时追问
+8. 执行当前阶段 skill
+9. 必要时执行多角色评审团
+10. 必要时执行复写判定
+11. 回写状态和记忆
 
 ## 10. 与 ShitPM 的差异
 
@@ -276,5 +289,5 @@ OhMyPm 需要保留这些优点，但把主流程重心改成：
 
 - 以回应/校验循环为中心
 - 以项目记忆和系统记忆为长期主存
-- 以追问和多角色评审作为认知控制器
+- 以追问和评审机制作为认知控制器
 - 以复写机制保障前后链路一致性

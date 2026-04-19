@@ -11,7 +11,8 @@ description: "形成当前理解与一版可信回应，暴露不确定项，建
 2. `docs/project-memory.md`
 3. `contracts/gates.md`
 4. `contracts/context-guard.md`
-5. `contracts/knowledge.md`
+5. `contracts/ask-back.md`
+6. `contracts/knowledge.md`
 
 ## 目标
 
@@ -59,6 +60,8 @@ description: "形成当前理解与一版可信回应，暴露不确定项，建
 - 若事实缺口阻塞推进，转入 `omp-ask-back`
 - 若当前只是轮次内修正或待补资料，不得擅自增加轮次编号
 - 若文字已经不足以支撑需求方判断改动落点、流程或可达结果，可建议生成对齐型原型；是否实际生成由 PM 决定
+- 若范围边界未确认且已影响模块、工时或排期判断，不得继续把当前理解包装成稳定回应
+- 输出最后必须只给一个“下一步唯一动作”
 
 ## 阻断条件
 

@@ -1,0 +1,12 @@
+{
+  "Stage": "omp-deliver-prototype",
+  "Mode": "formal_delivery",
+  "Version": "v0.7",
+  "LastAction": "Produced the first delivery prototype package",
+  "NextRecommended": "Start omp-deliver-prd and complete rule details",
+  "ContextSummary": "Formal delivery prototype is ready as the main review artifact",
+  "BaselineField": "prototype",
+  "BaselinePath": "docs/templates/prototype-note.template.md",
+  "ArtifactField": "prototypes",
+  "ArtifactPath": "docs/templates/prototype-note.template.md"
+}

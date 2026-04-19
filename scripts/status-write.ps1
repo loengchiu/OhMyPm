@@ -25,7 +25,7 @@ param(
     [string]$FallbackType,
     [string]$FallbackReason,
     [string]$ChangeCategory,
-    [bool]$ChangeCategoryConfirmedByPm
+    $ChangeCategoryConfirmedByPm
 )
 
 function Fail {
@@ -72,6 +72,33 @@ function Ensure-OneOf {
     if ($Allowed -notcontains $Value) {
         $allowedText = ($Allowed -join ", ")
         Fail "$FieldName must be one of: $allowedText"
+    }
+}
+
+function Parse-BoolValue {
+    param(
+        $Raw,
+        [string]$FieldName
+    )
+
+    if ($null -eq $Raw) {
+        Fail "$FieldName cannot be null"
+    }
+
+    if ($Raw -is [bool]) {
+        return $Raw
+    }
+
+    $text = "$Raw".Trim().ToLowerInvariant()
+
+    switch ($text) {
+        "true" { return $true }
+        "false" { return $false }
+        "1" { return $true }
+        "0" { return $false }
+        "yes" { return $true }
+        "no" { return $false }
+        default { Fail "$FieldName must be a boolean value" }
     }
 }
 
@@ -192,7 +219,7 @@ if ($PSBoundParameters.ContainsKey("ChangeCategory")) {
 }
 
 if ($PSBoundParameters.ContainsKey("ChangeCategoryConfirmedByPm")) {
-    $status.change_state.change_category_confirmed_by_pm = $ChangeCategoryConfirmedByPm
+    $status.change_state.change_category_confirmed_by_pm = Parse-BoolValue -Raw $ChangeCategoryConfirmedByPm -FieldName "ChangeCategoryConfirmedByPm"
 }
 
 if (($PSBoundParameters.ContainsKey("FallbackType") -or $PSBoundParameters.ContainsKey("RoundResult")) -and

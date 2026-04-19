@@ -51,6 +51,7 @@ powershell -File .\installers\install.ps1
 
 - `/ompgo`
 - `/omprespond`
+- `/ompaskback`
 - `/ompalign`
 - `/omppreflight`
 - `/ompprototype`
@@ -70,3 +71,9 @@ powershell -File .\scripts\demo-smoke.ps1
 ```
 
 它会按样例回放一条最小状态链，并在结束后恢复原始状态文件与项目记忆文件。
+
+建议继续查看：
+
+- `docs/usage.md`
+- `docs/runbooks/demo-flow.md`
+- `docs/runbooks/round-state-flow.md`

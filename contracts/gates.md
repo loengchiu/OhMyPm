@@ -27,6 +27,11 @@
 - 继续内部整理
 - 不对外给出像承诺一样的正式回应
 
+建议回退类型：
+
+- `internal_repair`
+- `need_materials`
+
 ### 2.2 对齐推进门禁
 
 作用：判断当前是否值得进入下一轮对齐，而不是低质量散聊。
@@ -42,6 +47,10 @@
 
 - 先内部整理
 - 暂不推进下一轮正式对齐
+
+建议回退类型：
+
+- `internal_repair`
 
 ### 2.3 正式交付门禁
 
@@ -69,6 +78,12 @@
 - 不开始交付型原型
 - 不开始正式 PRD
 
+回退分流：
+
+- 方案逻辑不闭合、模块没拆清、表达路径不清：`internal_repair`
+- 关键截图、系统资料、关键人反馈缺失：`need_materials`
+- 需求方推翻当前版本方案或新增内容改变主结构：`reopen_alignment`
+
 ### 2.4 变更门禁
 
 作用：控制正式交付后新增内容的进入方式。
@@ -91,3 +106,60 @@
 
 - 轻微补充可并入当前交付，但要记录变化
 - 新模块或主结构变化不得默认吞入，必须重开对齐或转为变更
+
+分类判定权：
+
+- AI 先初判
+- PM 最终确认
+
+## 3. 运行时枚举
+
+为避免脚本、JSON 和宿主环境中的编码歧义，运行时状态建议固定使用以下稳定值。
+
+### 3.1 轮次结果
+
+`loop_state.round_result` 只允许：
+
+- `continue_alignment`
+- `need_materials`
+- `need_internal_repair`
+- `ready_for_preflight`
+
+说明：
+
+- `reopen_alignment` 不是轮次结果
+- 它只能作为 `fallback_state.fallback_type`
+
+### 3.2 回退类型
+
+`fallback_state.fallback_type` 只允许：
+
+- `internal_repair`
+- `need_materials`
+- `reopen_alignment`
+
+补充规则：
+
+- `internal_repair` 和 `need_materials` 是轮次内回退，不产生新轮次编号
+- 只有 `reopen_alignment` 并重新进入下一轮正式对齐时，才递增轮次编号
+
+### 3.3 变更分类
+
+`change_state.change_category` 只允许：
+
+- `minor_patch`
+- `within_module`
+- `new_module`
+- `structural_change`
+
+补充规则：
+
+- `new_module` 和 `structural_change` 必须显式记录 PM 确认结果
+
+## 4. 强制规则
+
+- 门禁不过时，不得用“先出一版再说”伪装推进
+- 轮次结果、回退类型、变更分类不得混用
+- 任何会影响正式交付范围的新增内容，都必须先过变更门禁
+- 当 `pending_confirmations` 非空时，除非当前动作明确处于 `internal_repair` 或 `need_materials`，否则不得静默推进到更重阶段
+- 当 `change_state.change_category_confirmed_by_pm=false` 时，AI 只能保留初判，不得把该分类当作最终结论继续推进正式交付或正式变更处理

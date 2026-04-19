@@ -33,3 +33,14 @@ powershell -File .\scripts\overwrite-judge.ps1 `
 ```powershell
 powershell -File .\scripts\overwrite-apply.ps1 -JudgeJsonPath .\docs\cache\overwrite-result.json
 ```
+
+### 4. 更新项目记忆
+
+```powershell
+powershell -File .\scripts\memory-apply.ps1 -PayloadPath .\docs\examples\fix-memory.sample.json
+```
+
+注意：
+
+- 若复写结果为 `restart_alignment`，下一步必须返回对齐链
+- 不得继续假装处于已稳定的正式交付阶段

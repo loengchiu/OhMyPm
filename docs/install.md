@@ -38,6 +38,7 @@ powershell -File .\installers\install.ps1
 
 - `/ompgo`
 - `/omprespond`
+- `/ompaskback`
 - `/ompalign`
 - `/omppreflight`
 - `/ompprototype`

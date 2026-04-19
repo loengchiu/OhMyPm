@@ -23,6 +23,8 @@ if (-not (Test-Path -LiteralPath $MemoryPath)) {
 
 $statusApply = Join-Path $scriptRoot "status-apply.ps1"
 $memoryApply = Join-Path $scriptRoot "memory-apply.ps1"
+$reviewApply = Join-Path $scriptRoot "review-apply.ps1"
+$overwriteApply = Join-Path $scriptRoot "overwrite-apply.ps1"
 
 $statusBackup = Join-Path $cacheDir "project-status.demo-smoke.backup.json"
 $memoryBackup = Join-Path $cacheDir "project-memory.demo-smoke.backup.md"
@@ -34,6 +36,12 @@ $steps = @(
     @{ Type = "memory"; Path = (Join-Path $repoRoot "docs\examples\align-memory.sample.json") },
     @{ Type = "status"; Path = (Join-Path $repoRoot "docs\examples\preflight-status.sample.json") },
     @{ Type = "memory"; Path = (Join-Path $repoRoot "docs\examples\preflight-memory.sample.json") },
+    @{ Type = "status"; Path = (Join-Path $repoRoot "docs\examples\prototype-status.sample.json") },
+    @{ Type = "status"; Path = (Join-Path $repoRoot "docs\examples\prd-status.sample.json") },
+    @{ Type = "review"; Path = (Join-Path $repoRoot "docs\examples\review-result.sample.json") },
+    @{ Type = "memory"; Path = (Join-Path $repoRoot "docs\examples\review-memory.sample.json") },
+    @{ Type = "overwrite"; Path = (Join-Path $repoRoot "docs\examples\overwrite-result.sample.json") },
+    @{ Type = "memory"; Path = (Join-Path $repoRoot "docs\examples\fix-memory.sample.json") },
     @{ Type = "status"; Path = (Join-Path $repoRoot "docs\examples\reopen-alignment.sample.json") },
     @{ Type = "status"; Path = (Join-Path $repoRoot "docs\examples\change-status-confirmed.sample.json") }
 )
@@ -50,8 +58,17 @@ try {
         if ($step.Type -eq "status") {
             & $statusApply -PayloadPath $step.Path
         }
-        else {
+        elseif ($step.Type -eq "memory") {
             & $memoryApply -PayloadPath $step.Path
+        }
+        elseif ($step.Type -eq "review") {
+            & $reviewApply -ReviewJsonPath $step.Path
+        }
+        elseif ($step.Type -eq "overwrite") {
+            & $overwriteApply -JudgeJsonPath $step.Path
+        }
+        else {
+            Fail "unsupported demo step type: $($step.Type)"
         }
 
         if (-not $?) {

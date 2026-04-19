@@ -25,13 +25,33 @@ powershell -File <OHMYPM_PATH>\scripts\init-project.ps1
 
 ### 1.3 入口
 
-主入口：
+默认主入口：
+
+- 自然语言
+
+系统必须先自动判断当前意图属于：
+
+- respond
+- align
+- ask-back
+- preflight
+- deliver prototype
+- deliver prd
+- review
+- change
+- fix
+
+短命令只保留为：
+
+- 调试入口
+- 强制指定入口
+- 高级用户入口
+
+可用短命令：
 
 - `/ompgo`
-
-常用短命令：
-
 - `/omprespond`
+- `/ompaskback`
 - `/ompalign`
 - `/omppreflight`
 - `/ompprototype`
@@ -39,6 +59,18 @@ powershell -File <OHMYPM_PATH>\scripts\init-project.ps1
 - `/ompreview`
 - `/ompchange`
 - `/ompfix`
+
+## 1.4 输出收口
+
+每次输出最后，系统必须只给一个“下一步唯一动作”。
+
+形式只能是：
+
+- `现在建议你做的下一步是：...`
+- `现在只需要你回答的唯一问题是：...`
+
+不得一次给 PM 一串操作菜单。
+不得要求 PM 自己从 runbook 或 usage 里挑下一步。
 
 ## 2. 回应与对齐
 
@@ -67,6 +99,10 @@ powershell -File <OHMYPM_PATH>\scripts\init-project.ps1
 - 更新模块清单
 - 更新粗估和排期影响
 - 判断是否进入 `omp-preflight`
+
+在范围、结构、表达边界和粗估判断上，优先遵循：
+
+- 当前流程内置的方法论规则
 
 轮次状态建议同步写入：
 
@@ -184,7 +220,40 @@ powershell -File .\scripts\artifact-sync.ps1 `
 - `new_module`
 - `structural_change`
 
+## 6.2 追问触发与回写
+
+当以下情况出现时，应直接转入 `omp-ask-back`，而不是继续推进：
+
+- `pending_confirmations` 非空且当前动作不是 `internal_repair / need_materials`
+- 正式交付前仍有未确认范围或事实
+- `change_state.change_category_confirmed_by_pm=false`
+
+生成最小问题：
+
+```powershell
+powershell -File .\scripts\ask-back-plan.ps1
+```
+
+应用 PM 回答后的状态回写：
+
+```powershell
+powershell -File .\scripts\ask-back-apply.ps1 `
+  -AnsweredConfirmation 'Need confirmation on scope boundary' `
+  -ChangeCategoryConfirmedByPm $true `
+  -NextRecommended 'Return to the blocked stage and rerun the gate'
+```
+
 ## 7. 示例文件
+
+核心规则文件：
+
+- `contracts/gates.md`
+- `contracts/ask-back.md`
+- `contracts/memory.md`
+- `contracts/context-guard.md`
+- `contracts/delivery.md`
+- `contracts/review.md`
+- `contracts/overwrite.md`
 
 可直接参考：
 
@@ -195,14 +264,23 @@ powershell -File .\scripts\artifact-sync.ps1 `
 - `docs/examples/change-status.sample.json`
 - `docs/examples/change-status-confirmed.sample.json`
 - `docs/examples/reopen-alignment.sample.json`
+- `docs/examples/prototype-status.sample.json`
+- `docs/examples/prd-status.sample.json`
+- `docs/examples/review-memory.sample.json`
+- `docs/examples/fix-memory.sample.json`
 
 常用流程手册：
 
 - `docs/runbooks/respond-runbook.md`
+- `docs/runbooks/ask-back-runbook.md`
 - `docs/runbooks/align-runbook.md`
 - `docs/runbooks/preflight-runbook.md`
+- `docs/runbooks/prototype-runbook.md`
+- `docs/runbooks/prd-runbook.md`
 - `docs/runbooks/round-state-flow.md`
 - `docs/runbooks/demo-flow.md`
+- `docs/runbooks/review-runbook.md`
+- `docs/runbooks/fix-runbook.md`
 
 快捷验证：
 

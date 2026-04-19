@@ -10,7 +10,8 @@ description: "需求接收。建立当前需求任务、初始化项目记忆、
 1. `docs/project-status.json`
 2. `docs/project-memory.md`
 3. `contracts/gates.md`
-4. `contracts/context-guard.md`
+4. `contracts/ask-back.md`
+5. `contracts/context-guard.md`
 
 ## 目标
 

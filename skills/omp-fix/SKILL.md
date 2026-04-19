@@ -33,6 +33,8 @@ description: "修正已有产物缺陷，并在需要时触发下游修正上游
 - `review_state`
 - `overwrite_queue`
 - `latest_artifacts.fix_records`
+- `loop_state`
+- `fallback_state`
 
 ## 阻断条件
 
@@ -44,6 +46,12 @@ description: "修正已有产物缺陷，并在需要时触发下游修正上游
 
 - `scripts/overwrite-judge.ps1`
 - `scripts/overwrite-apply.ps1`
+
+## 强制规则
+
+- 下游不得默默覆盖上游结论
+- 若复写判定为 `restart_alignment`，下一步必须明确回到对齐链，不得继续假装处于正式交付
+- 修复如果只解决局部缺陷，可保留当前阶段；若推翻基线，则必须同步更新 `overwrite_queue`
 
 ## 回写要求
 

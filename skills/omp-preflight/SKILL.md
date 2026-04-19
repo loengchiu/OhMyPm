@@ -56,6 +56,8 @@ description: "正式交付前检查。判断当前方案是否满足进入正式
 - `reopen_alignment` 是回退动作，不是轮次结果值
 - 若判定为 `reopen_alignment`，下一步应回到 `omp-align` 并在重新进入正式对齐时递增轮次编号
 - 进入正式交付前，建议补一次轮次历史摘要，便于评审会和后续交接快速回顾
+- 若 `pending_confirmations` 仍非空，必须先转入 `omp-ask-back`，不得静默进入 preflight
+- 输出最后必须只给一个“下一步唯一动作”
 
 ## 阻断条件
 

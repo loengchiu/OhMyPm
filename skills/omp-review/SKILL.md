@@ -35,6 +35,7 @@ description: "组织评审会材料、执行多角色评审团、输出评审结
 - `stable_baselines.prd`
 - `review_state`
 - `latest_artifacts.review_records`
+- `overwrite_queue`
 
 ## 最低输出
 
@@ -48,6 +49,13 @@ description: "组织评审会材料、执行多角色评审团、输出评审结
 
 - `scripts/review-panel.ps1`
 - `scripts/review-apply.ps1`
+
+## 强制规则
+
+- 评审会是正式流程节点，不是普通聊天确认
+- 评审材料包至少应覆盖：当前版本方案摘要、原型、PRD 或关键规则说明、本轮变化点、风险点、待决策点、模块级粗估和排期影响
+- 评审结论必须归并为：事实问题、风险问题、建议问题、统一结论
+- 若评审结论推翻稳定基线，应转入 `omp-fix` 并触发复写判定
 
 ## 阻断条件
 
@@ -67,3 +75,4 @@ description: "组织评审会材料、执行多角色评审团、输出评审结
   - `review_state.last_review_result`
   - `review_state.must_fix_before_next_stage`
   - `latest_artifacts.review_records`
+  - 必要时 `overwrite_queue`

@@ -15,6 +15,33 @@
 
 未真实读取状态文件前，不得表述为“已确认可以推进”。
 
+默认交互规则：
+
+- 用户默认通过自然语言使用 OhMyPm
+- 系统必须先自动判断当前意图属于：
+  - `omp-respond`
+  - `omp-align`
+  - `omp-ask-back`
+  - `omp-preflight`
+  - `omp-deliver-prototype`
+  - `omp-deliver-prd`
+  - `omp-review`
+  - `omp-change`
+  - `omp-fix`
+- 短命令只作为：
+  - 调试入口
+  - 强制指定入口
+  - 高级用户入口
+
+输出收口规则：
+
+- 每次输出最后，必须只给一个“下一步唯一动作”
+- 形式只能是以下两类之一：
+  - `现在建议你做的下一步是：...`
+  - `现在只需要你回答的唯一问题是：...`
+- 不得一次给用户一串操作菜单
+- 不得要求 PM 先去 runbook 或 usage 里自己挑下一步
+
 ## 2. 激活与未激活
 
 - 若 `docs/project-status.json` 不存在：视为未初始化，只允许执行初始化说明、纯咨询或创建初始化文件
@@ -37,24 +64,15 @@ OhMyPm 主流程固定为：
 
 ## 4. 默认路由
 
-### 短命令
+### 自然语言主入口
 
-- `/ompgo` -> 初始化或进入 OhMyPm 工作流
-- `/omprespond` -> `omp-respond`
-- `/ompalign` -> `omp-align`
-- `/omppreflight` -> `omp-preflight`
-- `/ompprototype` -> `omp-deliver-prototype`
-- `/ompprd` -> `omp-deliver-prd`
-- `/ompreview` -> `omp-review`
-- `/ompchange` -> `omp-change`
-- `/ompfix` -> `omp-fix`
-
-### 自然语言路由
+自然语言是默认主入口。
 
 用户意图与 skill 的默认映射：
 
 - 初始化项目 -> `omp-intake`
 - 新需求 / 补充需求 / 先回应一下 -> `omp-respond`
+- 先问我需要确认的点 / 把待确认项抛给我 -> `omp-ask-back`
 - 继续对齐 / 根据反馈调整 -> `omp-align`
 - 检查能否进入正式交付 -> `omp-preflight`
 - 做交付型原型 -> `omp-deliver-prototype`
@@ -62,6 +80,21 @@ OhMyPm 主流程固定为：
 - 开评审 / 做评审会材料 -> `omp-review`
 - 正式交付后新增需求 / 范围变化 -> `omp-change`
 - 修正已有产物 -> `omp-fix`
+
+### 短命令兜底入口
+
+短命令只作为调试、强制指定和高级用户入口：
+
+- `/ompgo` -> 初始化或进入 OhMyPm 工作流
+- `/omprespond` -> `omp-respond`
+- `/ompaskback` -> `omp-ask-back`
+- `/ompalign` -> `omp-align`
+- `/omppreflight` -> `omp-preflight`
+- `/ompprototype` -> `omp-deliver-prototype`
+- `/ompprd` -> `omp-deliver-prd`
+- `/ompreview` -> `omp-review`
+- `/ompchange` -> `omp-change`
+- `/ompfix` -> `omp-fix`
 
 ## 5. 门禁强制规则
 
@@ -111,6 +144,19 @@ OhMyPm 固定采用四层门禁：
 - OhMyPm 按需读取
 - AI 整理为系统记忆卡
 - 系统记忆卡回写供人工阅读和修改
+
+## 8.1 记忆强制规则
+
+涉及项目记忆读取、系统记忆卡读取或记忆回写时，必须读取 `contracts/memory.md`。
+
+## 8.2 追问强制规则
+
+当前阶段若因信息不足无法过门禁时，必须读取 `contracts/ask-back.md`。
+
+补充规则：
+
+- 若 `pending_confirmations` 非空，且当前动作不是 `internal_repair` 或 `need_materials`，不得静默推进到更重阶段
+- 若 `change_state.change_category_confirmed_by_pm=false`，不得把当前变更分类当作最终结论继续推进正式交付或正式变更处理
 
 ## 9. 复写与评审
 

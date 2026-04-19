@@ -48,6 +48,16 @@ function AddEnumError {
     $List.Add("$FieldName must be one of: $allowedText; actual: $Value")
 }
 
+function AddAskBackError {
+    param(
+        [System.Collections.Generic.List[string]]$List,
+        [string]$Reason,
+        [string]$Question
+    )
+
+    $List.Add("ask-back required: $Reason | minimal question: $Question")
+}
+
 if (-not (Test-Path -LiteralPath $Path)) {
     Fail "docs/project-status.json not found."
 }
@@ -117,8 +127,8 @@ switch ($Gate) {
             $errors.Add("fallback_state.fallback_type=reopen_alignment cannot coexist with loop_state.round_result=ready_for_preflight")
         }
 
-        if (HasItems $status.pending_confirmations) {
-            $errors.Add("pending_confirmations are not empty")
+        if (HasItems $status.pending_confirmations -and $status.fallback_state.fallback_type -notin @("internal_repair", "need_materials")) {
+            AddAskBackError -List $errors -Reason "pending_confirmations are not empty and alignment is not explicitly in internal_repair/need_materials" -Question "Please answer the top pending confirmation before the next heavier step continues."
         }
 
         $hasPlan = HasText $status.stable_baselines.response_plan
@@ -151,7 +161,7 @@ switch ($Gate) {
         }
 
         if (HasItems $status.pending_confirmations) {
-            $errors.Add("pending_confirmations are not empty")
+            AddAskBackError -List $errors -Reason "pending_confirmations are still open before preflight" -Question "Please confirm the unresolved scope/fact boundary before preflight continues."
         }
 
         $hasPlan = HasText $status.stable_baselines.response_plan
@@ -182,7 +192,7 @@ switch ($Gate) {
         }
 
         if (HasItems $status.pending_confirmations) {
-            $errors.Add("pending_confirmations are not empty")
+            AddAskBackError -List $errors -Reason "pending_confirmations are still open before formal delivery" -Question "Please confirm the unresolved scope/fact boundary before prototype or PRD delivery starts."
         }
 
         $hasPlan = HasText $status.stable_baselines.response_plan
@@ -200,10 +210,12 @@ switch ($Gate) {
             AddEnumError -List $errors -FieldName "change_state.change_category" -Value $status.change_state.change_category -Allowed $changeEnums
         }
 
-        if (($status.change_state.change_category -eq "new_module") -or ($status.change_state.change_category -eq "structural_change")) {
-            if (-not $status.change_state.change_category_confirmed_by_pm) {
-                $errors.Add("PM confirmation is required for new_module or structural_change")
-            }
+        if (HasItems $status.pending_confirmations) {
+            AddAskBackError -List $errors -Reason "pending_confirmations are still open before formal change handling" -Question "Please confirm the unresolved scope/fact boundary before formal change handling continues."
+        }
+
+        if (-not $status.change_state.change_category_confirmed_by_pm) {
+            AddAskBackError -List $errors -Reason "change classification has not been confirmed by PM" -Question "Please confirm whether the current request should stay classified as '$($status.change_state.change_category)' before formal delivery/change handling continues."
         }
 
         if ((-not (HasText $status.stable_baselines.prototype)) -and (-not (HasText $status.stable_baselines.prd))) {

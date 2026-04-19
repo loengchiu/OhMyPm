@@ -1,0 +1,12 @@
+{
+  "Stage": "omp-deliver-prd",
+  "Mode": "formal_delivery",
+  "Version": "v0.7",
+  "LastAction": "Completed the first formal PRD draft",
+  "NextRecommended": "Run omp-review with prototype and PRD together",
+  "ContextSummary": "Formal PRD is ready and paired with the delivery prototype",
+  "BaselineField": "prd",
+  "BaselinePath": "docs/templates/prd-outline.template.md",
+  "ArtifactField": "prd",
+  "ArtifactPath": "docs/templates/prd-outline.template.md"
+}
