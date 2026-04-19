@@ -1,11 +1,19 @@
 {
-  "Stage": "omp-review",
+  "Stage": "omp-align",
   "Mode": "alignment_loop",
-  "Version": "v0.4",
-  "LastAction": "Prepared review package and normalized status updates",
-  "NextRecommended": "Run omp-review-panel",
-  "ContextSummary": "Review runtime chain is ready and waiting for review execution",
-  "PendingConfirmationsJson": "[\"Need stakeholder confirmation on scope\"]",
-  "ReviewResult": "conditional_pass",
-  "ReviewMustFixJson": "[\"Missing API contract\",\"Acceptance coverage is incomplete\"]"
+  "Version": "v0.7",
+  "LastAction": "Updated alignment status with round, fallback, and change metadata",
+  "NextRecommended": "Do internal repair and confirm whether the new request forms a separate module",
+  "ContextSummary": "The current round is still in repair and the post-feedback change may expand the scope",
+  "RoundNumber": 3,
+  "RoundGoal": "Repair the current plan after new structural feedback",
+  "RoundInputsJson": "[\"Stakeholder requested a new approval branch\",\"Current module estimate became unclear\"]",
+  "CurrentOutput": "Alignment draft updated but still requires internal repair",
+  "RoundResult": "need_internal_repair",
+  "LoopHistorySummary": "Rounds 1-2 formed and stabilized the first credible plan. Round 3 introduced a possible new module and forced another internal repair.",
+  "FallbackType": "internal_repair",
+  "FallbackReason": "The new approval branch changes the module split and the estimate cannot yet be explained",
+  "ChangeCategory": "new_module",
+  "ChangeCategoryConfirmedByPm": true,
+  "PendingConfirmationsJson": "[]"
 }

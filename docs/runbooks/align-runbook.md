@@ -21,6 +21,12 @@ powershell -File .\scripts\status-apply.ps1 -PayloadPath .\docs\examples\align-s
 - `FallbackType`
 - `FallbackReason`
 
+注意：
+
+- `FallbackType` 可以是 `internal_repair`、`need_materials`、`reopen_alignment`
+- `reopen_alignment` 是回退动作，不是 `RoundResult`
+- 只有重新进入下一轮正式对齐时，才增加 `RoundNumber`
+
 ### 2. Apply alignment memory
 
 ```powershell

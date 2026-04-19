@@ -60,3 +60,13 @@ powershell -File .\installers\install.ps1
 - `/ompfix`
 
 也支持自然语言路由。
+
+## 6. 安装后自检
+
+建议至少跑一次最小链路验证：
+
+```powershell
+powershell -File .\scripts\demo-smoke.ps1
+```
+
+它会按样例回放一条最小状态链，并在结束后恢复原始状态文件与项目记忆文件。

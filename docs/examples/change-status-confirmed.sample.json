@@ -1,0 +1,10 @@
+{
+  "Stage": "omp-change",
+  "Mode": "change_control",
+  "Version": "v0.8",
+  "LastAction": "Classified a post-delivery request as a new module and confirmed it with PM",
+  "NextRecommended": "Reopen alignment and rebuild delivery scope around the new module",
+  "ContextSummary": "A post-delivery request was confirmed as a new module and cannot be silently merged",
+  "ChangeCategory": "new_module",
+  "ChangeCategoryConfirmedByPm": true
+}

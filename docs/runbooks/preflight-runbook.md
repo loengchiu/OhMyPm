@@ -27,6 +27,12 @@ powershell -File .\scripts\status-apply.ps1 -PayloadPath .\docs\examples\preflig
 - `FallbackType`
 - `FallbackReason`
 
+注意：
+
+- preflight 入口要求 `RoundResult=ready_for_preflight`
+- 如果 preflight 失败并决定 `reopen_alignment`，应回到 `omp-align`
+- 不应把 `reopen_alignment` 改写成新的 `RoundResult`
+
 ### 3. Apply preflight memory
 
 ```powershell

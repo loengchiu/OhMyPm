@@ -193,3 +193,17 @@ powershell -File .\scripts\artifact-sync.ps1 `
 - `docs/examples/context-plan.sample.json`
 - `docs/examples/fallback-status.sample.json`
 - `docs/examples/change-status.sample.json`
+- `docs/examples/change-status-confirmed.sample.json`
+- `docs/examples/reopen-alignment.sample.json`
+
+常用流程手册：
+
+- `docs/runbooks/respond-runbook.md`
+- `docs/runbooks/align-runbook.md`
+- `docs/runbooks/preflight-runbook.md`
+- `docs/runbooks/round-state-flow.md`
+- `docs/runbooks/demo-flow.md`
+
+快捷验证：
+
+- `powershell -File .\scripts\demo-smoke.ps1`

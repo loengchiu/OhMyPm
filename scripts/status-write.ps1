@@ -58,11 +58,31 @@ function Parse-JsonArray {
     return @($parsed)
 }
 
+function Ensure-OneOf {
+    param(
+        [string]$Value,
+        [string[]]$Allowed,
+        [string]$FieldName
+    )
+
+    if ([string]::IsNullOrWhiteSpace($Value)) {
+        return
+    }
+
+    if ($Allowed -notcontains $Value) {
+        $allowedText = ($Allowed -join ", ")
+        Fail "$FieldName must be one of: $allowedText"
+    }
+}
+
 if (-not (Test-Path -LiteralPath $Path)) {
     Fail "project-status.json not found."
 }
 
 $status = Get-Content -Raw -LiteralPath $Path | ConvertFrom-Json
+$roundResultEnums = @("continue_alignment", "need_materials", "need_internal_repair", "ready_for_preflight")
+$fallbackEnums = @("internal_repair", "need_materials", "reopen_alignment")
+$changeEnums = @("minor_patch", "within_module", "new_module", "structural_change")
 
 if ($PSBoundParameters.ContainsKey("Stage")) { $status.current_stage = $Stage }
 if ($PSBoundParameters.ContainsKey("Mode")) { $status.current_mode = $Mode }
@@ -149,6 +169,7 @@ if ($PSBoundParameters.ContainsKey("CurrentOutput")) {
 }
 
 if ($PSBoundParameters.ContainsKey("RoundResult")) {
+    Ensure-OneOf -Value $RoundResult -Allowed $roundResultEnums -FieldName "RoundResult"
     $status.loop_state.round_result = $RoundResult
 }
 
@@ -157,6 +178,7 @@ if ($PSBoundParameters.ContainsKey("LoopHistorySummary")) {
 }
 
 if ($PSBoundParameters.ContainsKey("FallbackType")) {
+    Ensure-OneOf -Value $FallbackType -Allowed $fallbackEnums -FieldName "FallbackType"
     $status.fallback_state.fallback_type = $FallbackType
 }
 
@@ -165,11 +187,25 @@ if ($PSBoundParameters.ContainsKey("FallbackReason")) {
 }
 
 if ($PSBoundParameters.ContainsKey("ChangeCategory")) {
+    Ensure-OneOf -Value $ChangeCategory -Allowed $changeEnums -FieldName "ChangeCategory"
     $status.change_state.change_category = $ChangeCategory
 }
 
 if ($PSBoundParameters.ContainsKey("ChangeCategoryConfirmedByPm")) {
     $status.change_state.change_category_confirmed_by_pm = $ChangeCategoryConfirmedByPm
+}
+
+if (($PSBoundParameters.ContainsKey("FallbackType") -or $PSBoundParameters.ContainsKey("RoundResult")) -and
+    $status.fallback_state.fallback_type -eq "reopen_alignment" -and
+    $status.loop_state.round_result -eq "ready_for_preflight") {
+    Fail "FallbackType=reopen_alignment cannot coexist with RoundResult=ready_for_preflight"
+}
+
+if (($PSBoundParameters.ContainsKey("ChangeCategory") -or $PSBoundParameters.ContainsKey("ChangeCategoryConfirmedByPm")) -and
+    (($status.change_state.change_category -eq "new_module") -or ($status.change_state.change_category -eq "structural_change"))) {
+    if (-not $status.change_state.change_category_confirmed_by_pm) {
+        Fail "ChangeCategoryConfirmedByPm is required for new_module or structural_change"
+    }
 }
 
 $status | ConvertTo-Json -Depth 10 | Set-Content -LiteralPath $Path -Encoding utf8

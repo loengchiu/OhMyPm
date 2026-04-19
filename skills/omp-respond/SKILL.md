@@ -57,6 +57,8 @@ description: "形成当前理解与一版可信回应，暴露不确定项，建
 
 - 未过回应门禁，不得形成像承诺一样的正式回应
 - 若事实缺口阻塞推进，转入 `omp-ask-back`
+- 若当前只是轮次内修正或待补资料，不得擅自增加轮次编号
+- 若文字已经不足以支撑需求方判断改动落点、流程或可达结果，可建议生成对齐型原型；是否实际生成由 PM 决定
 
 ## 阻断条件
 
@@ -78,5 +80,8 @@ description: "形成当前理解与一版可信回应，暴露不确定项，建
   - `current_mode`
   - `last_action`
   - `next_recommended`
+  - 必要时 `loop_state.round_result`
+  - 必要时 `fallback_state.fallback_type`
+  - 必要时 `fallback_state.fallback_reason`
   - `latest_artifacts.response_notes`
   - 必要时 `pending_confirmations`

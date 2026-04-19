@@ -33,6 +33,9 @@ description: "正式交付前检查。判断当前方案是否满足进入正式
 ## 必读状态
 
 - `stable_baselines.response_plan`
+- `loop_state.round_result`
+- `loop_state.history_summary`
+- `fallback_state`
 - `pending_confirmations`
 - `blockers`
 - `review_state.must_fix_before_next_stage`
@@ -42,6 +45,17 @@ description: "正式交付前检查。判断当前方案是否满足进入正式
 
 - 通过：允许进入正式交付
 - 不通过：回退回应/校验循环
+
+## 强制规则
+
+- 进入 `omp-preflight` 前，`loop_state.round_result` 必须是 `ready_for_preflight`
+- 若正式交付门禁失败，必须给出明确回退类型：
+  - `internal_repair`
+  - `need_materials`
+  - `reopen_alignment`
+- `reopen_alignment` 是回退动作，不是轮次结果值
+- 若判定为 `reopen_alignment`，下一步应回到 `omp-align` 并在重新进入正式对齐时递增轮次编号
+- 进入正式交付前，建议补一次轮次历史摘要，便于评审会和后续交接快速回顾
 
 ## 阻断条件
 
@@ -64,5 +78,7 @@ description: "正式交付前检查。判断当前方案是否满足进入正式
   - `current_stage`
   - `last_action`
   - `next_recommended`
+  - 必要时 `fallback_state.fallback_type`
+  - 必要时 `fallback_state.fallback_reason`
   - 必要时 `blockers`
   - 必要时 `pending_confirmations`
