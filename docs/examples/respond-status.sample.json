@@ -1,0 +1,16 @@
+{
+  "Stage": "omp-respond",
+  "Mode": "alignment_loop",
+  "Version": "v0.5",
+  "LastAction": "Prepared the first credible response draft",
+  "NextRecommended": "Run omp-align after stakeholder feedback",
+  "ContextSummary": "First response draft is ready with open questions and a rough estimate",
+  "RoundNumber": 1,
+  "RoundGoal": "Form the first credible response",
+  "RoundInputsJson": "[\"Initial demand statement\",\"Product definition draft\"]",
+  "CurrentOutput": "First response draft with open questions and estimate",
+  "RoundResult": "continue_alignment",
+  "ArtifactField": "response_notes",
+  "ArtifactPath": "docs/templates/response-note.template.md",
+  "PendingConfirmationsJson": "[\"Need confirmation on scope boundary\"]"
+}

@@ -1,0 +1,12 @@
+{
+  "updates": [
+    {
+      "SectionNumber": 8,
+      "Content": "- Finish the `omp-review` package before rerunning the panel"
+    },
+    {
+      "SectionNumber": 14,
+      "Content": "- Review concluded as `conditional_pass`\n- Must fix: Missing API contract\n- Must fix: Acceptance coverage is incomplete"
+    }
+  ]
+}

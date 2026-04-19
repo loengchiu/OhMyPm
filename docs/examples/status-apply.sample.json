@@ -1,0 +1,11 @@
+{
+  "Stage": "omp-review",
+  "Mode": "alignment_loop",
+  "Version": "v0.4",
+  "LastAction": "Prepared review package and normalized status updates",
+  "NextRecommended": "Run omp-review-panel",
+  "ContextSummary": "Review runtime chain is ready and waiting for review execution",
+  "PendingConfirmationsJson": "[\"Need stakeholder confirmation on scope\"]",
+  "ReviewResult": "conditional_pass",
+  "ReviewMustFixJson": "[\"Missing API contract\",\"Acceptance coverage is incomplete\"]"
+}
