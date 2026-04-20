@@ -1,7 +1,7 @@
 param(
     [Parameter(Mandatory = $true)]
     [string]$InputPath,
-    [string]$CachePath = "docs/cache/material-extract.md",
+    [string]$CachePath = "docs/ohmypm/cache/material-extract.md",
     [int]$DirectReadThreshold = 3000
 )
 

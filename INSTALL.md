@@ -33,7 +33,7 @@ powershell -File .\installers\install.ps1
 安装器会：
 
 - 为支持的宿主写入 OhMyPm 全局规则
-- 让宿主在项目根目录存在 `docs/project-status.json` 时自动读取 `AGENTS.md`
+- 让宿主在项目根目录存在 `docs/ohmypm/ohmypm-status.json` 时自动读取 `AGENTS.md`
 - 让宿主在项目未激活时忽略 OhMyPm 规则
 
 ## 4. 项目启用
@@ -42,8 +42,8 @@ powershell -File .\installers\install.ps1
 
 当前最小文件为：
 
-- `docs/project-status.json`
-- `docs/project-memory.md`
+- `docs/ohmypm/ohmypm-status.json`
+- `docs/ohmypm/ohmypm-memory.md`
 
 ## 5. 公开入口
 

@@ -20,7 +20,7 @@
 
 ```powershell
 powershell -File .\scripts\overwrite-judge.ps1 `
-  -AffectedUpstreamJson '["docs/project-memory.md"]' `
+  -AffectedUpstreamJson '["docs/ohmypm/ohmypm-memory.md"]' `
   -ConflictType review_reversal `
   -Severity high `
   -ActionLevel restart_alignment `

@@ -1,5 +1,5 @@
 param(
-    [string]$Path = "docs/project-memory.md",
+    [string]$Path = "docs/ohmypm/ohmypm-memory.md",
     [string]$SectionTitle,
     [int]$SectionNumber = 0,
     [Parameter(Mandatory = $true)]
@@ -13,7 +13,7 @@ function Fail {
 }
 
 if (-not (Test-Path -LiteralPath $Path)) {
-    Fail "project-memory.md not found."
+    Fail "ohmypm-memory.md not found."
 }
 
 $lines = Get-Content -LiteralPath $Path
@@ -74,4 +74,4 @@ $updated += ""
 $updated += $after
 
 $updated | Set-Content -LiteralPath $Path -Encoding utf8
-Write-Host "[OhMyPm] project-memory.md updated: $SectionTitle" -ForegroundColor Green
+Write-Host "[OhMyPm] ohmypm-memory.md updated: $SectionTitle" -ForegroundColor Green

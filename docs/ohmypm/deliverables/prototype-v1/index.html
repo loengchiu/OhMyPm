@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>审批路径扩展 - 第一版交付型原型</title>
+  <title>审批路径扩展 - 第一版交付型原型（机制验证样例）</title>
   <style>
     :root {
       --bg: #f6f1e8;
@@ -435,8 +435,8 @@
 <body>
   <div class="shell">
     <section class="hero">
-      <h1>审批路径扩展 / 第一版交付型原型</h1>
-      <p>这不是说明稿，而是可直接进入评审理解的原型本体。当前范围固定为现有审批能力内部增强，展示目标是让业务、研发、测试一眼看清新增路径从哪里进入、主链路怎么走、哪些状态会变化、通知和留痕怎么联动。</p>
+      <h1>审批路径扩展 / 第一版交付型原型（机制验证样例）</h1>
+      <p>这不是说明稿，而是可直接进入评审理解的原型本体。当前页面用于验证 OhMyPm 主链路和交付分工是否能跑通，不代表真实项目审批需求。页面中的金额阈值、风险条件、专项复核角色等业务内容仅作为样例占位，不应向 PM 追问真实答案。当前样例占位值固定为：金额阈值 >= 100000，风险标签 = RISK_HIGH，专项复核角色按业务线 A/B/默认映射到 ROLE_SPECIAL_REVIEW_A / ROLE_SPECIAL_REVIEW_B / ROLE_SPECIAL_REVIEW_DEFAULT。</p>
       <div class="hero-grid">
         <div class="hero-card">
           <h2>本版覆盖</h2>
@@ -571,7 +571,7 @@
             <div class="detail-grid">
               <div class="stack">
                 <div class="stat"><small>05 当前审批节点</small><strong>节点 2 / 风险复核</strong></div>
-                <div class="stat"><small>06 新增审批路径进入条件</small><strong>金额阈值 + 风险标签同时命中</strong></div>
+                <div class="stat"><small>06 新增审批路径进入条件</small><strong>样例占位：金额 &gt;= 100000 且风险标签 = RISK_HIGH</strong></div>
                 <div class="stat"><small>08 结果判断分支</small><strong>命中分支后进入专项复核，否则沿用原路径</strong></div>
                 <div class="stat"><small>09 状态变化点</small><strong>处理中 → 特殊复核中 → 已完成</strong></div>
               </div>
@@ -663,11 +663,11 @@
               <div class="notify-card">
                 <small>15 通知触发点</small>
                 <strong>提交专项复核后触发</strong>
-                <p>动作成功后，系统向专项复核角色发送待处理通知。</p>
+                <p>动作成功后，系统向当前业务线对应的样例专项复核角色发送待处理通知。</p>
               </div>
               <div class="notify-card">
                 <small>16 通知对象</small>
-                <strong>专项复核角色 / 当前审批责任人</strong>
+                <strong>样例专项复核角色 / 当前审批责任人</strong>
                 <p>根据节点角色与当前路径结果动态决定接收对象。</p>
               </div>
               <div class="notify-card">

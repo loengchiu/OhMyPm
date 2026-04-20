@@ -1,7 +1,7 @@
 param(
     [Parameter(Mandatory = $true)]
     [string]$PayloadPath,
-    [string]$Path = "docs/project-memory.md"
+    [string]$Path = "docs/ohmypm/ohmypm-memory.md"
 )
 
 function Fail {
@@ -74,7 +74,7 @@ if (-not (Test-Path -LiteralPath $PayloadPath)) {
 }
 
 if (-not (Test-Path -LiteralPath $Path)) {
-    Fail "project-memory.md not found."
+    Fail "ohmypm-memory.md not found."
 }
 
 $payload = Get-Content -Raw -LiteralPath $PayloadPath | ConvertFrom-Json
@@ -92,4 +92,4 @@ foreach ($update in @($payload.updates)) {
 }
 
 $lines | Set-Content -LiteralPath $Path -Encoding utf8
-Write-Host "[OhMyPm] project-memory.md batch updated." -ForegroundColor Green
+Write-Host "[OhMyPm] ohmypm-memory.md batch updated." -ForegroundColor Green

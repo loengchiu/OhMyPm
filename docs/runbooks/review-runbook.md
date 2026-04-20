@@ -13,7 +13,7 @@
 
 ### 1. 检查前提
 
-- `docs/project-status.json` 已存在
+- `docs/ohmypm/ohmypm-status.json` 已存在
 - 至少已有可评审版本
 - 当前评审对象已判清
 
@@ -37,7 +37,7 @@ powershell -File .\scripts\review-panel.ps1 `
 ### 3. 应用评审结论
 
 ```powershell
-powershell -File .\scripts\review-apply.ps1 -ReviewJsonPath .\docs\cache\review-result.json
+powershell -File .\scripts\review-apply.ps1 -ReviewJsonPath .\docs\ohmypm\cache\review-result.json
 ```
 
 这一步会更新：

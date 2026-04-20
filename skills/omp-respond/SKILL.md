@@ -7,12 +7,24 @@ description: "形成当前理解与一版可信回应，暴露不确定项，建
 
 ## 读取顺序
 
-1. `docs/project-status.json`
-2. `docs/project-memory.md`
-3. `contracts/gates.md`
-4. `contracts/context-guard.md`
-5. `contracts/ask-back.md`
-6. `contracts/knowledge.md`
+第 0 层：最小状态
+
+1. `docs/ohmypm/ohmypm-status.json`
+2. `docs/ohmypm/ohmypm-memory.md` 的最小必要摘要
+
+第 1 层：当前动作 skill
+
+3. 当前只执行 `omp-respond`，不得默认并读其他 skill
+
+第 2 层：当前动作必要 contract
+
+4. `contracts/gates.md`
+5. `contracts/context-guard.md`
+
+第 3 层：条件触发读取
+
+6. 仅当回应门禁被事实缺口阻塞时，再读取 `contracts/ask-back.md`
+7. 仅当当前回应明确依赖系统知识或外部资料时，再局部回查 `contracts/knowledge.md` 所指向的资料
 
 ## 目标
 
@@ -25,7 +37,9 @@ description: "形成当前理解与一版可信回应，暴露不确定项，建
 
 1. 检查回应门禁是否具备最小输入
 2. 评估上下文风险，必要时先做分块计划
-3. 形成回应稿或更新回应稿
+3. 若需要长材料或外部知识，只允许做摘要或局部回查
+4. 形成回应稿或更新回应稿
+5. 长文生成后只保留摘要、索引和稳定路径
 4. 产出状态载荷和记忆载荷
 5. 调用 `scripts/status-apply.ps1`
 6. 调用 `scripts/memory-apply.ps1`
@@ -61,6 +75,9 @@ description: "形成当前理解与一版可信回应，暴露不确定项，建
 - 若当前只是轮次内修正或待补资料，不得擅自增加轮次编号
 - 若文字已经不足以支撑需求方判断改动落点、流程或可达结果，可建议生成对齐型原型；是否实际生成由 PM 决定
 - 若范围边界未确认且已影响模块、工时或排期判断，不得继续把当前理解包装成稳定回应
+- 不得默认同时读取多个 skill
+- 不得为了保险预读 `ask-back`、`knowledge` 或其他 contract
+- 外部资料只允许局部回查，不得整篇整包载入
 - 输出最后必须只给一个“下一步唯一动作”
 
 ## 阻断条件
@@ -72,13 +89,13 @@ description: "形成当前理解与一版可信回应，暴露不确定项，建
 
 ## 回写要求
 
-- 更新 `docs/project-memory.md` 中的：
+- 更新 `docs/ohmypm/ohmypm-memory.md` 中的：
   - `当前版本方案`
   - `未确认事实`
   - `未澄清问题`
   - `当前方案预估工时`
   - `当前建议`
-- 更新 `docs/project-status.json` 中的：
+- 更新 `docs/ohmypm/ohmypm-status.json` 中的：
   - `current_stage`
   - `current_mode`
   - `last_action`

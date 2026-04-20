@@ -27,7 +27,7 @@ powershell -File .\scripts\material-extract.ps1 -InputPath .\product-definition.
 
 默认缓存文件：
 
-- `docs/cache/material-extract.md`
+- `docs/ohmypm/cache/material-extract.md`
 
 后续只读取：
 

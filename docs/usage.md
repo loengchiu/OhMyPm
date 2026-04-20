@@ -20,14 +20,20 @@ powershell -File <OHMYPM_PATH>\scripts\init-project.ps1
 
 当项目根目录存在以下文件时，OhMyPm 激活：
 
-- `docs/project-status.json`
-- `docs/project-memory.md`
+- `docs/ohmypm/ohmypm-status.json`
+- `docs/ohmypm/ohmypm-memory.md`
 
 ### 1.3 入口
 
 默认主入口：
 
 - 自然语言
+
+默认交互方式：
+
+- 用户只需要直接说需求或下一步
+- 系统先自动判断当前意图，再进入对应动作
+- 用户不需要自己判断现在该敲哪个命令
 
 系统必须先自动判断当前意图属于：
 
@@ -60,6 +66,22 @@ powershell -File <OHMYPM_PATH>\scripts\init-project.ps1
 - `/ompchange`
 - `/ompfix`
 
+### 1.3.1 分层加载
+
+运行时默认按以下顺序加载，详细规则见 `contracts/loading.md`：
+
+1. 第 0 层：只读 `docs/ohmypm/ohmypm-status.json` 和 `docs/ohmypm/ohmypm-memory.md` 的最小必要摘要
+2. 第 1 层：只按当前自然语言意图读取一个 skill
+3. 第 2 层：只读当前动作必须的 contract
+4. 第 3 层：外部知识和长材料只做局部回查
+5. 第 4 层：长文生成后只保留摘要、索引和稳定路径
+
+禁止：
+
+- 默认把多个 skill 一起读入
+- 为了保险一次读很多 contract
+- 整篇整包载入外部知识或长材料
+
 ## 1.4 输出收口
 
 每次输出最后，系统必须只给一个“下一步唯一动作”。
@@ -71,6 +93,7 @@ powershell -File <OHMYPM_PATH>\scripts\init-project.ps1
 
 不得一次给 PM 一串操作菜单。
 不得要求 PM 自己从 runbook 或 usage 里挑下一步。
+不得直接把内部状态机术语当作外部提问内容。
 
 ## 2. 回应与对齐
 
@@ -78,8 +101,8 @@ powershell -File <OHMYPM_PATH>\scripts\init-project.ps1
 
 进入 `omp-respond` 前，先读取：
 
-- `docs/project-status.json`
-- `docs/project-memory.md`
+- `docs/ohmypm/ohmypm-status.json`
+- `docs/ohmypm/ohmypm-memory.md`
 - `contracts/gates.md`
 - `contracts/context-guard.md`
 
@@ -136,7 +159,7 @@ powershell -File .\scripts\material-extract.ps1 -InputPath .\product-definition.
 
 缓存默认写到：
 
-- `docs/cache/material-extract.md`
+- `docs/ohmypm/cache/material-extract.md`
 
 ## 4. 评审会
 
@@ -157,7 +180,7 @@ powershell -File .\scripts\review-panel.ps1 `
 将上一步 JSON 保存后执行：
 
 ```powershell
-powershell -File .\scripts\review-apply.ps1 -ReviewJsonPath .\docs\cache\review-result.json
+powershell -File .\scripts\review-apply.ps1 -ReviewJsonPath .\docs\ohmypm\cache\review-result.json
 ```
 
 ## 5. 下游修正上游
@@ -166,7 +189,7 @@ powershell -File .\scripts\review-apply.ps1 -ReviewJsonPath .\docs\cache\review-
 
 ```powershell
 powershell -File .\scripts\overwrite-judge.ps1 `
-  -AffectedUpstreamJson '["docs/project-memory.md"]' `
+  -AffectedUpstreamJson '["docs/ohmypm/ohmypm-memory.md"]' `
   -ConflictType review_reversal `
   -Severity high `
   -ActionLevel restart_alignment `
@@ -179,7 +202,7 @@ powershell -File .\scripts\overwrite-judge.ps1 `
 将上一步 JSON 保存后执行：
 
 ```powershell
-powershell -File .\scripts\overwrite-apply.ps1 -JudgeJsonPath .\docs\cache\overwrite-result.json
+powershell -File .\scripts\overwrite-apply.ps1 -JudgeJsonPath .\docs\ohmypm\cache\overwrite-result.json
 ```
 
 ## 6. 状态同步

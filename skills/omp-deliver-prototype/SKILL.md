@@ -7,11 +7,24 @@ description: "生成交付型原型，作为评审会主展示物和研发第一
 
 ## 读取顺序
 
-1. `docs/project-status.json`
-2. `docs/project-memory.md`
-3. `contracts/gates.md`
-4. `contracts/delivery.md`
-5. `contracts/context-guard.md`
+第 0 层：最小状态
+
+1. `docs/ohmypm/ohmypm-status.json`
+2. `docs/ohmypm/ohmypm-memory.md` 的最小必要摘要
+
+第 1 层：当前动作 skill
+
+3. 当前只执行 `omp-deliver-prototype`，不得默认并读其他 skill
+
+第 2 层：当前动作必要 contract
+
+4. `contracts/gates.md`
+5. `contracts/delivery.md`
+6. `contracts/context-guard.md`
+
+第 3 层：条件触发读取
+
+7. 只有当当前原型需要依赖外部知识或长材料时，才允许做局部回查
 
 ## 目标
 
@@ -30,8 +43,10 @@ description: "生成交付型原型，作为评审会主展示物和研发第一
 
 1. 检查正式交付门禁
 2. 确认当前版本已进入正式交付模式
-3. 生成交付型原型主展示物
-4. 回写原型基线与原型产物路径
+3. 若需要外部知识或长材料，只允许读摘要、索引和局部片段
+4. 生成交付型原型主展示物
+5. 长文或长说明生成后，只保留摘要、索引和稳定路径
+6. 回写原型基线与原型产物路径
 
 ## 最低输出
 
@@ -46,10 +61,15 @@ description: "生成交付型原型，作为评审会主展示物和研发第一
 - 标注方式采用编号，不在页面铺大量正文
 - 若 `fallback_state.fallback_type` 非空，不得伪装进入交付型原型
 - 交付型原型是评审会主展示物，完成后应能直接进入 `omp-review`
+- 不得默认同时读取多个 skill
+- 不得为了保险一次读取很多 contract
+- 不得整篇整包载入外部知识或长材料
+- 对外默认表现为会自己判断下一步的协作型大 skill，不让 PM 自己判断命令或流程节点
+- 输出最后必须只给一个“下一步唯一动作”
 
 ## 回写要求
 
-- 更新 `docs/project-status.json` 中的：
+- 更新 `docs/ohmypm/ohmypm-status.json` 中的：
   - `current_stage`
   - `current_mode`
   - `last_action`

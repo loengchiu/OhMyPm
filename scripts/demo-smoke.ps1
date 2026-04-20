@@ -1,6 +1,6 @@
 param(
-    [string]$StatusPath = "docs/project-status.json",
-    [string]$MemoryPath = "docs/project-memory.md"
+    [string]$StatusPath = "docs/ohmypm/ohmypm-status.json",
+    [string]$MemoryPath = "docs/ohmypm/ohmypm-memory.md"
 )
 
 function Fail {
@@ -11,7 +11,7 @@ function Fail {
 
 $scriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 $repoRoot = Split-Path -Parent $scriptRoot
-$cacheDir = Join-Path $repoRoot "docs\cache"
+$cacheDir = Join-Path $repoRoot "docs\ohmypm\cache"
 
 if (-not (Test-Path -LiteralPath $StatusPath)) {
     Fail "project status file not found: $StatusPath"

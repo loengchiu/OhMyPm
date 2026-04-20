@@ -7,10 +7,22 @@ description: "正式交付前检查。判断当前方案是否满足进入正式
 
 ## 读取顺序
 
-1. `docs/project-status.json`
-2. `docs/project-memory.md`
-3. `contracts/gates.md`
-4. `contracts/review.md`
+第 0 层：最小状态
+
+1. `docs/ohmypm/ohmypm-status.json`
+2. `docs/ohmypm/ohmypm-memory.md` 的最小必要摘要
+
+第 1 层：当前动作 skill
+
+3. 当前只执行 `omp-preflight`，不得默认并读其他 skill
+
+第 2 层：当前动作必要 contract
+
+4. `contracts/gates.md`
+
+第 3 层：条件触发读取
+
+5. 仅当需要核对当前评审阻塞项时，再读取 `contracts/review.md`
 
 ## 目标
 
@@ -25,10 +37,11 @@ description: "正式交付前检查。判断当前方案是否满足进入正式
 
 1. 检查正式交付门禁
 2. 按六项闭合条件逐项判断
-3. 形成通过或回退结论
-4. 产出状态载荷和记忆载荷
-5. 调用 `scripts/status-apply.ps1`
-6. 调用 `scripts/memory-apply.ps1`
+3. 若需要核对评审阻塞，只局部读取评审相关信息
+4. 形成通过或回退结论
+5. 产出状态载荷和记忆载荷
+6. 调用 `scripts/status-apply.ps1`
+7. 调用 `scripts/memory-apply.ps1`
 
 ## 必读状态
 
@@ -57,6 +70,8 @@ description: "正式交付前检查。判断当前方案是否满足进入正式
 - 若判定为 `reopen_alignment`，下一步应回到 `omp-align` 并在重新进入正式对齐时递增轮次编号
 - 进入正式交付前，建议补一次轮次历史摘要，便于评审会和后续交接快速回顾
 - 若 `pending_confirmations` 仍非空，必须先转入 `omp-ask-back`，不得静默进入 preflight
+- 不得默认预读交付、评审、变更等不相关 skill
+- 不得为了保险一次读取多个 contract
 - 输出最后必须只给一个“下一步唯一动作”
 
 ## 阻断条件
@@ -73,10 +88,10 @@ description: "正式交付前检查。判断当前方案是否满足进入正式
 
 ## 回写要求
 
-- 更新 `docs/project-memory.md` 中的：
+- 更新 `docs/ohmypm/ohmypm-memory.md` 中的：
   - `当前建议`
   - `评审摘要` 或交付前检查摘要
-- 更新 `docs/project-status.json` 中的：
+- 更新 `docs/ohmypm/ohmypm-status.json` 中的：
   - `current_stage`
   - `last_action`
   - `next_recommended`

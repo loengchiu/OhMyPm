@@ -7,10 +7,22 @@ description: "修正已有产物缺陷，并在需要时触发下游修正上游
 
 ## 读取顺序
 
-1. `docs/project-status.json`
-2. `docs/project-memory.md`
-3. `contracts/overwrite.md`
-4. `contracts/review.md`
+第 0 层：最小状态
+
+1. `docs/ohmypm/ohmypm-status.json`
+2. `docs/ohmypm/ohmypm-memory.md` 的最小必要摘要
+
+第 1 层：当前动作 skill
+
+3. 当前只执行 `omp-fix`，不得默认并读其他 skill
+
+第 2 层：当前动作必要 contract
+
+4. `contracts/overwrite.md`
+
+第 3 层：条件触发读取
+
+5. 仅当修复来源明确来自评审结论时，再读取 `contracts/review.md`
 
 ## 目标
 
@@ -52,13 +64,17 @@ description: "修正已有产物缺陷，并在需要时触发下游修正上游
 - 下游不得默默覆盖上游结论
 - 若复写判定为 `restart_alignment`，下一步必须明确回到对齐链，不得继续假装处于正式交付
 - 修复如果只解决局部缺陷，可保留当前阶段；若推翻基线，则必须同步更新 `overwrite_queue`
+- 不得默认同时读取多个 skill
+- 不得为了保险一次读取很多 contract
+- 对外默认表现为会自己判断下一步的协作型大 skill
+- 输出最后必须只给一个“下一步唯一动作”
 
 ## 回写要求
 
-- 更新 `docs/project-memory.md` 中的：
+- 更新 `docs/ohmypm/ohmypm-memory.md` 中的：
   - `复写记录`
   - 必要时 `当前建议`
-- 更新 `docs/project-status.json` 中的：
+- 更新 `docs/ohmypm/ohmypm-status.json` 中的：
   - `current_stage`
   - `last_action`
   - `next_recommended`

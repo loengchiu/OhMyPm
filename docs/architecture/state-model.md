@@ -16,7 +16,7 @@ OhMyPm 需要同时维护三类持久信息：
 
 建议路径：
 
-- `docs/project-status.json`
+- `docs/ohmypm/ohmypm-status.json`
 
 职责：
 
@@ -28,7 +28,7 @@ OhMyPm 需要同时维护三类持久信息：
 
 建议路径：
 
-- `docs/project-memory.md`
+- `docs/ohmypm/ohmypm-memory.md`
 
 职责：
 
@@ -40,13 +40,13 @@ OhMyPm 需要同时维护三类持久信息：
 
 建议路径：
 
-- `docs/system-memory/`
+- `docs/ohmypm/system-memory/`
 
 每个系统或子系统一个卡片，例如：
 
-- `docs/system-memory/oms.md`
-- `docs/system-memory/crm-member.md`
-- `docs/system-memory/invoice-center.md`
+- `docs/ohmypm/system-memory/oms.md`
+- `docs/ohmypm/system-memory/crm-member.md`
+- `docs/ohmypm/system-memory/invoice-center.md`
 
 职责：
 
@@ -75,7 +75,7 @@ OhMyPm 需要同时维护三类持久信息：
     "review_pack": ""
   },
   "memory_refs": {
-    "project_memory": "docs/project-memory.md",
+    "project_memory": "docs/ohmypm/ohmypm-memory.md",
     "system_memory_cards": []
   },
   "latest_artifacts": {
@@ -264,7 +264,7 @@ OhMyPm 需要同时维护三类持久信息：
 
 ## 6. 三类文件的边界
 
-### `project-status.json` 负责
+### `ohmypm-status.json` 负责
 
 - 能不能继续
 - 当前在什么阶段
@@ -275,7 +275,7 @@ OhMyPm 需要同时维护三类持久信息：
 - 当前门禁不通过时的回退类型是什么
 - 当前变更分类初判是什么
 
-### `project-memory.md` 负责
+### `ohmypm-memory.md` 负责
 
 - 这个项目目前到底理解成什么了
 - 哪些已确认，哪些未确认
@@ -295,7 +295,7 @@ OhMyPm 需要同时维护三类持久信息：
 - `系统记忆引用`
 - `新增资料记录`
 
-### `system-memory/*.md` 负责
+### `docs/ohmypm/system-memory/*.md` 负责
 
 - 某个系统长期稳定的知识是什么
 - 哪些边界、权限、兼容性和坑点可跨项目复用
@@ -304,14 +304,14 @@ OhMyPm 需要同时维护三类持久信息：
 
 ### 常规回写
 
-- 阶段型 skill 完成后：更新 `project-status.json`
-- 当前轮次有实质性认知变化后：更新 `project-memory.md`
+- 阶段型 skill 完成后：更新 `ohmypm-status.json`
+- 当前轮次有实质性认知变化后：更新 `ohmypm-memory.md`
 - 新获取到可复用系统知识后：更新对应系统记忆卡
 
 ### 评审回写
 
-- 评审结论写入 `project-status.json.review_state`
-- 评审摘要写入 `project-memory.md`
+- 评审结论写入 `ohmypm-status.json.review_state`
+- 评审摘要写入 `ohmypm-memory.md`
 - 与系统边界相关的新结论，按需回写系统记忆卡
 
 ### 下游复写回写
@@ -330,12 +330,12 @@ OhMyPm 需要同时维护三类持久信息：
 
 可直接参考的部分：
 
-- `project-status.json` 的状态驱动思路
+- `ohmypm-status.json` 的状态驱动思路
 - `blockers`、`pending_confirmations`、`stable_baselines` 的运行时作用
 - `context_summary` 作为跨会话摘要入口
 
 需要新增的部分：
 
-- `project-memory.md` 作为项目语义主存
-- `docs/system-memory/` 作为跨项目知识主存
+- `ohmypm-memory.md` 作为项目语义主存
+- `docs/ohmypm/system-memory/` 作为跨项目知识主存
 - `overwrite_queue` 和复写记录，用于管理下游修正上游

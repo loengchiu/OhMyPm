@@ -7,10 +7,22 @@ description: "处理正式交付后的新增内容或范围变化，判断是否
 
 ## 读取顺序
 
-1. `docs/project-status.json`
-2. `docs/project-memory.md`
-3. `contracts/gates.md`
-4. `contracts/overwrite.md`
+第 0 层：最小状态
+
+1. `docs/ohmypm/ohmypm-status.json`
+2. `docs/ohmypm/ohmypm-memory.md` 的最小必要摘要
+
+第 1 层：当前动作 skill
+
+3. 当前只执行 `omp-change`，不得默认并读其他 skill
+
+第 2 层：当前动作必要 contract
+
+4. `contracts/gates.md`
+
+第 3 层：条件触发读取
+
+5. 仅当变更已影响上游稳定基线时，再读取 `contracts/overwrite.md`
 
 ## 目标
 
@@ -46,14 +58,19 @@ description: "处理正式交付后的新增内容或范围变化，判断是否
 - 当分类为 `new_module` 或 `structural_change` 时，必须显式记录 `change_state.change_category_confirmed_by_pm`
 - 若变更推翻主结构，应将下一步写为 `reopen_alignment` 或转正式变更流程，而不是直接补 PRD
 - 当 `change_state.change_category_confirmed_by_pm=false` 时，必须转入 `omp-ask-back`，不得把当前分类当作最终结论继续推进
+- 不得默认同时读取多个 skill
+- 不得为了保险一次读取很多 contract
+- 对外必须把内部分类翻译成人话，不直接把状态字段丢给 PM
+- 对外默认表现为会自己判断下一步的协作型大 skill
+- 输出最后必须只给一个“下一步唯一动作”
 
 ## 回写要求
 
-- 更新 `docs/project-memory.md` 中的：
+- 更新 `docs/ohmypm/ohmypm-memory.md` 中的：
   - `本轮变化点`
   - `当前建议`
   - 必要时 `复写记录`
-- 更新 `docs/project-status.json` 中的：
+- 更新 `docs/ohmypm/ohmypm-status.json` 中的：
   - `current_stage`
   - `last_action`
   - `next_recommended`

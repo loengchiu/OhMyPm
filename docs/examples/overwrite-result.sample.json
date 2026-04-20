@@ -1,6 +1,6 @@
 {
   "affected_upstream": [
-    "docs/project-memory.md"
+    "docs/ohmypm/ohmypm-memory.md"
   ],
   "conflict_type": "review_reversal",
   "severity": "high",

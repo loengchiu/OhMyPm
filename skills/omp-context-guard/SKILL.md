@@ -7,9 +7,21 @@ description: "评估输入、上下文和输出规模风险，并决定是否分
 
 ## 读取顺序
 
-1. `contracts/context-guard.md`
-2. `docs/project-status.json`
-3. 按需读取当前输入材料
+第 0 层：最小状态
+
+1. `docs/ohmypm/ohmypm-status.json`
+
+第 1 层：当前动作 skill
+
+2. 当前只执行 `omp-context-guard`，不得默认并读其他 skill
+
+第 2 层：当前动作必要 contract
+
+3. `contracts/context-guard.md`
+
+第 3 层：条件触发读取
+
+4. 仅按需局部读取当前输入材料
 
 输出：
 
@@ -29,7 +41,9 @@ description: "评估输入、上下文和输出规模风险，并决定是否分
 
 - 风险等级为 `high` 时，不得直接整篇输入或整篇输出
 - 必须先产出分块计划，再进入实际生成
-- 来源材料过长时，优先写入 `docs/cache/material-extract.md`
+- 来源材料过长时，优先写入 `docs/ohmypm/cache/material-extract.md`
+- 不得整篇整包载入当前输入材料
+- 输出只保留分块计划、提取结果摘要和稳定路径
 
 ## 建议脚本
 

@@ -10,6 +10,11 @@
 - 让追问直接服务当前阶段门禁
 - 把结果回写到项目记忆和状态文件
 
+前置边界：
+
+- ask-back 只服务真实协作阻塞，不能把机制验证样例里的虚拟业务问题抛给 PM
+- 在进入 ask-back 前，必须先判断当前属于真实项目协作还是样例/演示场景
+
 ## 2. 适用场景
 
 以下情况优先触发追问，而不是直接继续生成：
@@ -27,6 +32,14 @@
 - 正式交付门禁前仍有 `pending_confirmations`
 - `change_state.change_category_confirmed_by_pm=false`
 - 范围边界未确认，但已经影响模块清单、工时或排期判断
+
+样例例外：
+
+- 若当前是 `机制验证样例` 或 `demo/smoke 回放`，样例中的业务参数、业务规则口径、角色映射缺口不得进入面向 PM 的 ask-back
+- 此类缺口必须改为：
+  - 内部修正
+  - 使用占位值
+  - 或显式标注“仅用于机制验证”
 
 ## 3. 追问范围
 
@@ -65,9 +78,10 @@
 - 若已有证据可从资料中查出，优先查证，不要先问人
 - 当 `pending_confirmations` 非空时，除非当前动作明确处于 `internal_repair` 或 `need_materials`，否则不得静默推进到更重阶段
 - 当 `change_state.change_category_confirmed_by_pm=false` 时，AI 可以保留变更初判，但不得把该分类当作最终结论继续推进正式交付或正式变更处理
+- 若当前场景属于样例/演示，必须先拦截“向 PM 问虚拟业务问题”的冲动，改为内部占位或机制说明
 - 追问结果必须回写：
-  - `docs/project-memory.md`
-  - 必要时 `docs/project-status.json.pending_confirmations`
+  - `docs/ohmypm/ohmypm-memory.md`
+  - 必要时 `docs/ohmypm/ohmypm-status.json.pending_confirmations`
 
 ## 5.1 运行时触发
 
@@ -92,6 +106,7 @@
 - `/ompaskback` 只能作为显式入口，不是 ask-back 的必要前提
 - ask-back 输出最后必须收口为：
   - `现在只需要你回答的唯一问题是：...`
+- 若当前是样例/演示场景，则不得输出面向 PM 的业务追问；应改为内部修正建议
 
 ## 6. 输出要求
 
@@ -102,8 +117,15 @@
 - 这个问题属于哪类缺口
 - 回答后会解除哪一项阻塞
 
+样例场景下的替代输出至少要给出：
+
+- 当前为什么不能继续推进
+- 这是样例缺口还是机制缺口
+- 接下来是改用占位值、内部修正，还是需要切回真实项目协作
+
 ## 7. 回写原则
 
 - 若用户已回答：清理对应阻塞项并更新事实
 - 若仍未回答：保留到 `pending_confirmations`
 - 若回答推翻当前方案：同步更新 `本轮变化点` 或进入复写判断
+- 若当前被判定为样例场景：样例业务缺口不得写入面向 PM 的 `pending_confirmations`

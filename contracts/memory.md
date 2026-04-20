@@ -14,8 +14,8 @@
 
 OhMyPm 的记忆固定分两层：
 
-- 项目记忆文件：`docs/project-memory.md`
-- 系统记忆卡：`docs/system-memory/*.md`
+- 项目记忆文件：`docs/ohmypm/ohmypm-memory.md`
+- 系统记忆卡：`docs/ohmypm/system-memory/*.md`
 
 ## 3. 项目记忆的职责
 
@@ -87,7 +87,7 @@ OhMyPm 的记忆固定分两层：
 
 ## 8. 强制规则
 
-- `project-status.json` 负责运行时真值，`project-memory.md` 不替代状态文件
+- `ohmypm-status.json` 负责运行时真值，`ohmypm-memory.md` 不替代状态文件
 - 不得把纯操作日志塞进项目记忆替代项目语义
 - 不得把某个项目的一次性讨论细节直接写成系统记忆卡的长期事实
 - 若复写或评审推翻既有结论，记忆必须同步更新

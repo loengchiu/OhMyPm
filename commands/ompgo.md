@@ -4,7 +4,7 @@
 
 默认行为：
 
-- 读取 `docs/project-status.json`
+- 读取 `docs/ohmypm/ohmypm-status.json`
 - 若不存在，则创建最小初始化文件
 - 若存在，则按 `AGENTS.md` 进入当前阶段
 - 若当前处于回应/对齐循环，优先读取：

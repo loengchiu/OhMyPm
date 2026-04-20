@@ -2,15 +2,22 @@
 
 ## 1. Project Overview
 - Project Name: Oh My PM
-- Current Demand Task: Clarify how the approval-path expansion should be absorbed into the current version plan and explain its impact on module split, estimate, and schedule.
+- Current Demand Task: Use the approval-path expansion only as a mechanism-validation sample to verify the minimum OhMyPm chain.
 - Current Mode: alignment_loop
 - Current Version: v0.6
 
+## 1.1 Collaboration Boundary
+- The current approval-path expansion chain is a sample for mechanism validation, not a real project collaboration thread.
+- The current sample exists to verify routing, gates, preflight, delivery split, review, and state writeback.
+- PM is not expected to answer virtual sample business questions such as thresholds, risk conditions, or reviewer-role mapping.
+- If a later thread turns into real project collaboration, that real demand must be reopened under its own context instead of inheriting sample assumptions as real facts.
+
 ## 2. Confirmed Facts
-- The approval-path expansion is still inside the current version scope.
-- The newly added content should be treated as an in-module supplement inside the existing approval capability, not as a separate module.
-- The current review state is still `conditional_pass`.
-- Formal delivery cannot continue yet because the module split and estimate explanation are not stable enough.
+- The current approval-path expansion is a sample scenario used to validate mechanism behavior.
+- A real HTML prototype body and a real PRD V1 already exist as the current sample delivery pair.
+- The current sample pair has passed preflight and has now received a `pass` review result.
+- The current blocker is not a real-project business gap to be answered by PM.
+- The earlier virtual business gaps have already been converted into explicit placeholders and mechanism-validation-only notes.
 
 ## 3. Unconfirmed Facts
 - None
@@ -19,23 +26,26 @@
 - None
 
 ## 5. Why Still Unclear
-- The scope boundary is now clear, and the module classification is now also clear.
-- What is still unclear is how to explain the updated module split, estimate, and schedule impact in one stable narrative that can be reused in the next alignment step.
+- The sample boundary is now clear.
+- There is no longer a blocking unclear item inside the current sample chain.
 
 ## 6. Current Version Plan
-- Keep the approval-path expansion inside the current version.
-- Treat the newly added approval-path content as an in-module supplement inside the existing approval capability.
-- Rework the module split, estimate explanation, and schedule-impact wording before attempting a heavier stage.
-- A merged stable alignment package is now available to carry the response note, interface boundary note, and acceptance coverage note under one reusable narrative.
+- Keep the current approval-path expansion only as a sample validation story.
+- Keep the current HTML prototype and PRD V1 as the present sample baseline.
+- The current sample now uses explicit placeholders for thresholds, risk tags, and reviewer-role mapping.
+- Do not ask PM to provide virtual business answers for this sample chain.
 
 ## 7. This Round Changes
-- Confirmed that the approval-path expansion is still inside the current version scope.
-- Corrected the earlier module classification and confirmed that the newly added content should be treated as an in-module supplement rather than a separate module.
-- Cleared the PM confirmation blocker on scope boundary.
-- Cleared the PM confirmation blocker on change classification.
+- Explicitly separated mechanism-validation sample work from real project collaboration.
+- Marked the current approval-path expansion chain as a sample validation path rather than a real demand thread.
+- Replaced the previously open virtual business gaps with explicit sample placeholders in the current prototype and PRD.
+- Produced a real HTML prototype body.
+- Produced a real PRD V1.
+- Passed preflight with the current prototype and PRD pair.
+- Produced the first real review record at `docs/ohmypm/cache/review-v1.json`.
 
 ## 8. Current Recommendation
-- Continue refining the module split, estimate explanation, and schedule-impact wording into one stable alignment note before the next alignment step.
+- Use the current sample chain as the baseline for later mechanism replay, or open a separate real-project context if collaboration should move beyond sample validation.
 
 ## 9. Current Module List
 - Approval capability
@@ -74,16 +84,15 @@
 - Added `docs/prototype-handoff-note.md`
 - Added `docs/prototype-v1-draft.md`
 - Added `docs/prototype-v1-structure.md`
-- Added `deliverables/prototype-v1/index.html`
-- Added `deliverables/prd-v1/PRD-v1.md`
+- Added `docs/ohmypm/deliverables/prototype-v1/index.html`
+- Added `docs/ohmypm/deliverables/prd-v1/PRD-v1.md`
 
 ## 14. Review Summary
-- Review concluded as `conditional_pass`
-- Must fix: Missing API contract
-- Must fix: Acceptance coverage is incomplete
-- Current repair focus has been split into three concrete gaps: module split and estimate wording, interface boundary clarification, and acceptance coverage completion.
-- The second and third gaps now both have first-round human-readable repair notes.
-- The current repair outputs have now been merged into one stable alignment package for reuse in later steps.
+- Review concluded as `pass`
+- Fact issues: none
+- Risk issues: none that block the current sample chain
+- Must fix: none
+- Suggestions remain non-blocking: later add a clearer implementation checklist for fields/actions/states and more detailed notification exception cases for testing.
 
 ## 15. Overwrite Records
 - None
@@ -122,3 +131,11 @@
 ## 23. PRD Skeleton Progress
 - A first real PRD skeleton is now available.
 - The current skeleton already covers document info, background, scope, overall approach, page explanation, business rules, exceptions and boundaries, roles and data impact, and acceptance and delivery notes.
+- The current PRD now also includes the minimum interface agreement, linkage rules, role-action matrix, exception rules, and executable acceptance checks needed for preflight.
+- The current PRD now uses explicit sample placeholders for amount threshold, risk tag, and reviewer-role mapping instead of leaving them as PM-facing open questions.
+
+## 24. Review Record Progress
+- A first real review record is now available at `docs/ohmypm/cache/review-v1.json`.
+- The current review conclusion is `pass`.
+- The current sample chain no longer carries a review-stage hard blocker.
+

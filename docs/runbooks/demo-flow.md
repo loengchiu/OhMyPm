@@ -28,8 +28,8 @@ powershell -File .\scripts\init-project.ps1
 Recommended backup before replay:
 
 ```powershell
-Copy-Item .\docs\project-status.json .\docs\cache\project-status.demo.backup.json -Force
-Copy-Item .\docs\project-memory.md .\docs\cache\project-memory.demo.backup.md -Force
+Copy-Item .\docs\ohmypm\ohmypm-status.json .\docs\ohmypm\cache\ohmypm-status.demo.backup.json -Force
+Copy-Item .\docs\ohmypm\ohmypm-memory.md .\docs\ohmypm\cache\ohmypm-memory.demo.backup.md -Force
 ```
 
 ## Path A: Respond -> Align -> Preflight Pass
@@ -147,6 +147,6 @@ Expected state:
 If you created backups, restore them after the demo:
 
 ```powershell
-Copy-Item .\docs\cache\project-status.demo.backup.json .\docs\project-status.json -Force
-Copy-Item .\docs\cache\project-memory.demo.backup.md .\docs\project-memory.md -Force
+Copy-Item .\docs\ohmypm\cache\ohmypm-status.demo.backup.json .\docs\ohmypm\ohmypm-status.json -Force
+Copy-Item .\docs\ohmypm\cache\ohmypm-memory.demo.backup.md .\docs\ohmypm\ohmypm-memory.md -Force
 ```

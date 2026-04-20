@@ -44,7 +44,7 @@
 
 默认缓存路径：
 
-- `docs/cache/material-extract.md`
+- `docs/ohmypm/cache/material-extract.md`
 
 结构化提取至少包含：
 

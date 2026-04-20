@@ -7,11 +7,23 @@ description: "组织评审会材料、执行多角色评审团、输出评审结
 
 ## 读取顺序
 
-1. `docs/project-status.json`
-2. `docs/project-memory.md`
-3. `contracts/review.md`
-4. `contracts/delivery.md`
-5. `contracts/overwrite.md`
+第 0 层：最小状态
+
+1. `docs/ohmypm/ohmypm-status.json`
+2. `docs/ohmypm/ohmypm-memory.md` 的最小必要摘要
+
+第 1 层：当前动作 skill
+
+3. 当前只执行 `omp-review`，不得默认并读其他 skill
+
+第 2 层：当前动作必要 contract
+
+4. `contracts/review.md`
+
+第 3 层：条件触发读取
+
+5. 仅当需要核对交付物分工边界时，再读取 `contracts/delivery.md`
+6. 仅当评审结论已影响上游稳定基线时，再读取 `contracts/overwrite.md`
 
 ## 目标
 
@@ -24,10 +36,12 @@ description: "组织评审会材料、执行多角色评审团、输出评审结
 
 1. 确认当前已有可评审版本
 2. 归并评审输入，形成材料包
-3. 调用 `omp-review-panel`
-4. 产出统一评审 JSON
-5. 调用 `scripts/review-apply.ps1`
-6. 将评审摘要回写到 `docs/project-memory.md`
+3. 若需要长材料或外部知识，只允许读摘要、索引和局部片段
+4. 调用 `omp-review-panel`
+5. 产出统一评审 JSON
+6. 长文生成后只保留摘要、索引和稳定路径
+7. 调用 `scripts/review-apply.ps1`
+8. 将评审摘要回写到 `docs/ohmypm/ohmypm-memory.md`
 
 ## 必读状态
 
@@ -56,6 +70,10 @@ description: "组织评审会材料、执行多角色评审团、输出评审结
 - 评审材料包至少应覆盖：当前版本方案摘要、原型、PRD 或关键规则说明、本轮变化点、风险点、待决策点、模块级粗估和排期影响
 - 评审结论必须归并为：事实问题、风险问题、建议问题、统一结论
 - 若评审结论推翻稳定基线，应转入 `omp-fix` 并触发复写判定
+- 不得默认同时读取多个 skill
+- 不得为了保险一次读取很多 contract
+- 对外默认表现为会自己判断下一步的协作型大 skill
+- 输出最后必须只给一个“下一步唯一动作”
 
 ## 阻断条件
 
@@ -65,10 +83,10 @@ description: "组织评审会材料、执行多角色评审团、输出评审结
 
 ## 回写要求
 
-- 更新 `docs/project-memory.md` 中的：
+- 更新 `docs/ohmypm/ohmypm-memory.md` 中的：
   - `评审摘要`
   - 必要时 `复写记录`
-- 更新 `docs/project-status.json` 中的：
+- 更新 `docs/ohmypm/ohmypm-status.json` 中的：
   - `current_stage`
   - `last_action`
   - `next_recommended`

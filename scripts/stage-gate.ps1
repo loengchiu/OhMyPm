@@ -3,7 +3,7 @@ param(
     [ValidateSet("omp-respond", "omp-align", "omp-preflight", "omp-deliver", "omp-change")]
     [string]$Gate,
 
-    [string]$Path = "docs/project-status.json"
+    [string]$Path = "docs/ohmypm/ohmypm-status.json"
 )
 
 function Fail {
@@ -21,6 +21,28 @@ function HasItems {
     param([object]$Value)
     if ($null -eq $Value) { return $false }
     return @($Value).Count -gt 0
+}
+
+function Get-ScenarioMode {
+    param([object]$Status)
+
+    if ($null -ne $Status.scenario_mode -and $Status.scenario_mode.ToString().Trim().Length -gt 0) {
+        return $Status.scenario_mode.ToString().Trim().ToLowerInvariant()
+    }
+
+    if ($null -ne $Status.collaboration_context -and
+        $null -ne $Status.collaboration_context.scenario_mode -and
+        $Status.collaboration_context.scenario_mode.ToString().Trim().Length -gt 0) {
+        return $Status.collaboration_context.scenario_mode.ToString().Trim().ToLowerInvariant()
+    }
+
+    return "real_project"
+}
+
+function IsSampleScenario {
+    param([string]$ScenarioMode)
+
+    return $ScenarioMode -in @("sample_validation", "demo_smoke", "demo", "sample")
 }
 
 function IsOneOf {
@@ -59,7 +81,7 @@ function AddAskBackError {
 }
 
 if (-not (Test-Path -LiteralPath $Path)) {
-    Fail "docs/project-status.json not found."
+    Fail "docs/ohmypm/ohmypm-status.json not found."
 }
 
 $status = Get-Content -Raw -LiteralPath $Path | ConvertFrom-Json
@@ -67,6 +89,8 @@ $errors = New-Object System.Collections.Generic.List[string]
 $roundResultEnums = @("continue_alignment", "need_materials", "need_internal_repair", "ready_for_preflight")
 $fallbackEnums = @("internal_repair", "need_materials", "reopen_alignment")
 $changeEnums = @("minor_patch", "within_module", "new_module", "structural_change")
+$scenarioMode = Get-ScenarioMode $status
+$isSampleScenario = IsSampleScenario $scenarioMode
 
 if (HasItems $status.blockers) {
     $errors.Add("blockers are not empty")
@@ -128,7 +152,12 @@ switch ($Gate) {
         }
 
         if (HasItems $status.pending_confirmations -and $status.fallback_state.fallback_type -notin @("internal_repair", "need_materials")) {
-            AddAskBackError -List $errors -Reason "pending_confirmations are not empty and alignment is not explicitly in internal_repair/need_materials" -Question "Please answer the top pending confirmation before the next heavier step continues."
+            if ($isSampleScenario) {
+                $errors.Add("sample/demo scenario: pending_confirmations must be resolved by internal repair, placeholders, or sample-only notes instead of PM ask-back")
+            }
+            else {
+                AddAskBackError -List $errors -Reason "pending_confirmations are not empty and alignment is not explicitly in internal_repair/need_materials" -Question "Please answer the top pending confirmation before the next heavier step continues."
+            }
         }
 
         $hasPlan = HasText $status.stable_baselines.response_plan
@@ -161,7 +190,12 @@ switch ($Gate) {
         }
 
         if (HasItems $status.pending_confirmations) {
-            AddAskBackError -List $errors -Reason "pending_confirmations are still open before preflight" -Question "Please confirm the unresolved scope/fact boundary before preflight continues."
+            if ($isSampleScenario) {
+                $errors.Add("sample/demo scenario: pending_confirmations must be converted to placeholders or sample-only notes before preflight continues")
+            }
+            else {
+                AddAskBackError -List $errors -Reason "pending_confirmations are still open before preflight" -Question "Please confirm the unresolved scope/fact boundary before preflight continues."
+            }
         }
 
         $hasPlan = HasText $status.stable_baselines.response_plan
@@ -192,7 +226,12 @@ switch ($Gate) {
         }
 
         if (HasItems $status.pending_confirmations) {
-            AddAskBackError -List $errors -Reason "pending_confirmations are still open before formal delivery" -Question "Please confirm the unresolved scope/fact boundary before prototype or PRD delivery starts."
+            if ($isSampleScenario) {
+                $errors.Add("sample/demo scenario: formal delivery cannot ask PM to fill virtual business gaps; use placeholders or explicit sample notes first")
+            }
+            else {
+                AddAskBackError -List $errors -Reason "pending_confirmations are still open before formal delivery" -Question "Please confirm the unresolved scope/fact boundary before prototype or PRD delivery starts."
+            }
         }
 
         $hasPlan = HasText $status.stable_baselines.response_plan
@@ -211,11 +250,21 @@ switch ($Gate) {
         }
 
         if (HasItems $status.pending_confirmations) {
-            AddAskBackError -List $errors -Reason "pending_confirmations are still open before formal change handling" -Question "Please confirm the unresolved scope/fact boundary before formal change handling continues."
+            if ($isSampleScenario) {
+                $errors.Add("sample/demo scenario: change handling must stay inside sample assumptions instead of asking PM to confirm virtual facts")
+            }
+            else {
+                AddAskBackError -List $errors -Reason "pending_confirmations are still open before formal change handling" -Question "Please confirm the unresolved scope/fact boundary before formal change handling continues."
+            }
         }
 
         if (-not $status.change_state.change_category_confirmed_by_pm) {
-            AddAskBackError -List $errors -Reason "change classification has not been confirmed by PM" -Question "Please confirm whether the current request should stay classified as '$($status.change_state.change_category)' before formal delivery/change handling continues."
+            if ($isSampleScenario) {
+                $errors.Add("sample/demo scenario: unconfirmed change classification must stay as a sample assumption or internal repair item, not a PM ask-back")
+            }
+            else {
+                AddAskBackError -List $errors -Reason "change classification has not been confirmed by PM" -Question "Please confirm whether the current request should stay classified as '$($status.change_state.change_category)' before formal delivery/change handling continues."
+            }
         }
 
         if ((-not (HasText $status.stable_baselines.prototype)) -and (-not (HasText $status.stable_baselines.prd))) {

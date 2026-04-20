@@ -1,5 +1,5 @@
 param(
-    [string]$Path = "docs/project-status.json",
+    [string]$Path = "docs/ohmypm/ohmypm-status.json",
     [string]$AnsweredConfirmation,
     [string]$PendingConfirmationsJson,
     [string]$ChangeCategoryConfirmedByPm,
@@ -45,7 +45,7 @@ function Parse-BoolString {
 }
 
 if (-not (Test-Path -LiteralPath $Path)) {
-    Fail "project-status.json not found."
+    Fail "ohmypm-status.json not found."
 }
 
 $status = Get-Content -Raw -LiteralPath $Path | ConvertFrom-Json

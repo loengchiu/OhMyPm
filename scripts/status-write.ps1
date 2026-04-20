@@ -1,5 +1,5 @@
 param(
-    [string]$Path = "docs/project-status.json",
+    [string]$Path = "docs/ohmypm/ohmypm-status.json",
     [string]$Stage,
     [string]$Mode,
     [string]$Version,
@@ -103,7 +103,7 @@ function Parse-BoolValue {
 }
 
 if (-not (Test-Path -LiteralPath $Path)) {
-    Fail "project-status.json not found."
+    Fail "ohmypm-status.json not found."
 }
 
 $status = Get-Content -Raw -LiteralPath $Path | ConvertFrom-Json
@@ -236,4 +236,4 @@ if (($PSBoundParameters.ContainsKey("ChangeCategory") -or $PSBoundParameters.Con
 }
 
 $status | ConvertTo-Json -Depth 10 | Set-Content -LiteralPath $Path -Encoding utf8
-Write-Host "[OhMyPm] project-status.json updated." -ForegroundColor Green
+Write-Host "[OhMyPm] ohmypm-status.json updated." -ForegroundColor Green

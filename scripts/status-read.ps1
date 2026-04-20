@@ -1,9 +1,9 @@
 param(
-    [string]$Path = "docs/project-status.json"
+    [string]$Path = "docs/ohmypm/ohmypm-status.json"
 )
 
 if (-not (Test-Path -LiteralPath $Path)) {
-    Write-Host "[OhMyPm] project-status.json not found." -ForegroundColor Yellow
+    Write-Host "[OhMyPm] ohmypm-status.json not found." -ForegroundColor Yellow
     exit 1
 }
 

@@ -45,7 +45,7 @@ OhMyPm 运行在 AI IDE / AI CLI 中。
 
 ### 3.1 激活开关
 
-建议以 `docs/project-status.json` 作为 OhMyPm 在当前项目中的激活开关。
+建议以 `docs/ohmypm/ohmypm-status.json` 作为 OhMyPm 在当前项目中的激活开关。
 
 规则：
 
@@ -56,9 +56,9 @@ OhMyPm 运行在 AI IDE / AI CLI 中。
 
 当 OhMyPm 已激活时，宿主模型在执行阶段型 skill 之前，必须至少完成以下动作：
 
-1. 读取 `docs/project-status.json`
-2. 读取 `docs/project-memory.md`
-3. 根据任务需要读取相关 `docs/system-memory/*.md`
+1. 读取 `docs/ohmypm/ohmypm-status.json`
+2. 读取 `docs/ohmypm/ohmypm-memory.md`
+3. 根据任务需要读取相关 `docs/ohmypm/system-memory/*.md`
 4. 执行门禁判断
 5. 执行上下文风险判断
 

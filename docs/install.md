@@ -29,8 +29,8 @@ powershell -File .\installers\install.ps1
 
 当项目根目录存在以下文件时，OhMyPm 工作流激活：
 
-- `docs/project-status.json`
-- `docs/project-memory.md`
+- `docs/ohmypm/ohmypm-status.json`
+- `docs/ohmypm/ohmypm-memory.md`
 
 ## 入口
 
