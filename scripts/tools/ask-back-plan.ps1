@@ -1,4 +1,4 @@
-param(
+﻿param(
     [string]$Path = "docs/ohmypm/ohmypm-status.json"
 )
 
@@ -63,20 +63,20 @@ $isSampleScenario = IsSampleScenario $scenarioMode
 foreach ($item in @($status.pending_confirmations)) {
     $category = "fact_gap"
     $impacts = @("current_understanding")
-    $question = "Please confirm the unresolved item: $item"
+    $question = "请确认这个还没定下来的点：$item"
     $handling = "ask_pm"
 
     if ($isSampleScenario) {
-        $question = "Sample/demo scenario detected. Do not ask PM to answer this business detail. Replace it with a placeholder or mark it as mechanism-validation-only."
+        $question = "当前是样例或演示场景。不要把这个业务细节抛给 PM，请改为占位值或明确标注为仅用于机制验证。"
         $handling = "internal_placeholder"
     }
 
     if ($item -match "scope boundary") {
         $category = "scope_gap"
         $impacts = @("module_list", "estimate", "schedule")
-        $question = "Please confirm the scope boundary for the current version: is the approval-path expansion still inside the current version, or should it be treated as a separate scope/module?"
+        $question = "这次新增内容是否仍然属于当前版本范围内的补充，而不是需要拆成单独的新范围？"
         if ($isSampleScenario) {
-            $question = "Sample/demo scenario detected. Keep the scope note inside the sample itself, and do not turn this into a PM business confirmation."
+            $question = "当前是样例或演示场景。请把范围说明留在样例内部，不要转成向 PM 追问的真实业务问题。"
             $handling = "internal_placeholder"
         }
     }
@@ -93,10 +93,10 @@ foreach ($item in @($status.pending_confirmations)) {
 
 $changeConfirmedByPm = Get-BoolValue $status.change_state.change_category_confirmed_by_pm
 if ((HasText $status.change_state.change_category) -and (-not $changeConfirmedByPm)) {
-    $categoryQuestion = "Please confirm whether this newly added content is already large enough that it should be treated as a separate new module, rather than still being handled as an in-module supplement."
+    $categoryQuestion = "这次新增内容是否已经大到需要按独立模块处理，而不是继续算作原模块内补充？"
     $handling = "ask_pm"
     if ($isSampleScenario) {
-        $categoryQuestion = "Sample/demo scenario detected. Keep the change classification inside the demo narrative or mark it as a sample assumption instead of asking PM for a real-project decision."
+        $categoryQuestion = "当前是样例或演示场景。请把这个分类留在样例内部处理，或标成样例假设，不要向 PM 要真实项目判断。"
         $handling = "internal_placeholder"
     }
     $triggers.Add((New-Object psobject -Property @{
@@ -110,10 +110,10 @@ if ((HasText $status.change_state.change_category) -and (-not $changeConfirmedBy
 }
 
 if ((HasText $status.fallback_state.fallback_type) -and ($status.fallback_state.fallback_type -notin @("internal_repair", "need_materials"))) {
-    $fallbackQuestion = "Please confirm whether the current state should reopen formal alignment before any heavier stage continues."
+    $fallbackQuestion = "在继续更重动作之前，是否需要重新开一轮对齐？"
     $handling = "ask_pm"
     if ($isSampleScenario) {
-        $fallbackQuestion = "Sample/demo scenario detected. Reopen alignment only inside the sample flow if needed; do not turn this into a PM decision."
+        $fallbackQuestion = "当前是样例或演示场景。如果需要重开对齐，请只在样例内部处理，不要转成 PM 决策。"
         $handling = "internal_placeholder"
     }
     $triggers.Add((New-Object psobject -Property @{
@@ -126,13 +126,13 @@ if ((HasText $status.fallback_state.fallback_type) -and ($status.fallback_state.
     }))
 }
 
-$nextRecommended = "No ask-back trigger found"
+$nextRecommended = "当前没有需要抛给 PM 的追问"
 if ($triggers.Count -gt 0) {
     if ($isSampleScenario) {
-        $nextRecommended = "Sample/demo scenario detected: do not route virtual business gaps to PM; use placeholders or internal repair instead"
+        $nextRecommended = "当前是样例或演示场景：不要把虚拟业务缺口抛给 PM，请改为占位值或内部修正"
     }
     else {
-        $nextRecommended = "Route to omp-ask-back and wait for PM confirmation"
+        $nextRecommended = "进入 ask-back，等待 PM 回答唯一问题"
     }
 }
 

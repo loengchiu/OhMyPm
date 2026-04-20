@@ -73,11 +73,12 @@ powershell -File .\scripts\control\ompgo.ps1
 
 固定执行链：
 
-1. 入口层：判断当前动作和场景
-2. 状态层：读取最小状态与最小记忆摘要
-3. 决策层：只装当前动作对应的一个 skill 与必要规则
-4. 交付层：仅在重动作时补读交付材料
-5. 归档层：回写状态并只保留唯一下一步
+1. `scripts/tools/state-machine.ps1`：读取最小状态，判断当前主链位置
+2. `scripts/tools/route-resolve.ps1`：把自然语言或强制入口映射成单个动作
+3. `scripts/control/ompgo.ps1`：汇总门禁、ask-back 和唯一收口
+4. 决策层：只装当前动作对应的一个 skill 与必要规则
+5. 交付层：仅在重动作时补读交付材料
+6. 归档层：回写状态并只保留唯一下一步
 
 ## 4. 主链
 

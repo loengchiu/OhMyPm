@@ -131,6 +131,46 @@ OhMyPm 需要同时维护三类持久信息：
 - `fallback_state` 用于记录门禁不通过后当前应回退到哪一类处理
 - `change_state` 用于记录变更门禁的分类初判与是否已被 PM 确认
 
+### 运行时状态机
+
+主控层实际只认五个大节点：
+
+- 接收需求
+- 回应/对齐
+- 交付前检查
+- 正式交付
+- 变更控制
+
+其中的运行时判断由脚本层承担：
+
+- `scripts/tools/state-machine.ps1`：根据最小状态判断当前位于哪个节点、默认优先推进哪个动作
+- `scripts/tools/route-resolve.ps1`：把自然语言或强制入口映射到单个动作
+- `scripts/control/ompgo.ps1`：串起状态机、路由、门禁、ask-back 与唯一收口
+
+最小迁移关系固定为：
+
+- 接收需求 -> 回应/对齐
+- 回应/对齐 -> 交付前检查
+- 交付前检查 -> 正式交付
+- 正式交付 -> 开评审
+- 开评审 -> 修正问题 或 变更控制
+- 变更控制 -> 回应/对齐 或 正式交付
+
+ask-back 不是单独主节点，它是阻塞解除动作：
+
+- 当 `pending_confirmations` 非空且当前是真实项目协作时，优先转入 ask-back
+- 当当前是样例或演示场景时，不向 PM 追问虚拟业务细节，而是转为内部修正或占位说明
+
+当前脚本层依赖这些状态字段完成最小迁移判断：
+
+- `current_mode`
+- `current_stage`
+- `loop_state.round_result`
+- `fallback_state.fallback_type`
+- `pending_confirmations`
+- `review_state.must_fix_before_next_stage`
+- `change_state.*`
+
 ## 4. 项目记忆文件模型
 
 项目记忆文件应采用 Markdown，可读性优先，但字段语义要稳定。

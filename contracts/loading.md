@@ -76,6 +76,7 @@
 - 需要提问时补读 `contracts/ask-back.md`
 - 交付前检查或变更判断时补读 `contracts/gates.md`
 - 进入正式交付时补读 `contracts/delivery.md`
+- 生成 PRD 详细需求说明时补读 `contracts/anchors.md`
 - 做评审时补读 `contracts/review.md`
 - 涉及复写时补读 `contracts/overwrite.md`
 - 涉及记忆时补读 `contracts/memory.md`

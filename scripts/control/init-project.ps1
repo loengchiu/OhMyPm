@@ -15,7 +15,7 @@ $repoRoot = Resolve-Path (Join-Path $scriptRoot '..\..')
 
 $sourceStatus = Join-Path $repoRoot 'docs\ohmypm\ohmypm-status.json'
 $sourceMemory = Join-Path $repoRoot 'docs\ohmypm\ohmypm-memory.md'
-$sourceSystemTemplate = Join-Path $repoRoot 'docs\system-memory\_template.md'
+$sourceSystemTemplate = Join-Path $repoRoot 'docs\ohmypm\system-memory\_template.md'
 
 $targetDocs = Resolve-Path -LiteralPath '.' | ForEach-Object { Join-Path $_ $DocsDir }
 $targetOhMyPm = Join-Path $targetDocs $OhMyPmDir

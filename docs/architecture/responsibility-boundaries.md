@@ -20,17 +20,18 @@
 | `skills/` | 单个动作如何执行、该动作最少读什么、该动作最低输出要求 | 总流程定义、全局路由、重复抄写所有 contract |
 | `docs/` | 人能看懂的说明、架构视图、动作卡片、进度清单、runbook | 代替运行时主控、代替 contract 做硬规则判定 |
 | `scripts/control/` | 单一主控入口、初始化、最小链路回放 | 承载所有零散工具逻辑 |
-| `scripts/tools/` | 门禁、ask-back、状态回写、记忆回写、评审、复写、材料抽取等底层工具 | 对外主入口、默认协作心智 |
+| `scripts/tools/` | 路由解析、状态机判断、门禁、ask-back、状态回写、记忆回写、评审、复写、材料抽取等底层工具 | 对外主入口、默认协作心智 |
 
 ## 3. 当前单一主控链
 
 固定链路：
 
 1. `AGENTS.md` 决定是否进入 OhMyPm
-2. `scripts/control/ompgo.ps1` 读取最小状态
-3. `scripts/control/ompgo.ps1` 判断当前动作
-4. 只加载一个 `skills/omp-*/SKILL.md`
-5. 只补当前动作必要的 `contracts/*.md`
-6. 需要时调用 `scripts/tools/*.ps1`
-7. 回写 `docs/ohmypm/ohmypm-status.json`
-8. 对外只保留唯一下一步
+2. `scripts/tools/state-machine.ps1` 读取最小状态并判断当前主链位置
+3. `scripts/tools/route-resolve.ps1` 判断当前动作
+4. `scripts/control/ompgo.ps1` 汇总路由、门禁、ask-back 与唯一收口
+5. 只加载一个 `skills/omp-*/SKILL.md`
+6. 只补当前动作必要的 `contracts/*.md`
+7. 需要时调用 `scripts/tools/*.ps1`
+8. 回写 `docs/ohmypm/ohmypm-status.json`
+9. 对外只保留唯一下一步

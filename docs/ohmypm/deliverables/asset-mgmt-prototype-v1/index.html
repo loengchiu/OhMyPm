@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>资产管理模块 - 交付型原型 V1</title>
+  <style>
+    :root {
+      --bg: #f3efe8;
+      --paper: #fffdf9;
+      --panel: #f8f2e8;
+      --line: #dccfb9;
+      --text: #1f2937;
+      --muted: #5f6b7a;
+      --brand: #9a3412;
+      --brand-soft: #f6ddcf;
+      --accent: #1f6f78;
+      --ok: #2f6f4f;
+      --warn: #9f5a1b;
+      --shadow: 0 18px 44px rgba(73, 53, 28, 0.10);
+      --radius: 22px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Microsoft YaHei UI", "PingFang SC", "Noto Sans SC", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(154, 52, 18, 0.08), transparent 26%),
+        radial-gradient(circle at 85% 10%, rgba(31, 111, 120, 0.08), transparent 20%),
+        linear-gradient(180deg, #fbf8f2 0%, var(--bg) 100%);
+    }
+
+    .shell {
+      width: min(1380px, calc(100vw - 32px));
+      margin: 24px auto 48px;
+    }
+
+    .hero,
+    .flowbar,
+    .panel,
+    .screen {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
+      padding: 28px 30px;
+      background: linear-gradient(135deg, rgba(154, 52, 18, 0.96), rgba(31, 111, 120, 0.88));
+      color: #fffaf5;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: -80px;
+      bottom: -90px;
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      background: rgba(255, 248, 241, 0.08);
+    }
+
+    .hero h1 {
+      margin: 0 0 8px;
+      font-size: clamp(30px, 4vw, 44px);
+      line-height: 1.1;
+    }
+
+    .hero p {
+      margin: 0;
+      max-width: 920px;
+      line-height: 1.8;
+      color: rgba(255, 250, 245, 0.86);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 18px;
+      margin-top: 22px;
+    }
+
+    .hero-card {
+      border: 1px solid rgba(255, 248, 241, 0.16);
+      background: rgba(255, 248, 241, 0.10);
+      border-radius: 18px;
+      padding: 16px 18px;
+      backdrop-filter: blur(8px);
+    }
+
+    .hero-card h2 {
+      margin: 0 0 10px;
+      font-size: 14px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255, 248, 241, 0.76);
+    }
+
+    .hero-card ul {
+      margin: 0;
+      padding-left: 18px;
+      line-height: 1.7;
+    }
+
+    .sticky-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 18px 0 20px;
+    }
+
+    .chip {
+      padding: 10px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255, 253, 249, 0.96);
+      color: var(--brand);
+      font-size: 14px;
+      box-shadow: 0 8px 18px rgba(73, 53, 28, 0.06);
+      text-decoration: none;
+    }
+
+    .flowbar {
+      padding: 18px;
+      margin-bottom: 22px;
+    }
+
+    .flowbar h2 {
+      margin: 0 0 14px;
+      font-size: 18px;
+    }
+
+    .flowline {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .flow-step {
+      min-height: 116px;
+      padding: 14px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, #fffefc, #f7efe3);
+    }
+
+    .flow-step strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--brand);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 18px;
+      display: grid;
+      gap: 16px;
+    }
+
+    .panel {
+      padding: 18px;
+    }
+
+    .panel h3 {
+      margin: 0 0 12px;
+      font-size: 18px;
+    }
+
+    .panel p,
+    .panel li {
+      margin: 0;
+      line-height: 1.75;
+      color: var(--muted);
+    }
+
+    .legend-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .legend-item {
+      display: grid;
+      grid-template-columns: 54px 1fr;
+      gap: 10px;
+      align-items: start;
+    }
+
+    .screen-stack {
+      display: grid;
+      gap: 22px;
+    }
+
+    .screen {
+      padding: 20px;
+    }
+
+    .screen-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .screen-tag {
+      display: inline-flex;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: var(--brand-soft);
+      color: var(--brand);
+      font-weight: 700;
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+
+    .screen h2 {
+      margin: 0;
+      font-size: 28px;
+    }
+
+    .screen p {
+      margin: 8px 0 0;
+      line-height: 1.75;
+      color: var(--muted);
+    }
+
+    .annotation-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
+      max-width: 360px;
+    }
+
+    .anno {
+      width: 42px;
+      height: 42px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, #fff, #f4e4d3);
+      color: var(--brand);
+      font-weight: 800;
+      box-shadow: 0 8px 18px rgba(73, 53, 28, 0.08);
+    }
+
+    .mock {
+      border: 1px solid #e8dcc7;
+      border-radius: 24px;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    .mock-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 18px;
+      background: linear-gradient(180deg, #fff8ee, #f2e6d5);
+      border-bottom: 1px solid #eadcc7;
+    }
+
+    .mock-header strong {
+      font-size: 18px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(31, 111, 120, 0.10);
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .mock-toolbar,
+    .grid,
+    .detail-grid,
+    .timeline,
+    .stats-grid {
+      padding: 18px;
+    }
+
+    .mock-toolbar {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      background: #fffdf9;
+      border-bottom: 1px solid #efe4d4;
+    }
+
+    .field,
+    .stat,
+    .action-card,
+    .metric-card {
+      border: 1px solid #eadcc7;
+      border-radius: 16px;
+      background: #fffaf4;
+      padding: 14px;
+    }
+
+    .field small,
+    .stat small,
+    .action-card small,
+    .metric-card small {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--muted);
+    }
+
+    .grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr 1fr 150px;
+      gap: 12px;
+      align-items: center;
+      border: 1px solid #efe4d4;
+      border-radius: 18px;
+      background: #fffdfa;
+      padding: 14px;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 16px;
+      background: #fffdf9;
+    }
+
+    .stack,
+    .actions {
+      display: grid;
+      gap: 12px;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 12px;
+      background: #fffdf9;
+    }
+
+    .timeline-item {
+      display: grid;
+      grid-template-columns: 110px 1fr auto;
+      gap: 12px;
+      align-items: center;
+      border: 1px solid #efe4d4;
+      border-radius: 18px;
+      padding: 14px;
+      background: #fffaf4;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      background: #fffdf9;
+    }
+
+    @media (max-width: 1100px) {
+      .hero-grid,
+      .layout,
+      .detail-grid,
+      .stats-grid,
+      .flowline {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: static;
+      }
+
+      .mock-toolbar,
+      .row,
+      .timeline-item {
+        grid-template-columns: 1fr;
+      }
+
+      .annotation-strip {
+        justify-content: start;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <section class="hero">
+      <h1>资产管理模块 / 交付型原型 V1</h1>
+      <p>围绕“资产库 + 服务区资产台账”双层模型，把资产新增、异动、盘点和统计主链压成研发与业务都能先看懂的页面原型，帮助先建立模块结构、业务流转和关键状态的整体理解。</p>
+      <div class="hero-grid">
+        <div class="hero-card">
+          <h2>本版覆盖</h2>
+          <ul>
+            <li>4 个主视角：资产基础资料、台账与异动、盘点任务、统计总览</li>
+            <li>6 条主流程：入库、出库、调拨、报废、盘点、统计钻取</li>
+            <li>12 个编号标注：模型入口、阈值分流、状态回写、编码补录、差异回写、统计一致性</li>
+          </ul>
+        </div>
+        <div class="hero-card">
+          <h2>阅读方式</h2>
+          <ul>
+            <li>先看页面，理解模块结构</li>
+            <li>再顺着编号定位关键规则</li>
+            <li>最后回 PRD 查字段、权限、异常和验收</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <nav class="sticky-nav">
+      <a class="chip" href="#p1">P1 资产库与台账</a>
+      <a class="chip" href="#p2">P2 异动单据工作台</a>
+      <a class="chip" href="#p3">P3 盘点任务与差异</a>
+      <a class="chip" href="#p4">P4 统计分析</a>
+      <a class="chip" href="#refs">编号引用表</a>
+    </nav>
+
+    <section class="flowbar">
+      <h2>核心业务链路</h2>
+      <div class="flowline">
+        <div class="flow-step"><strong>资产基础</strong> 运营部维护资产库标准物资，服务区基于标准物资建立本区台账。</div>
+        <div class="flow-step"><strong>入库</strong> 服务区或管理中心发起入库，超过 2000 元明细进入财务审核，确认后数量入账。</div>
+        <div class="flow-step"><strong>出库 / 调拨 / 报废</strong> 所有异动都从台账出发，完成后统一回写数量、状态和履历。</div>
+        <div class="flow-step"><strong>盘点</strong> 运营部或区域中心发起任务，服务区执行数量盘点或编码盘点，差异确认后回写台账。</div>
+        <div class="flow-step"><strong>统计</strong> 台账、异动和盘点结果汇总到统计页，支持趋势分析和明细钻取。</div>
+        <div class="flow-step"><strong>数量闭环</strong> 所有业务最终落回服务区资产台账，形成数量、状态、履历一致闭环。</div>
+      </div>
+    </section>
+
+    <div class="layout">
+      <aside class="sidebar">
+        <section class="panel">
+          <h3>页面分组</h3>
+          <p>这版原型没有按原 PRD 的 11 个页面逐页铺开，而是按真实业务理解方式重组成 4 个主视角。这样更适合首轮交付型原型，研发先看结构，细页再回 PRD 对照。</p>
+        </section>
+        <section class="panel">
+          <h3>编号说明</h3>
+          <div class="legend-list">
+            <div class="legend-item"><span class="anno">01</span><p>双层模型入口</p></div>
+            <div class="legend-item"><span class="anno">04</span><p>2000 元财务审核门槛</p></div>
+            <div class="legend-item"><span class="anno">06</span><p>异动完成后的数量与履历回写</p></div>
+            <div class="legend-item"><span class="anno">09</span><p>差异复核与回写</p></div>
+            <div class="legend-item"><span class="anno">12</span><p>统计口径与台账一致性</p></div>
+          </div>
+        </section>
+      </aside>
+
+      <main class="screen-stack">
+        <section class="screen" id="p1">
+          <div class="screen-top">
+            <div>
+              <span class="screen-tag">P1</span>
+              <h2>资产库与服务区资产台账</h2>
+              <p>这一屏把“标准物资目录”和“服务区实际资产记录”放在同一视角里展示，先让人看懂双层模型和编码管理入口。</p>
+            </div>
+            <div class="annotation-strip">
+              <span class="anno">01</span>
+              <span class="anno">02</span>
+              <span class="anno">03</span>
+            </div>
+          </div>
+          <div class="mock">
+            <div class="mock-header">
+              <strong>资产基础工作台</strong>
+              <span class="badge">标准物资目录 + 服务区台账</span>
+            </div>
+            <div class="mock-toolbar">
+              <div class="field"><small>01 模型入口</small>左侧资产库，右侧本区台账，标准目录与实际数量分开维护</div>
+              <div class="field"><small>02 引用关系</small>服务区入库、台账新增都必须从标准物资出发</div>
+              <div class="field"><small>03 编码管理</small>台账页承接编码补录、标签打印、履历查看</div>
+              <div class="field"><small>核心角色</small>运营部维护目录，服务区维护台账</div>
+            </div>
+            <div class="grid">
+              <div class="row">
+                <div>
+                  <strong>资产库记录 / 空调外机</strong>
+                  <p>展示物资名称、分类、规格、供应商、单位、引用状态</p>
+                </div>
+                <div><span class="badge">标准目录</span></div>
+                <div><span class="badge">可编辑</span></div>
+                <div><span class="badge">查看详情</span></div>
+              </div>
+              <div class="row">
+                <div>
+                  <strong>服务区台账 / 东区服务区 - 空调外机</strong>
+                  <p>展示当前数量、可用数量、在库状态、编码状态、归档状态</p>
+                </div>
+                <div><span class="badge">在档</span></div>
+                <div><span class="badge">部分补录</span></div>
+                <div><span class="badge">补录编码</span></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="screen" id="p2">
+          <div class="screen-top">
+            <div>
+              <span class="screen-tag">P2</span>
+              <h2>异动单据工作台</h2>
+              <p>把入库、出库、调拨、报废统一放进一个业务工作台里，重点突出分流条件、状态推进和回写结果。</p>
+            </div>
+            <div class="annotation-strip">
+              <span class="anno">04</span>
+              <span class="anno">05</span>
+              <span class="anno">06</span>
+            </div>
+          </div>
+          <div class="mock">
+            <div class="mock-header">
+              <strong>异动单据工作台</strong>
+              <span class="badge">入库 / 出库 / 调拨 / 报废</span>
+            </div>
+            <div class="detail-grid">
+              <div class="stack">
+                <div class="stat"><small>04 财务审核门槛</small><strong>任一入库或出库明细税后价值 &gt; 2000 元时，状态先进入“待财务审核”</strong></div>
+                <div class="stat"><small>05 状态推进</small><strong>不同单据分别走“审核中 / 待财务审核 / 待确认 / 已完成 / 已驳回”等状态链</strong></div>
+                <div class="stat"><small>06 回写结果</small><strong>异动完成后统一回写台账数量、在库状态、归档状态和履历记录</strong></div>
+              </div>
+              <div class="actions">
+                <div class="action-card">
+                  <small>入库</small>
+                  <strong>从资产库选择标准物资发起</strong>
+                  <span>确认后目标服务区台账数量增加，在库状态默认为“闲置”</span>
+                </div>
+                <div class="action-card">
+                  <small>出库</small>
+                  <strong>从台账发起领用申请</strong>
+                  <span>确认后数量扣减，领用结果状态记录为“正常使用”</span>
+                </div>
+                <div class="action-card">
+                  <small>调拨 / 报废</small>
+                  <strong>都从台账出发</strong>
+                  <span>调拨双边回写数量，报废审核通过后扣减数量并保留证明材料</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="screen" id="p3">
+          <div class="screen-top">
+            <div>
+              <span class="screen-tag">P3</span>
+              <h2>盘点任务与差异处理</h2>
+              <p>这一屏讲清盘点任务如何生成、服务区如何执行数量或编码盘点，以及差异是如何确认和回写的。</p>
+            </div>
+            <div class="annotation-strip">
+              <span class="anno">07</span>
+              <span class="anno">08</span>
+              <span class="anno">09</span>
+            </div>
+          </div>
+          <div class="mock">
+            <div class="mock-header">
+              <strong>资产盘点任务</strong>
+              <span class="badge">任务发起 → 执行 → 差异确认 → 回写</span>
+            </div>
+            <div class="timeline">
+              <div class="timeline-item">
+                <div><strong>07</strong><br>任务创建</div>
+                <div>运营部或区域中心按“服务区 + 标准物资”粒度生成盘点明细，冻结账面数量与编码状态</div>
+                <div><span class="badge">待执行</span></div>
+              </div>
+              <div class="timeline-item">
+                <div><strong>08</strong><br>执行盘点</div>
+                <div>未补录编码的物资走数量盘点；已补录或部分补录的物资走编码盘点，系统自动汇总实盘数量</div>
+                <div><span class="badge">执行中</span></div>
+              </div>
+              <div class="timeline-item">
+                <div><strong>09</strong><br>差异确认</div>
+                <div>差异清单中逐条填写复核意见，选择确认盘盈、确认盘亏或忽略差异，完成后才能回写台账</div>
+                <div><span class="badge">待确认</span></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="screen" id="p4">
+          <div class="screen-top">
+            <div>
+              <span class="screen-tag">P4</span>
+              <h2>统计分析与结果钻取</h2>
+              <p>统计页不是单独的数据岛，而是把台账、异动和盘点结果汇总成统一口径，并支持回钻到业务记录。</p>
+            </div>
+            <div class="annotation-strip">
+              <span class="anno">10</span>
+              <span class="anno">11</span>
+              <span class="anno">12</span>
+            </div>
+          </div>
+          <div class="mock">
+            <div class="mock-header">
+              <strong>资产数据统计</strong>
+              <span class="badge">总览指标 + 趋势分析 + 明细钻取</span>
+            </div>
+            <div class="stats-grid">
+              <div class="metric-card">
+                <small>10 台账总览</small>
+                <strong>总数量 / 分类结构 / 编码覆盖率 / 总金额</strong>
+                <p>从服务区台账实时汇总，反映当前资产基础盘面。</p>
+              </div>
+              <div class="metric-card">
+                <small>11 业务趋势</small>
+                <strong>入库、出库、调拨金额与业务量</strong>
+                <p>支持按月、按季、按年查看趋势并下钻到对应业务列表。</p>
+              </div>
+              <div class="metric-card">
+                <small>12 一致性要求</small>
+                <strong>统计结果必须与台账和异动回写一致</strong>
+                <p>统计页展示的是业务结果，不允许出现与台账数量、盘点结果冲突的统计口径。</p>
+              </div>
+              <div class="metric-card">
+                <small>导出能力</small>
+                <strong>报表导出 / 图表数据导出</strong>
+                <p>同一筛选口径下同时支持图表视图和表格视图导出。</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="screen" id="refs">
+          <div class="screen-top">
+            <div>
+              <span class="screen-tag">编号表</span>
+              <h2>编号与 PRD 引用</h2>
+              <p>编号用于快速定位关键页面点和对应规则位置，便于研发、产品和业务在同一套表达上讨论。</p>
+            </div>
+          </div>
+          <div class="mock">
+            <div class="mock-header">
+              <strong>引用关系</strong>
+            </div>
+            <div class="timeline">
+              <div class="timeline-item"><div><strong>01-03</strong></div><div>对应 PRD 第 4 章整体方案、第 5 章页面说明、第 8 章编码与标签相关角色动作</div><div><span class="badge">资产基础</span></div></div>
+              <div class="timeline-item"><div><strong>04-06</strong></div><div>对应 PRD 第 6 章入库、出库、调拨、报废规则，第 8 章数据影响</div><div><span class="badge">异动单据</span></div></div>
+              <div class="timeline-item"><div><strong>07-09</strong></div><div>对应 PRD 第 6 章盘点规则，第 7 章差异和回写边界</div><div><span class="badge">盘点任务</span></div></div>
+              <div class="timeline-item"><div><strong>10-12</strong></div><div>对应 PRD 第 6 章统计规则，第 9 章验收与交付说明</div><div><span class="badge">统计分析</span></div></div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+</body>
+</html>
