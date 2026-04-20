@@ -62,7 +62,9 @@ foreach ($section in $sections) {
     $buffer.Add('')
 }
 
-$buffer | Set-Content -LiteralPath $CachePath -Encoding utf8
+$contentToWrite = ($buffer -join [Environment]::NewLine)
+$utf8Bom = New-Object System.Text.UTF8Encoding($true)
+[System.IO.File]::WriteAllText((Resolve-Path -LiteralPath $CachePath), $contentToWrite, $utf8Bom)
 
 $result = [ordered]@{
     source = $InputPath

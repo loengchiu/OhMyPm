@@ -1,4 +1,4 @@
----
+﻿---
 name: omp-review
 description: "组织评审会材料、执行多角色评审团、输出评审结论并回写。"
 ---
@@ -40,7 +40,7 @@ description: "组织评审会材料、执行多角色评审团、输出评审结
 4. 调用 `omp-review-panel`
 5. 产出统一评审 JSON
 6. 长文生成后只保留摘要、索引和稳定路径
-7. 调用 `scripts/review-apply.ps1`
+7. 调用 `scripts/tools/review-apply.ps1`
 8. 将评审摘要回写到 `docs/ohmypm/ohmypm-memory.md`
 
 ## 必读状态
@@ -61,8 +61,8 @@ description: "组织评审会材料、执行多角色评审团、输出评审结
 
 ## 建议脚本
 
-- `scripts/review-panel.ps1`
-- `scripts/review-apply.ps1`
+- `scripts/tools/review-panel.ps1`
+- `scripts/tools/review-apply.ps1`
 
 ## 强制规则
 

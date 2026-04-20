@@ -1,21 +1,16 @@
-# /omprespond
+﻿# /omprespond
 
-直接进入 `omp-respond`，用于形成当前理解与一版可信回应。
+用于强制进入“生成回应稿”动作。
 
-本命令负责：
+这是调试入口和强制入口，不是默认使用方式。
 
-- 建立当前版本方案
-- 显式暴露未确认事实和未澄清问题
-- 给出模块级粗估
+本命令只负责：
 
-补充规则：
-
-- 未过回应门禁，不得给出像承诺一样的正式回应
-- 若只是轮次内修正或待补资料，不得擅自增加轮次编号
-- 若文字已不足以支撑理解，可建议生成对齐型原型，但由 PM 决定是否实际生成
+- 强制走首轮回应或补充回应
+- 形成当前理解、当前版本方案和待确认项
 
 建议先执行：
 
 ```powershell
-powershell -File .\scripts\stage-gate.ps1 -Gate omp-respond
+powershell -File .\scripts\tools\stage-gate.ps1 -Gate omp-respond
 ```

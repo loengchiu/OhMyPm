@@ -1,27 +1,16 @@
-# /ompgo
+﻿# /ompgo
 
-初始化或进入 OhMyPm 工作流。
+用于强制初始化或重新进入 OhMyPm 工作流。
 
-默认行为：
+这是调试入口和强制入口，不是默认使用方式。  
+默认仍然是直接用自然语言说需求或说“继续”。
 
-- 读取 `docs/ohmypm/ohmypm-status.json`
-- 若不存在，则创建最小初始化文件
-- 若存在，则按 `AGENTS.md` 进入当前阶段
-- 若当前处于回应/对齐循环，优先读取：
-  - `loop_state.round_number`
-  - `loop_state.round_result`
-  - `fallback_state.fallback_type`
-  - `change_state.change_category`
-- 若检测到 `fallback_state.fallback_type=reopen_alignment`，下一步应回到正式对齐轮次，而不是把 `reopen_alignment` 写成轮次结果
+本命令只负责：
 
-启动后优先判断：
-
-- 当前在哪个阶段
-- 当前轮次是否已闭合
-- 是否存在门禁失败后的回退动作
-- 是否需要更新轮次历史摘要
+- 检查 `docs/ohmypm/ohmypm-status.json` 是否存在
+- 不存在时初始化项目
+- 存在时根据当前状态恢复到正确动作
 
 建议脚本：
 
-- `scripts/init-project.ps1`
-- `scripts/stage-gate.ps1`
+- `scripts/control/ompgo.ps1`

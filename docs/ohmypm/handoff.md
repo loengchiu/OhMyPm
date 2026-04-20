@@ -1,57 +1,56 @@
-﻿# OhMyPm Handoff
+# OhMyPm 预留交接对象
 
-## 1. Purpose
+## 1. 作用
 
-This file is the minimum one-way handoff object from OhMyPm to ShitPM.
+这个文件是 OhMyPm 向 ShitPM 预留的一份最小单向交接对象。
 
-It is:
+它的含义是：
 
-- an input candidate for later formal-project intake
-- not the ShitPM status file itself
-- not a promise that ShitPM has already taken over
+- 作为后续正式项目接入时的候选输入
+- 不是 ShitPM 自己的状态文件
+- 不代表 ShitPM 已经接管当前链路
 
-## 2. Current Demand Task
+## 2. 当前需求任务
 
-- Use the approval-path expansion only as a mechanism-validation sample to verify the minimum OhMyPm chain.
+- 以“审批路径扩展”为样例，验证 OhMyPm 最小主链路是否能跑通。
 
-## 3. Current Version
+## 3. 当前版本
 
 - `v0.6`
 
-## 4. Confirmed Facts
+## 4. 已确认事实
 
-- The current chain is a mechanism-validation sample, not a real project collaboration thread.
-- The sample prototype, sample PRD, and sample review are aligned.
-- The sample no longer asks PM to answer virtual business questions.
+- 当前链路是机制验证样例，不是真实项目协作线程。
+- 当前样例原型、PRD 和评审记录已经对齐。
+- 当前样例不再向 PM 追问任何虚拟业务问题。
 
-## 5. Current Version Plan Summary
+## 5. 当前版本方案摘要
 
-- Keep the current sample chain as a replayable OhMyPm validation baseline.
-- Keep all sample thresholds, tags, and role mappings marked as sample-only assumptions.
-- If later work turns into a real project, reopen it under a separate real-project context instead of reusing sample assumptions as facts.
+- 保留当前样例链路，作为可回放的 OhMyPm 验证基线。
+- 样例中的阈值、标签和角色映射继续保留为样例假设，不上升为真实事实。
+- 如果后续转入真实项目，应显式开启新的真实协作上下文，而不是直接复用样例假设。
 
-## 6. Current Module List
+## 6. 当前模块清单
 
-- Approval capability
-  - Existing approval flow
-  - Approval-path expansion
-- Notification module
+- 审批能力
+  - 现有审批主流程
+  - 审批路径扩展
+- 通知模块
 
-## 7. Estimate / Schedule View
+## 7. 工时与排期视角
 
-- The current sample keeps the estimate discussion at the “existing capability becomes more complex” level.
-- No formal ShitPM schedule commitment is implied by this handoff.
+- 当前样例的工时讨论仍停留在“原有能力复杂度上升”这一层，不是新增独立模块。
+- 这份交接对象不隐含任何正式排期承诺。
 
-## 8. Artifact Paths
+## 8. 产物路径
 
-- Prototype: `docs/ohmypm/deliverables/prototype-v1/index.html`
-- PRD skeleton: `docs/ohmypm/deliverables/prd-v1/PRD-v1.md`
-- Review record: `docs/ohmypm/cache/review-v1.json`
-- OhMyPm status: `docs/ohmypm/ohmypm-status.json`
-- OhMyPm memory: `docs/ohmypm/ohmypm-memory.md`
+- 原型：`docs/ohmypm/deliverables/prototype-v1/index.html`
+- PRD：`docs/ohmypm/deliverables/prd-v1/PRD-v1.md`
+- 评审记录：`docs/ohmypm/cache/review-v1.json`
+- OhMyPm 状态：`docs/ohmypm/ohmypm-status.json`
+- OhMyPm 记忆：`docs/ohmypm/ohmypm-memory.md`
 
-## 9. Non-Blocking Notes
+## 9. 非阻塞说明
 
-- No PM-facing blocking question remains inside the current sample chain.
-- If future work should move from sample validation to real collaboration, that switch should be made explicitly rather than implicitly.
-
+- 当前样例链路中已经没有面向 PM 的阻塞问题。
+- 如果未来要从样例验证切到真实协作，必须显式切换，不能隐式继承。

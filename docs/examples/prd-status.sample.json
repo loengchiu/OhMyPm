@@ -3,10 +3,10 @@
   "Mode": "formal_delivery",
   "Version": "v0.7",
   "LastAction": "Completed the first formal PRD draft",
-  "NextRecommended": "Run omp-review with prototype and PRD together",
-  "ContextSummary": "Formal PRD is ready and paired with the delivery prototype",
+  "NextRecommended": "Stop the chain here and judge whether the prototype template, PRD template, and minimum rules are usable",
+  "ContextSummary": "Formal PRD is ready and paired with the delivery prototype for template and rule validation",
   "BaselineField": "prd",
-  "BaselinePath": "docs/templates/prd-outline.template.md",
+  "BaselinePath": "docs/ohmypm/deliverables/prd-v1/PRD-v1.md",
   "ArtifactField": "prd",
-  "ArtifactPath": "docs/templates/prd-outline.template.md"
+  "ArtifactPath": "docs/ohmypm/deliverables/prd-v1/PRD-v1.md"
 }

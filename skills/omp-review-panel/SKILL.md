@@ -1,4 +1,4 @@
----
+﻿---
 name: omp-review-panel
 description: "从多角色视角审视当前方案，归并形成统一评审意见。"
 ---
@@ -48,5 +48,5 @@ description: "从多角色视角审视当前方案，归并形成统一评审意
 
 ## 建议脚本
 
-- `scripts/review-panel.ps1`
-- `scripts/review-apply.ps1`
+- `scripts/tools/review-panel.ps1`
+- `scripts/tools/review-apply.ps1`

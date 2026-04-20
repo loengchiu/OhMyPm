@@ -1,4 +1,4 @@
-# 使用说明
+﻿# 使用说明
 
 ## 1. 初始化
 
@@ -15,7 +15,7 @@ powershell -File .\installers\install.ps1
 在目标项目根目录执行：
 
 ```powershell
-powershell -File <OHMYPM_PATH>\scripts\init-project.ps1
+powershell -File <OHMYPM_PATH>\scripts\control\init-project.ps1
 ```
 
 当项目根目录存在以下文件时，OhMyPm 激活：
@@ -23,29 +23,24 @@ powershell -File <OHMYPM_PATH>\scripts\init-project.ps1
 - `docs/ohmypm/ohmypm-status.json`
 - `docs/ohmypm/ohmypm-memory.md`
 
-### 1.3 入口
+## 2. 默认入口
 
-默认主入口：
+默认主入口是自然语言。
 
-- 自然语言
+用户只需要直接说需求、补反馈，或者回答系统抛出的唯一问题。  
+系统会自己判断当前动作，不需要用户自己决定该敲哪个命令。
 
-默认交互方式：
+对外固定动作只保留：
 
-- 用户只需要直接说需求或下一步
-- 系统先自动判断当前意图，再进入对应动作
-- 用户不需要自己判断现在该敲哪个命令
-
-系统必须先自动判断当前意图属于：
-
-- respond
-- align
-- ask-back
-- preflight
-- deliver prototype
-- deliver prd
-- review
-- change
-- fix
+- 接收需求
+- 生成回应稿
+- 继续对齐
+- 交付前检查
+- 生成原型
+- 生成 PRD
+- 开评审
+- 处理变更
+- 修正问题
 
 短命令只保留为：
 
@@ -66,23 +61,38 @@ powershell -File <OHMYPM_PATH>\scripts\init-project.ps1
 - `/ompchange`
 - `/ompfix`
 
-### 1.3.1 分层加载
+如需强制走主控脚本，统一入口是：
 
-运行时默认按以下顺序加载，详细规则见 `contracts/loading.md`：
+```powershell
+powershell -File .\scripts\control\ompgo.ps1
+```
 
-1. 第 0 层：只读 `docs/ohmypm/ohmypm-status.json` 和 `docs/ohmypm/ohmypm-memory.md` 的最小必要摘要
-2. 第 1 层：只按当前自然语言意图读取一个 skill
-3. 第 2 层：只读当前动作必须的 contract
-4. 第 3 层：外部知识和长材料只做局部回查
-5. 第 4 层：长文生成后只保留摘要、索引和稳定路径
+这条入口固定只做六件事：
+
+1. 读最小状态
+2. 判断当前动作
+3. 只加载一个 skill
+4. 只加载必要规则
+5. 回写状态
+6. 只输出唯一下一步
+
+## 3. 分层加载
+
+运行时固定按五层加载：
+
+1. 入口层：判断当前意图、主控权和真实/样例场景
+2. 状态层：只读 `docs/ohmypm/ohmypm-status.json` 和 `docs/ohmypm/ohmypm-memory.md` 的最小必要摘要
+3. 决策层：只按当前动作读取一个 skill 和少量必要规则
+4. 交付层：只在重动作时读取交付规则、局部材料和稳定基线
+5. 归档层：只回写稳定路径、摘要、索引和状态
 
 禁止：
 
 - 默认把多个 skill 一起读入
-- 为了保险一次读很多 contract
+- 为了保险一次读很多规则
 - 整篇整包载入外部知识或长材料
 
-## 1.4 输出收口
+## 4. 输出收口
 
 每次输出最后，系统必须只给一个“下一步唯一动作”。
 
@@ -91,22 +101,21 @@ powershell -File <OHMYPM_PATH>\scripts\init-project.ps1
 - `现在建议你做的下一步是：...`
 - `现在只需要你回答的唯一问题是：...`
 
-不得一次给 PM 一串操作菜单。
-不得要求 PM 自己从 runbook 或 usage 里挑下一步。
-不得直接把内部状态机术语当作外部提问内容。
+不得一次给 PM 一串操作菜单。  
+不得要求 PM 自己从 runbook 或 usage 里挑下一步。  
+不得直接把内部状态字段当作外部提问内容。
 
-## 2. 回应与对齐
+## 5. 常见动作
 
-### 2.1 首轮回应
+### 5.1 生成回应稿
 
-进入 `omp-respond` 前，先读取：
+进入这个动作前，先读取：
 
 - `docs/ohmypm/ohmypm-status.json`
 - `docs/ohmypm/ohmypm-memory.md`
-- `contracts/gates.md`
-- `contracts/context-guard.md`
+- 必要时 `contracts/context-guard.md`
 
-要求输出：
+输出至少要覆盖：
 
 - 当前理解
 - 当前版本方案
@@ -114,185 +123,80 @@ powershell -File <OHMYPM_PATH>\scripts\init-project.ps1
 - 未澄清问题
 - 模块级粗估
 
-### 2.2 多轮对齐
+### 5.2 继续对齐
 
-进入 `omp-align` 后：
+进入这个动作后：
 
 - 更新本轮变化点
 - 更新模块清单
 - 更新粗估和排期影响
-- 判断是否进入 `omp-preflight`
+- 判断是否继续对齐，还是进入交付前检查
 
-在范围、结构、表达边界和粗估判断上，优先遵循：
+### 5.3 交付前检查
 
-- 当前流程内置的方法论规则
+这个动作只检查六项高价值闭合：
 
-轮次状态建议同步写入：
+- 范围闭合
+- 流程闭合
+- 模块闭合
+- 未澄清项风险
+- 工时可解释
+- 交付承接是否完整
 
-- `RoundNumber`
-- `RoundGoal`
-- `RoundInputsJson`
-- `CurrentOutput`
-- `RoundResult`
-- `LoopHistorySummary`
+只有通过这一关，才允许进入正式交付。
 
-推荐使用稳定枚举值：
+### 5.4 生成原型与 PRD
 
-- `continue_alignment`
-- `need_materials`
-- `need_internal_repair`
-- `ready_for_preflight`
+正式交付固定包含：
 
-## 3. 上下文防爆
+- 交付型原型
+- PRD
 
-### 3.1 先做分块计划
+默认分工：
 
-```powershell
-powershell -File .\scripts\context-plan.ps1 -InputPath .\product-definition.md -OutputKind prd -ExpectedOutputChars 9000
-```
+- 原型负责让研发和评审先理解页面、流程和关键交互
+- PRD 负责归档规则、异常、权限、数据影响和验收说明
 
-### 3.2 长材料先做提取缓存
+### 5.5 开评审
 
-```powershell
-powershell -File .\scripts\material-extract.ps1 -InputPath .\product-definition.md
-```
+评审会需要形成统一结论，而不是普通确认。
 
-缓存默认写到：
+统一输出至少包括：
 
-- `docs/ohmypm/cache/material-extract.md`
+- 事实问题
+- 风险问题
+- 建议问题
+- 统一结论
 
-## 4. 评审会
+### 5.6 ask-back
 
-### 4.1 生成评审团输出
+当存在最阻塞推进的问题时，应主动进入 ask-back，而不是继续推进。
 
-```powershell
-powershell -File .\scripts\review-panel.ps1 `
-  -FactIssuesJson '[{"role":"dev","issue":"Missing API contract"}]' `
-  -RiskIssuesJson '[{"role":"qa","issue":"Acceptance coverage is incomplete"}]' `
-  -SuggestionIssuesJson '[{"role":"pm","issue":"Clarify scope note"}]' `
-  -Conclusion conditional_pass `
-  -NextAction 'Fix blockers and rerun omp-review' `
-  -MustFixJson '["Missing API contract","Acceptance coverage is incomplete"]'
-```
+ask-back 只做一件事：
 
-### 4.2 应用评审结论
-
-将上一步 JSON 保存后执行：
-
-```powershell
-powershell -File .\scripts\review-apply.ps1 -ReviewJsonPath .\docs\ohmypm\cache\review-result.json
-```
-
-## 5. 下游修正上游
-
-### 5.1 生成复写判定
-
-```powershell
-powershell -File .\scripts\overwrite-judge.ps1 `
-  -AffectedUpstreamJson '["docs/ohmypm/ohmypm-memory.md"]' `
-  -ConflictType review_reversal `
-  -Severity high `
-  -ActionLevel restart_alignment `
-  -WritebackTargetsJson '["stable_baselines.response_plan","overwrite_queue"]' `
-  -Reason 'Review conclusion reversed a baseline assumption'
-```
-
-### 5.2 应用复写判定
-
-将上一步 JSON 保存后执行：
-
-```powershell
-powershell -File .\scripts\overwrite-apply.ps1 -JudgeJsonPath .\docs\ohmypm\cache\overwrite-result.json
-```
-
-## 6. 状态同步
-
-统一状态同步入口：
-
-```powershell
-powershell -File .\scripts\artifact-sync.ps1 `
-  -Stage 'omp-review' `
-  -Mode 'alignment_loop' `
-  -Version 'v0.3' `
-  -LastAction 'Validated review runtime chain' `
-  -NextRecommended 'Run omp-review-panel'
-```
-
-## 6.1 回退与变更分类
-
-门禁不通过时，建议同步写入：
-
-- `FallbackType`
-- `FallbackReason`
-
-推荐使用稳定枚举值：
-
-- `internal_repair`
-- `need_materials`
-- `reopen_alignment`
-
-变更门禁分类时，建议同步写入：
-
-- `ChangeCategory`
-- `ChangeCategoryConfirmedByPm`
-
-推荐使用稳定枚举值：
-
-- `minor_patch`
-- `within_module`
-- `new_module`
-- `structural_change`
-
-## 6.2 追问触发与回写
-
-当以下情况出现时，应直接转入 `omp-ask-back`，而不是继续推进：
-
-- `pending_confirmations` 非空且当前动作不是 `internal_repair / need_materials`
-- 正式交付前仍有未确认范围或事实
-- `change_state.change_category_confirmed_by_pm=false`
-
-生成最小问题：
-
-```powershell
-powershell -File .\scripts\ask-back-plan.ps1
-```
+- 向 PM 提一个最阻塞的问题
 
 应用 PM 回答后的状态回写：
 
 ```powershell
-powershell -File .\scripts\ask-back-apply.ps1 `
+powershell -File .\scripts\tools\ask-back-apply.ps1 `
   -AnsweredConfirmation 'Need confirmation on scope boundary' `
   -ChangeCategoryConfirmedByPm $true `
-  -NextRecommended 'Return to the blocked stage and rerun the gate'
+  -NextRecommended '回到刚才被卡住的阶段，并按最新确认结果重新判断是否可以推进。'
 ```
 
-## 7. 示例文件
+## 6. 常用规则和手册
 
 核心规则文件：
 
-- `contracts/gates.md`
+- `contracts/loading.md`
 - `contracts/ask-back.md`
-- `contracts/memory.md`
 - `contracts/context-guard.md`
 - `contracts/delivery.md`
 - `contracts/review.md`
 - `contracts/overwrite.md`
 
-可直接参考：
-
-- `docs/examples/review-result.sample.json`
-- `docs/examples/overwrite-result.sample.json`
-- `docs/examples/context-plan.sample.json`
-- `docs/examples/fallback-status.sample.json`
-- `docs/examples/change-status.sample.json`
-- `docs/examples/change-status-confirmed.sample.json`
-- `docs/examples/reopen-alignment.sample.json`
-- `docs/examples/prototype-status.sample.json`
-- `docs/examples/prd-status.sample.json`
-- `docs/examples/review-memory.sample.json`
-- `docs/examples/fix-memory.sample.json`
-
-常用流程手册：
+开发/验证手册：
 
 - `docs/runbooks/respond-runbook.md`
 - `docs/runbooks/ask-back-runbook.md`
@@ -300,11 +204,12 @@ powershell -File .\scripts\ask-back-apply.ps1 `
 - `docs/runbooks/preflight-runbook.md`
 - `docs/runbooks/prototype-runbook.md`
 - `docs/runbooks/prd-runbook.md`
-- `docs/runbooks/round-state-flow.md`
-- `docs/runbooks/demo-flow.md`
 - `docs/runbooks/review-runbook.md`
 - `docs/runbooks/fix-runbook.md`
+- `docs/architecture/responsibility-boundaries.md`
+- `docs/architecture/action-cards.md`
+- `docs/progress.md`
 
 快捷验证：
 
-- `powershell -File .\scripts\demo-smoke.ps1`
+- `powershell -File .\scripts\control\demo-smoke.ps1`

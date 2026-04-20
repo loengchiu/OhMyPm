@@ -1,4 +1,4 @@
----
+﻿---
 name: omp-context-guard
 description: "评估输入、上下文和输出规模风险，并决定是否分块、摘要、裁剪和回收。"
 ---
@@ -32,8 +32,8 @@ description: "评估输入、上下文和输出规模风险，并决定是否分
 
 ## 执行顺序
 
-1. 先调用 `scripts/context-plan.ps1`
-2. 若输入过长，再调用 `scripts/material-extract.ps1`
+1. 先调用 `scripts/tools/context-plan.ps1`
+2. 若输入过长，再调用 `scripts/tools/material-extract.ps1`
 3. 仅将分块计划和提取结果载入当前上下文
 4. 长文生成后只保留摘要、索引和稳定路径
 
@@ -47,8 +47,8 @@ description: "评估输入、上下文和输出规模风险，并决定是否分
 
 ## 建议脚本
 
-- `scripts/context-plan.ps1`
-- `scripts/material-extract.ps1`
+- `scripts/tools/context-plan.ps1`
+- `scripts/tools/material-extract.ps1`
 
 ## 默认分块模板
 

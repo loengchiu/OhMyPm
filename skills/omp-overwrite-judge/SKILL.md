@@ -1,4 +1,4 @@
----
+﻿---
 name: omp-overwrite-judge
 description: "判断下游发现的问题是否需要修正上游文件，并定义回写范围。"
 ---
@@ -39,5 +39,5 @@ description: "判断下游发现的问题是否需要修正上游文件，并定
 
 ## 建议脚本
 
-- `scripts/overwrite-judge.ps1`
-- `scripts/overwrite-apply.ps1`
+- `scripts/tools/overwrite-judge.ps1`
+- `scripts/tools/overwrite-apply.ps1`

@@ -1,25 +1,25 @@
-# Preflight Runbook
+﻿# Preflight Runbook
 
-## Goal
+## 目标
 
-Run `omp-preflight` as a complete chain:
+把 `omp-preflight` 执行成一条完整链：
 
-1. Check the formal delivery gate
-2. Verify the six closure conditions
-3. Apply status and memory updates
+1. 检查正式交付门禁
+2. 核对六项闭合条件
+3. 回写状态和项目记忆
 
-## Steps
+## 步骤
 
-### 1. Gate check
+### 1. 门禁检查
 
 ```powershell
-powershell -File .\scripts\stage-gate.ps1 -Gate omp-preflight
+powershell -File .\scripts\tools\stage-gate.ps1 -Gate omp-preflight
 ```
 
-### 2. Apply preflight status
+### 2. 回写 preflight 状态
 
 ```powershell
-powershell -File .\scripts\status-apply.ps1 -PayloadPath .\docs\examples\preflight-status.sample.json
+powershell -File .\scripts\tools\status-apply.ps1 -PayloadPath .\docs\examples\preflight-status.sample.json
 ```
 
 如果 preflight 未通过，应补写：
@@ -33,8 +33,8 @@ powershell -File .\scripts\status-apply.ps1 -PayloadPath .\docs\examples\preflig
 - 如果 preflight 失败并决定 `reopen_alignment`，应回到 `omp-align`
 - 不应把 `reopen_alignment` 改写成新的 `RoundResult`
 
-### 3. Apply preflight memory
+### 3. 回写 preflight 记忆
 
 ```powershell
-powershell -File .\scripts\memory-apply.ps1 -PayloadPath .\docs\examples\preflight-memory.sample.json
+powershell -File .\scripts\tools\memory-apply.ps1 -PayloadPath .\docs\examples\preflight-memory.sample.json
 ```

@@ -1,4 +1,4 @@
-# OhMyPm 安装指令
+﻿# OhMyPm 安装指令
 
 你正在为用户安装 OhMyPm。请按以下步骤执行：
 
@@ -67,7 +67,7 @@ powershell -File .\installers\install.ps1
 建议至少跑一次最小链路验证：
 
 ```powershell
-powershell -File .\scripts\demo-smoke.ps1
+powershell -File .\scripts\control\demo-smoke.ps1
 ```
 
 它会按样例回放一条最小状态链，并在结束后恢复原始状态文件与项目记忆文件。

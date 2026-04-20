@@ -1,4 +1,4 @@
----
+﻿---
 name: omp-memory-write
 description: "将本轮新确认事实、变化点、评审结果和系统知识回写到项目记忆或系统记忆卡。"
 ---
@@ -42,8 +42,8 @@ description: "将本轮新确认事实、变化点、评审结果和系统知识
 
 ## 建议脚本
 
-- `scripts/memory-write.ps1`
-- `scripts/memory-apply.ps1`
+- `scripts/tools/memory-write.ps1`
+- `scripts/tools/memory-apply.ps1`
 
 ## 标准化输入
 
@@ -54,4 +54,4 @@ description: "将本轮新确认事实、变化点、评审结果和系统知识
 - `docs/examples/preflight-memory.sample.json`
 - `docs/examples/review-memory.sample.json`
 - `docs/examples/fix-memory.sample.json`
-- `scripts/memory-apply.ps1`
+- `scripts/tools/memory-apply.ps1`

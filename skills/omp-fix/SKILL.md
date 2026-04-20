@@ -1,4 +1,4 @@
----
+﻿---
 name: omp-fix
 description: "修正已有产物缺陷，并在需要时触发下游修正上游的判定复写。"
 ---
@@ -36,7 +36,7 @@ description: "修正已有产物缺陷，并在需要时触发下游修正上游
 2. 判断问题是否仅为局部修订，还是已影响上游结论
 3. 若影响上游，调用 `omp-overwrite-judge`
 4. 产出复写判定 JSON
-5. 调用 `scripts/overwrite-apply.ps1`
+5. 调用 `scripts/tools/overwrite-apply.ps1`
 6. 回写状态与项目记忆
 
 ## 必读状态
@@ -56,8 +56,8 @@ description: "修正已有产物缺陷，并在需要时触发下游修正上游
 
 ## 建议脚本
 
-- `scripts/overwrite-judge.ps1`
-- `scripts/overwrite-apply.ps1`
+- `scripts/tools/overwrite-judge.ps1`
+- `scripts/tools/overwrite-apply.ps1`
 
 ## 强制规则
 

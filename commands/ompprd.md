@@ -1,4 +1,4 @@
-# /ompprd
+﻿# /ompprd
 
 直接进入 `omp-deliver-prd`，用于生成正式 PRD。
 
@@ -13,9 +13,10 @@
 - 生成正式归档主文件
 - 与原型分工互补
 - 写入 `stable_baselines.prd`
+- 让当前主链停在“可判断模板和规则是否够用”的状态
 
 建议先执行：
 
 ```powershell
-powershell -File .\scripts\stage-gate.ps1 -Gate omp-deliver
+powershell -File .\scripts\tools\stage-gate.ps1 -Gate omp-deliver
 ```

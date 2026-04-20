@@ -1,4 +1,4 @@
-# Review Runbook
+﻿# Review Runbook
 
 ## 目标
 
@@ -25,7 +25,7 @@
 ### 2. 生成评审团 JSON
 
 ```powershell
-powershell -File .\scripts\review-panel.ps1 `
+powershell -File .\scripts\tools\review-panel.ps1 `
   -FactIssuesJson '[{"role":"dev","issue":"Missing API contract"}]' `
   -RiskIssuesJson '[{"role":"qa","issue":"Acceptance coverage is incomplete"}]' `
   -SuggestionIssuesJson '[{"role":"pm","issue":"Clarify scope note"}]' `
@@ -37,7 +37,7 @@ powershell -File .\scripts\review-panel.ps1 `
 ### 3. 应用评审结论
 
 ```powershell
-powershell -File .\scripts\review-apply.ps1 -ReviewJsonPath .\docs\ohmypm\cache\review-result.json
+powershell -File .\scripts\tools\review-apply.ps1 -ReviewJsonPath .\docs\ohmypm\cache\review-result.json
 ```
 
 这一步会更新：
@@ -49,7 +49,7 @@ powershell -File .\scripts\review-apply.ps1 -ReviewJsonPath .\docs\ohmypm\cache\
 ### 4. 更新项目记忆
 
 ```powershell
-powershell -File .\scripts\memory-apply.ps1 -PayloadPath .\docs\examples\review-memory.sample.json
+powershell -File .\scripts\tools\memory-apply.ps1 -PayloadPath .\docs\examples\review-memory.sample.json
 ```
 
 若评审结论推翻基线，应转入 `omp-fix`。

@@ -1,4 +1,4 @@
-# /ompprototype
+﻿# /ompprototype
 
 直接进入 `omp-deliver-prototype`，用于生成交付型原型。
 
@@ -10,12 +10,12 @@
 
 本命令负责：
 
-- 生成评审会主展示物
+- 生成当前最小主链的第一版原型本体
 - 写入 `stable_baselines.prototype`
-- 为后续 `ompreview` 准备可评审原型基线
+- 为后续 `omp-deliver-prd` 提供页面、流程和编号基线
 
 建议先执行：
 
 ```powershell
-powershell -File .\scripts\stage-gate.ps1 -Gate omp-deliver
+powershell -File .\scripts\tools\stage-gate.ps1 -Gate omp-deliver
 ```

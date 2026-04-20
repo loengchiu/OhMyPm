@@ -1,4 +1,4 @@
-# Context Guard Runbook
+﻿# Context Guard Runbook
 
 ## 目标
 
@@ -14,13 +14,13 @@
 ### 1. 生成分块计划
 
 ```powershell
-powershell -File .\scripts\context-plan.ps1 -InputPath .\product-definition.md -OutputKind prd -ExpectedOutputChars 9000
+powershell -File .\scripts\tools\context-plan.ps1 -InputPath .\product-definition.md -OutputKind prd -ExpectedOutputChars 9000
 ```
 
 ### 2. 为长材料写缓存
 
 ```powershell
-powershell -File .\scripts\material-extract.ps1 -InputPath .\product-definition.md
+powershell -File .\scripts\tools\material-extract.ps1 -InputPath .\product-definition.md
 ```
 
 ### 3. 使用缓存

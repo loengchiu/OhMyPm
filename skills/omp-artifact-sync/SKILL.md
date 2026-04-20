@@ -1,4 +1,4 @@
----
+﻿---
 name: omp-artifact-sync
 description: "同步状态文件、稳定基线、产物索引和必要的复写记录。"
 ---
@@ -28,8 +28,8 @@ description: "同步状态文件、稳定基线、产物索引和必要的复写
 
 ## 建议脚本
 
-- `scripts/artifact-sync.ps1`
-- `scripts/status-apply.ps1`
+- `scripts/tools/artifact-sync.ps1`
+- `scripts/tools/status-apply.ps1`
 
 ## 可同步字段
 
@@ -51,7 +51,7 @@ description: "同步状态文件、稳定基线、产物索引和必要的复写
 若宿主更适合先产出结构化载荷，再统一落盘，可使用：
 
 - `docs/examples/status-apply.sample.json`
-- `scripts/status-apply.ps1`
+- `scripts/tools/status-apply.ps1`
 
 ## 强制规则
 

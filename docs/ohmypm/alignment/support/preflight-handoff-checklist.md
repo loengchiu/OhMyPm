@@ -7,8 +7,8 @@
   - 当前还差哪些点，所以暂时不能进入正式交付
 
 ## 2. 当前检查基础
-- 统一说明基础：`docs/stable-alignment-package.md`
-- 下游继承规则：`docs/delivery-inheritance-note.md`
+- 统一说明基础：`docs/ohmypm/alignment/support/stable-alignment-package.md`
+- 下游继承规则：`docs/ohmypm/alignment/support/delivery-inheritance-note.md`
 
 说明：
 - 交付前检查不再重新判断范围是否仍在当前版本内，也不再重新判断是否属于独立新模块。

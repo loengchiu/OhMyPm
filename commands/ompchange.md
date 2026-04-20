@@ -1,4 +1,4 @@
-# /ompchange
+﻿# /ompchange
 
 直接进入 `omp-change`，用于处理正式交付后的新增内容或范围变化。
 
@@ -23,5 +23,5 @@
 建议先执行：
 
 ```powershell
-powershell -File .\scripts\stage-gate.ps1 -Gate omp-change
+powershell -File .\scripts\tools\stage-gate.ps1 -Gate omp-change
 ```

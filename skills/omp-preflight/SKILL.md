@@ -1,101 +1,48 @@
 ---
 name: omp-preflight
-description: "正式交付前检查。判断当前方案是否满足进入正式交付的门槛。"
+description: "交付前检查。判断当前方案是否满足进入正式交付的门槛。"
 ---
 
-# Preflight
+# 交付前检查
+
+## 所属层级
+
+- 决策层动作
 
 ## 读取顺序
 
-第 0 层：最小状态
-
-1. `docs/ohmypm/ohmypm-status.json`
-2. `docs/ohmypm/ohmypm-memory.md` 的最小必要摘要
-
-第 1 层：当前动作 skill
-
-3. 当前只执行 `omp-preflight`，不得默认并读其他 skill
-
-第 2 层：当前动作必要 contract
-
-4. `contracts/gates.md`
-
-第 3 层：条件触发读取
-
-5. 仅当需要核对当前评审阻塞项时，再读取 `contracts/review.md`
+1. 读取最小状态：
+  - `docs/ohmypm/ohmypm-status.json`
+  - `docs/ohmypm/ohmypm-memory.md` 的最小必要摘要
+2. 只读取当前 skill
+3. 只读取必要规则：
+  - `contracts/gates.md`
+  - `contracts/delivery.md`
+4. 若需要核对交付物或材料，只允许局部回查
 
 ## 目标
 
-- 检查目标闭合
-- 检查主流程闭合
-- 检查模块闭合
-- 检查关键未澄清项是否仍会推翻方案
-- 检查预估是否可讲清
-- 检查正式表达路径是否明确
+- 检查范围是否闭合
+- 检查流程是否闭合
+- 检查模块是否闭合
+- 检查未澄清项风险
+- 检查工时是否可解释
+- 检查交付承接是否完整
+- 判断当前是否已经足够进入“原型 -> PRD”最小交付链
 
-## 执行顺序
+## 对外动作名
 
-1. 检查正式交付门禁
-2. 按六项闭合条件逐项判断
-3. 若需要核对评审阻塞，只局部读取评审相关信息
-4. 形成通过或回退结论
-5. 产出状态载荷和记忆载荷
-6. 调用 `scripts/status-apply.ps1`
-7. 调用 `scripts/memory-apply.ps1`
-
-## 必读状态
-
-- `stable_baselines.response_plan`
-- `loop_state.round_result`
-- `loop_state.history_summary`
-- `fallback_state`
-- `pending_confirmations`
-- `blockers`
-- `review_state.must_fix_before_next_stage`
-- `context_summary`
+- 交付前检查
 
 ## 结果
 
 - 通过：允许进入正式交付
-- 不通过：回退回应/校验循环
+- 不通过：回到内部修正或 ask-back
 
 ## 强制规则
 
-- 进入 `omp-preflight` 前，`loop_state.round_result` 必须是 `ready_for_preflight`
-- 若正式交付门禁失败，必须给出明确回退类型：
-  - `internal_repair`
-  - `need_materials`
-  - `reopen_alignment`
-- `reopen_alignment` 是回退动作，不是轮次结果值
-- 若判定为 `reopen_alignment`，下一步应回到 `omp-align` 并在重新进入正式对齐时递增轮次编号
-- 进入正式交付前，建议补一次轮次历史摘要，便于评审会和后续交接快速回顾
-- 若 `pending_confirmations` 仍非空，必须先转入 `omp-ask-back`，不得静默进入 preflight
-- 不得默认预读交付、评审、变更等不相关 skill
-- 不得为了保险一次读取多个 contract
+- 当前动作一次只推进一件事
+- 若仍有待确认项，必须先转入 `omp-ask-back`
+- 不得默认预读评审、变更、修正等不相关 skill
+- 不得为了保险一次读取多个规则
 - 输出最后必须只给一个“下一步唯一动作”
-
-## 阻断条件
-
-- `pending_confirmations` 未清空
-- `blockers` 未清空
-- `stable_baselines.response_plan` 缺失
-- `review_state.must_fix_before_next_stage` 未清空
-
-## 建议脚本
-
-- `scripts/status-apply.ps1`
-- `scripts/memory-apply.ps1`
-
-## 回写要求
-
-- 更新 `docs/ohmypm/ohmypm-memory.md` 中的：
-  - `当前建议`
-  - `评审摘要` 或交付前检查摘要
-- 更新 `docs/ohmypm/ohmypm-status.json` 中的：
-  - `current_stage`
-  - `last_action`
-  - `next_recommended`
-  - 必要时 `fallback_state.fallback_type`
-  - 必要时 `fallback_state.fallback_reason`
-  - 必要时 `blockers`
-  - 必要时 `pending_confirmations`

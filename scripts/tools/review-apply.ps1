@@ -22,13 +22,22 @@ if (-not $review.unified_conclusion) {
 $result = $review.unified_conclusion.result
 $mustFix = @($review.unified_conclusion.must_fix_before_next_stage) | ConvertTo-Json -Compress
 $nextAction = $review.unified_conclusion.next_action
+$mustFixItems = @($review.unified_conclusion.must_fix_before_next_stage)
 
 $scriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 $artifactSync = Join-Path $scriptRoot 'artifact-sync.ps1'
 
-& $artifactSync `
-    -Stage 'omp-review' `
-    -LastAction 'Applied review panel result' `
-    -NextRecommended $nextAction `
-    -ReviewResult $result `
-    -ReviewMustFixJson $mustFix
+$forward = @{
+    Stage = 'omp-review'
+    LastAction = 'Applied review panel result'
+    NextRecommended = $nextAction
+    ReviewResult = $result
+    ReviewMustFixJson = $mustFix
+}
+
+if ($result -eq 'pass' -and $mustFixItems.Count -eq 0) {
+    $forward.FallbackType = ''
+    $forward.FallbackReason = ''
+}
+
+& $artifactSync @forward

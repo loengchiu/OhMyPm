@@ -73,5 +73,7 @@ $updated += $contentLines
 $updated += ""
 $updated += $after
 
-$updated | Set-Content -LiteralPath $Path -Encoding utf8
+$content = ($updated -join [Environment]::NewLine)
+$utf8Bom = New-Object System.Text.UTF8Encoding($true)
+[System.IO.File]::WriteAllText((Resolve-Path -LiteralPath $Path), $content, $utf8Bom)
 Write-Host "[OhMyPm] ohmypm-memory.md updated: $SectionTitle" -ForegroundColor Green

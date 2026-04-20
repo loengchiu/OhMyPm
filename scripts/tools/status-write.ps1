@@ -235,5 +235,7 @@ if (($PSBoundParameters.ContainsKey("ChangeCategory") -or $PSBoundParameters.Con
     }
 }
 
-$status | ConvertTo-Json -Depth 10 | Set-Content -LiteralPath $Path -Encoding utf8
+$json = $status | ConvertTo-Json -Depth 10
+$utf8Bom = New-Object System.Text.UTF8Encoding($true)
+[System.IO.File]::WriteAllText((Resolve-Path -LiteralPath $Path), $json, $utf8Bom)
 Write-Host "[OhMyPm] ohmypm-status.json updated." -ForegroundColor Green

@@ -1,4 +1,4 @@
----
+﻿---
 name: omp-ask-back
 description: "围绕最阻塞推进的问题发起追问，并将结果回写项目记忆。"
 ---
@@ -53,8 +53,8 @@ description: "围绕最阻塞推进的问题发起追问，并将结果回写项
 
 ## 建议脚本
 
-- `scripts/ask-back-plan.ps1`
-- `scripts/ask-back-apply.ps1`
+- `scripts/tools/ask-back-plan.ps1`
+- `scripts/tools/ask-back-apply.ps1`
 
 ## 回写要求
 

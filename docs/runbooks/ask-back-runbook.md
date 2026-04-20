@@ -1,70 +1,70 @@
-# Ask Back Runbook
+﻿# Ask-Back Runbook
 
-## Goal
+## 目标
 
-Turn ask-back from a written rule into a runtime action:
+把 ask-back 从“写在规则里”变成“运行时会主动触发的动作”：
 
-1. detect a PM decision blocker
-2. stop heavier stage progression
-3. generate the minimal PM question
-4. apply the PM answer back into status
+1. 识别需要 PM 决策的阻塞点
+2. 阻断更重动作推进
+3. 生成最小提问
+4. 将 PM 回答回写到状态
 
-## Runtime Checks
+## 运行时检查
 
-The following runtime points must stop and route to ask-back when needed:
+以下运行时节点一旦命中条件，就必须中断并转入 ask-back：
 
-- `scripts/stage-gate.ps1`
+- `scripts/tools/stage-gate.ps1`
 - `omp-respond`
 - `omp-preflight`
 - `omp-change`
 
-## Trigger Cases
+## 触发场景
 
-At minimum, ask-back must trigger when:
+至少在以下场景必须触发 ask-back：
 
-- response is blocked by a key fact gap
-- preflight is blocked while `pending_confirmations` is still non-empty
-- `change_state.change_category_confirmed_by_pm=false`
-- scope boundary is still unconfirmed and already affects module list, estimate, or schedule
+- 生成回应稿时被关键事实缺口卡住
+- 交付前检查前仍然有待确认项
+- 变更分类还未得到 PM 确认
+- 范围边界尚未确认，但已经影响模块清单、工时或排期
 
-## Step 1. Generate the minimal question
+## 第 1 步：生成最小问题
 
 ```powershell
-powershell -File .\scripts\ask-back-plan.ps1
+powershell -File .\scripts\tools\ask-back-plan.ps1
 ```
 
-Expected result:
+预期结果：
 
 - `ask_back_required=true`
-- one or more trigger records
-- a minimal PM question for each trigger
+- 至少一条触发记录
+- 每条触发记录都带一条最小 PM 问题
 
-## Step 2. Ask PM the smallest blocking question
+## 第 2 步：向 PM 提最小阻塞问题
 
-Use the top trigger first.
+优先处理最靠前的触发项。
 
-Example from the current sample status:
+人话问法示例：
 
-- Please confirm the scope boundary for the current version: is the approval-path expansion still inside the current version, or should it be treated as a separate scope/module?
-- Please confirm whether this newly added content is already large enough that it should be treated as a separate new module, rather than still being handled as an in-module supplement.
+- 这次新增内容是否仍然属于当前版本范围？
+- 即使仍然属于当前版本范围，这次新增内容是否已经大到需要单独算作一个新模块？
 
-Important:
+注意：
 
-- do not merge scope-boundary judgment and module-classification judgment into one question
-- ask scope first
-- ask module classification second
+- 不要把“范围判断”和“模块分类判断”混成一个问题
+- 先问范围
+- 再问模块分类
 
-## Step 3. Apply the PM answer
+## 第 3 步：回写 PM 回答
 
 ```powershell
-powershell -File .\scripts\ask-back-apply.ps1 `
+powershell -File .\scripts\tools\ask-back-apply.ps1 `
   -AnsweredConfirmation 'Need confirmation on scope boundary' `
   -ChangeCategoryConfirmedByPm $true `
-  -NextRecommended 'Return to the blocked stage and rerun the gate'
+  -NextRecommended '回到刚才被卡住的阶段，并按最新确认结果重新判断是否可以推进。'
 ```
 
-Expected result:
+预期结果：
 
-- matching `pending_confirmations` entry is removed
-- PM confirmation state is updated
-- the blocked stage can be retried through `stage-gate.ps1`
+- 对应的 `pending_confirmations` 项被移除
+- PM 确认状态被更新
+- 被卡住的动作可以重新判断是否继续

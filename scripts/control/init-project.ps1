@@ -1,4 +1,4 @@
-param(
+﻿param(
     [string]$DocsDir = "docs",
     [string]$OhMyPmDir = "ohmypm"
 )
@@ -11,7 +11,7 @@ function Ensure-Dir {
 }
 
 $scriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
-$repoRoot = Resolve-Path (Join-Path $scriptRoot '..')
+$repoRoot = Resolve-Path (Join-Path $scriptRoot '..\..')
 
 $sourceStatus = Join-Path $repoRoot 'docs\ohmypm\ohmypm-status.json'
 $sourceMemory = Join-Path $repoRoot 'docs\ohmypm\ohmypm-memory.md'

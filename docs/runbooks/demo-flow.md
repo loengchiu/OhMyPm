@@ -1,150 +1,150 @@
-# Demo Flow
+﻿# 开发样例回放流程
 
-## Goal
+## 目标
 
-Run a minimal OhMyPm demo chain from first response to alignment, then branch into:
+用一条最小样例链路回放 OhMyPm，从首轮回应走到对齐，再分支验证：
 
-- formal delivery preparation
-- formal review and fix
-- reopen alignment after preflight failure
-- confirmed post-delivery change handling
+- 正式交付前准备
+- 正式评审与修正
+- preflight 失败后的重开对齐
+- 交付后变更分类处理
 
-This runbook is for demonstration and smoke-check use. It shows which sample payloads can be applied in sequence without redefining the architecture each time.
+这份 runbook 只用于开发验证和 smoke check，不属于正式协作入口。它说明哪些样例 payload 可以按顺序回放，而不需要每次重新解释架构。
 
-For a one-command replay, use:
-
-```powershell
-powershell -File .\scripts\demo-smoke.ps1
-```
-
-## Preparation
-
-Make sure the project is initialized:
+如需一键回放，可执行：
 
 ```powershell
-powershell -File .\scripts\init-project.ps1
+powershell -File .\scripts\control\demo-smoke.ps1
 ```
 
-Recommended backup before replay:
+## 准备
+
+先确认项目已经初始化：
+
+```powershell
+powershell -File .\scripts\control\init-project.ps1
+```
+
+建议先备份：
 
 ```powershell
 Copy-Item .\docs\ohmypm\ohmypm-status.json .\docs\ohmypm\cache\ohmypm-status.demo.backup.json -Force
 Copy-Item .\docs\ohmypm\ohmypm-memory.md .\docs\ohmypm\cache\ohmypm-memory.demo.backup.md -Force
 ```
 
-## Path A: Respond -> Align -> Preflight Pass
+## 路径 A：回应 -> 对齐 -> preflight 通过
 
-### 1. First response
+### 1. 首轮回应
 
 ```powershell
-powershell -File .\scripts\status-apply.ps1 -PayloadPath .\docs\examples\respond-status.sample.json
-powershell -File .\scripts\memory-apply.ps1 -PayloadPath .\docs\examples\respond-memory.sample.json
+powershell -File .\scripts\tools\status-apply.ps1 -PayloadPath .\docs\examples\respond-status.sample.json
+powershell -File .\scripts\tools\memory-apply.ps1 -PayloadPath .\docs\examples\respond-memory.sample.json
 ```
 
-Expected state:
+预期状态：
 
 - `RoundNumber=1`
 - `RoundResult=continue_alignment`
 
-### 2. Alignment after feedback
+### 2. 反馈后继续对齐
 
 ```powershell
-powershell -File .\scripts\status-apply.ps1 -PayloadPath .\docs\examples\align-status.sample.json
-powershell -File .\scripts\memory-apply.ps1 -PayloadPath .\docs\examples\align-memory.sample.json
+powershell -File .\scripts\tools\status-apply.ps1 -PayloadPath .\docs\examples\align-status.sample.json
+powershell -File .\scripts\tools\memory-apply.ps1 -PayloadPath .\docs\examples\align-memory.sample.json
 ```
 
-Expected state:
+预期状态：
 
 - `RoundNumber=2`
 - `RoundResult=ready_for_preflight`
 
-### 3. Preflight pass
+### 3. preflight 通过
 
 ```powershell
-powershell -File .\scripts\status-apply.ps1 -PayloadPath .\docs\examples\preflight-status.sample.json
-powershell -File .\scripts\memory-apply.ps1 -PayloadPath .\docs\examples\preflight-memory.sample.json
+powershell -File .\scripts\tools\status-apply.ps1 -PayloadPath .\docs\examples\preflight-status.sample.json
+powershell -File .\scripts\tools\memory-apply.ps1 -PayloadPath .\docs\examples\preflight-memory.sample.json
 ```
 
-Expected state:
+预期状态：
 
-- current plan is ready for formal delivery
-- next step can be `omp-deliver-prototype`
+- 当前方案已经可进入正式交付
+- 下一步可以进入 `omp-deliver-prototype`
 
-### 4. Delivery prototype
+### 4. 交付型原型
 
 ```powershell
-powershell -File .\scripts\status-apply.ps1 -PayloadPath .\docs\examples\prototype-status.sample.json
+powershell -File .\scripts\tools\status-apply.ps1 -PayloadPath .\docs\examples\prototype-status.sample.json
 ```
 
-### 5. Formal PRD
+### 5. 正式 PRD
 
 ```powershell
-powershell -File .\scripts\status-apply.ps1 -PayloadPath .\docs\examples\prd-status.sample.json
+powershell -File .\scripts\tools\status-apply.ps1 -PayloadPath .\docs\examples\prd-status.sample.json
 ```
 
-### 6. Review
+### 6. 评审
 
 ```powershell
-powershell -File .\scripts\review-apply.ps1 -ReviewJsonPath .\docs\examples\review-result.sample.json
-powershell -File .\scripts\memory-apply.ps1 -PayloadPath .\docs\examples\review-memory.sample.json
+powershell -File .\scripts\tools\review-apply.ps1 -ReviewJsonPath .\docs\examples\review-result.sample.json
+powershell -File .\scripts\tools\memory-apply.ps1 -PayloadPath .\docs\examples\review-memory.sample.json
 ```
 
-### 7. Fix and overwrite
+### 7. 修正与复写
 
 ```powershell
-powershell -File .\scripts\overwrite-apply.ps1 -JudgeJsonPath .\docs\examples\overwrite-result.sample.json
-powershell -File .\scripts\memory-apply.ps1 -PayloadPath .\docs\examples\fix-memory.sample.json
+powershell -File .\scripts\tools\overwrite-apply.ps1 -JudgeJsonPath .\docs\examples\overwrite-result.sample.json
+powershell -File .\scripts\tools\memory-apply.ps1 -PayloadPath .\docs\examples\fix-memory.sample.json
 ```
 
-Expected result:
+预期结果：
 
-- review blockers are recorded
-- overwrite queue is updated
-- next action points back to alignment if the baseline was overturned
+- 评审阻塞项被记录
+- 复写队列被更新
+- 如果基线被推翻，下一步会回到对齐链
 
-## Path B: Preflight Fail -> Reopen Alignment
+## 路径 B：preflight 失败 -> 重开对齐
 
-Use this branch when the stakeholder overturns the structure during or after preflight.
+当相关方在 preflight 期间或之后推翻结构结论时，使用这条分支。
 
 ```powershell
-powershell -File .\scripts\status-apply.ps1 -PayloadPath .\docs\examples\reopen-alignment.sample.json
+powershell -File .\scripts\tools\status-apply.ps1 -PayloadPath .\docs\examples\reopen-alignment.sample.json
 ```
 
-Expected state:
+预期状态：
 
 - `RoundResult=need_internal_repair`
 - `FallbackType=reopen_alignment`
 
-Important:
+说明：
 
-- `reopen_alignment` stays in fallback state
-- the next formal alignment start is what creates the next round number
+- `reopen_alignment` 只写在 fallback_state 中
+- 只有重新进入下一轮正式对齐时，才递增轮次编号
 
-## Path C: Post-Delivery Change Control
+## 路径 C：交付后变更处理
 
-### 1. Unconfirmed classification example
+### 1. 未确认分类示例
 
-This file is intentionally not for direct happy-path replay. It demonstrates the state before PM confirmation:
+这个文件不用于直接 happy path 回放，只用于展示 PM 确认前的状态：
 
 - `docs/examples/change-status.sample.json`
 
-### 2. Confirmed classification example
+### 2. 已确认分类示例
 
-Use this for a runnable change-control demo:
+如需可运行的变更处理样例，使用：
 
 ```powershell
-powershell -File .\scripts\status-apply.ps1 -PayloadPath .\docs\examples\change-status-confirmed.sample.json
+powershell -File .\scripts\tools\status-apply.ps1 -PayloadPath .\docs\examples\change-status-confirmed.sample.json
 ```
 
-Expected state:
+预期状态：
 
 - `ChangeCategory=new_module`
 - `ChangeCategoryConfirmedByPm=true`
-- next action points back to alignment instead of silent merge
+- 下一步应回到对齐链，而不是静默吞并进当前稳定版本
 
-## Restore
+## 恢复
 
-If you created backups, restore them after the demo:
+如果前面做了备份，回放完成后可按下面方式恢复：
 
 ```powershell
 Copy-Item .\docs\ohmypm\cache\ohmypm-status.demo.backup.json .\docs\ohmypm\ohmypm-status.json -Force

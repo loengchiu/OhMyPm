@@ -3,10 +3,10 @@
   "Mode": "formal_delivery",
   "Version": "v0.7",
   "LastAction": "Produced the first delivery prototype package",
-  "NextRecommended": "Start omp-deliver-prd and complete rule details",
-  "ContextSummary": "Formal delivery prototype is ready as the main review artifact",
+  "NextRecommended": "Start omp-deliver-prd and complete the minimum rule body for template validation",
+  "ContextSummary": "Formal delivery prototype is ready as the first reading artifact for the minimum prototype -> PRD chain",
   "BaselineField": "prototype",
-  "BaselinePath": "docs/templates/prototype-note.template.md",
+  "BaselinePath": "docs/ohmypm/deliverables/prototype-v1/index.html",
   "ArtifactField": "prototypes",
-  "ArtifactPath": "docs/templates/prototype-note.template.md"
+  "ArtifactPath": "docs/ohmypm/deliverables/prototype-v1/index.html"
 }

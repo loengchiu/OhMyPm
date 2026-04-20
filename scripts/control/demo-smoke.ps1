@@ -1,4 +1,4 @@
-param(
+﻿param(
     [string]$StatusPath = "docs/ohmypm/ohmypm-status.json",
     [string]$MemoryPath = "docs/ohmypm/ohmypm-memory.md"
 )
@@ -10,7 +10,7 @@ function Fail {
 }
 
 $scriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
-$repoRoot = Split-Path -Parent $scriptRoot
+$repoRoot = Resolve-Path (Join-Path $scriptRoot "..\..")
 $cacheDir = Join-Path $repoRoot "docs\ohmypm\cache"
 
 if (-not (Test-Path -LiteralPath $StatusPath)) {
@@ -21,10 +21,11 @@ if (-not (Test-Path -LiteralPath $MemoryPath)) {
     Fail "project memory file not found: $MemoryPath"
 }
 
-$statusApply = Join-Path $scriptRoot "status-apply.ps1"
-$memoryApply = Join-Path $scriptRoot "memory-apply.ps1"
-$reviewApply = Join-Path $scriptRoot "review-apply.ps1"
-$overwriteApply = Join-Path $scriptRoot "overwrite-apply.ps1"
+$toolsRoot = Join-Path $repoRoot "scripts\tools"
+$statusApply = Join-Path $toolsRoot "status-apply.ps1"
+$memoryApply = Join-Path $toolsRoot "memory-apply.ps1"
+$reviewApply = Join-Path $toolsRoot "review-apply.ps1"
+$overwriteApply = Join-Path $toolsRoot "overwrite-apply.ps1"
 
 $statusBackup = Join-Path $cacheDir "project-status.demo-smoke.backup.json"
 $memoryBackup = Join-Path $cacheDir "project-memory.demo-smoke.backup.md"
@@ -76,7 +77,7 @@ try {
         }
     }
 
-    Write-Host "[OhMyPm] demo smoke passed." -ForegroundColor Green
+    Write-Host "[OhMyPm][dev] demo smoke passed." -ForegroundColor Green
 }
 finally {
     if (Test-Path -LiteralPath $statusBackup) {

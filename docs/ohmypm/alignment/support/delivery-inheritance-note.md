@@ -4,7 +4,7 @@
 - 这份说明用于规定：后续原型、PRD、评审材料如何直接继承当前稳定对齐包，而不是各自重新判断范围、模块和边界。
 
 ## 2. 统一继承原则
-- 后续材料默认继承 `docs/stable-alignment-package.md`。
+- 后续材料默认继承 `docs/ohmypm/alignment/support/stable-alignment-package.md`。
 - 若后续材料与稳定对齐包冲突，应优先回到对齐层修正，不得各自写出不同版本。
 - 后续材料可以展开细节，但不应改写已经确认过的范围和模块归属。
 
@@ -26,6 +26,6 @@
 - 继承当前接口边界和验收覆盖缺口：把它们作为评审关注点，而不是让评审从零猜测哪里还没补齐。
 
 ## 6. 当前使用顺序
-- 先用 `docs/stable-alignment-package.md` 作为统一说明。
+- 先用 `docs/ohmypm/alignment/support/stable-alignment-package.md` 作为统一说明。
 - 再按需要分别展开到原型、PRD、评审材料。
 - 若后续出现新反馈，应先修正稳定对齐包，再同步带动下游材料。

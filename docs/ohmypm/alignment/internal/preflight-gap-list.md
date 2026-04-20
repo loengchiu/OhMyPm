@@ -25,9 +25,9 @@
 - 一版新增范围对应的验收覆盖补充
 
 当前对应文档：
-- `docs/current-response-note.md`
-- `docs/interface-boundary-note.md`
-- `docs/acceptance-coverage-note.md`
+- `docs/ohmypm/alignment/internal/current-response-note.md`
+- `docs/ohmypm/alignment/internal/interface-boundary-note.md`
+- `docs/ohmypm/alignment/internal/acceptance-coverage-note.md`
 
 ## 4. 当前推进原则
 - 先把上面三项补齐，再判断是否进入交付前检查。

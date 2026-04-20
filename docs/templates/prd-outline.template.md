@@ -1,35 +1,56 @@
-# Delivery PRD Outline
+# 正式 PRD 归档骨架模板
 
-## 1. Document Info
-- Version
-- Owner
+## 1. 文档信息
+- 文档名称：
+- 所属版本：
+- 当前状态：
+- 对应原型：
+- 负责人：
+- 当前试跑结论：
 
-## 2. Background And Goal
-- Problem
-- Goal
+## 2. 背景与目标
+- 当前问题：
+- 本次目标：
+- 本次不解决什么：
 
-## 3. Scope
-- In scope
-- Out of scope
+## 3. 本次范围
+- 本次范围包括：
+- 本次范围不包括：
 
-## 4. Solution Overview
-- Main structure
-- Flow summary
+## 4. 整体方案概述
+- 模块边界：
+- 流程概述：
+- 与存量能力的关系：
 
-## 5. Prototype And Page Notes
-- Entry
-- Page mapping
+## 5. 原型与页面说明
+- 页面清单：
+- 页面作用：
+- 与原型编号的引用关系：
+- 哪些内容已经由原型讲清：
+- 哪些内容必须继续由 PRD 补充：
 
-## 6. Business Rules
-- Core rules
+## 6. 业务规则说明
+- 核心判定条件：
+- 主流程规则：
+- 关键分支规则：
+- 联动规则：
+- 与原型编号的映射：
 
-## 7. Exceptions And Boundaries
-- Edge cases
+## 7. 异常与边界说明
+- 异常类型：
+- 回退规则：
+- 明确边界：
 
-## 8. Roles Permissions And Data Impact
-- Roles
-- Data impact
+## 8. 角色、权限与数据影响
+- 角色清单：
+- 角色动作矩阵：
+- 数据影响：
+- 查询、通知、记录影响：
 
-## 9. Acceptance And Delivery
-- Acceptance
-- Delivery pack
+## 9. 验收与交付说明
+- 主流程验收：
+- 分支流程验收：
+- 异常流程验收：
+- 联动影响验收：
+- 当前交付包：
+- 模板是否够用：

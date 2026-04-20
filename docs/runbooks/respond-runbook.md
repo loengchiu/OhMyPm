@@ -1,32 +1,32 @@
-# Respond Runbook
+﻿# Respond Runbook
 
-## Goal
+## 目标
 
-Run `omp-respond` as a complete chain:
+把 `omp-respond` 执行成一条完整链：
 
-1. Check the response gate
-2. Assess context risk
-3. Produce the first credible response draft
-4. Apply status and memory updates
+1. 检查回应门禁
+2. 判断上下文风险
+3. 形成第一版可信回应
+4. 回写状态和项目记忆
 
-## Steps
+## 步骤
 
-### 1. Check context risk
+### 1. 检查上下文风险
 
 ```powershell
-powershell -File .\scripts\context-plan.ps1 -InputPath .\product-definition.md -OutputKind response -ExpectedOutputChars 2500
+powershell -File .\scripts\tools\context-plan.ps1 -InputPath .\product-definition.md -OutputKind response -ExpectedOutputChars 2500
 ```
 
-### 2. If needed, extract long material
+### 2. 必要时提取长材料
 
 ```powershell
-powershell -File .\scripts\material-extract.ps1 -InputPath .\product-definition.md
+powershell -File .\scripts\tools\material-extract.ps1 -InputPath .\product-definition.md
 ```
 
-### 3. Apply response status
+### 3. 回写回应状态
 
 ```powershell
-powershell -File .\scripts\status-apply.ps1 -PayloadPath .\docs\examples\respond-status.sample.json
+powershell -File .\scripts\tools\status-apply.ps1 -PayloadPath .\docs\examples\respond-status.sample.json
 ```
 
 其中建议同步写入：
@@ -37,8 +37,8 @@ powershell -File .\scripts\status-apply.ps1 -PayloadPath .\docs\examples\respond
 - `CurrentOutput`
 - `RoundResult`
 
-### 4. Apply response memory
+### 4. 回写回应记忆
 
 ```powershell
-powershell -File .\scripts\memory-apply.ps1 -PayloadPath .\docs\examples\respond-memory.sample.json
+powershell -File .\scripts\tools\memory-apply.ps1 -PayloadPath .\docs\examples\respond-memory.sample.json
 ```

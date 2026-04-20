@@ -1,19 +1,19 @@
-# Align Runbook
+﻿# Align Runbook
 
-## Goal
+## 目标
 
-Run `omp-align` as a complete chain:
+把 `omp-align` 执行成一条完整链：
 
-1. Merge new feedback into facts and modules
-2. Update change points, estimate, and schedule impact
-3. Apply status and memory updates
+1. 把新反馈并入事实和模块判断
+2. 更新变化点、工时和排期影响
+3. 回写状态和项目记忆
 
-## Steps
+## 步骤
 
-### 1. Apply alignment status
+### 1. 回写对齐状态
 
 ```powershell
-powershell -File .\scripts\status-apply.ps1 -PayloadPath .\docs\examples\align-status.sample.json
+powershell -File .\scripts\tools\status-apply.ps1 -PayloadPath .\docs\examples\align-status.sample.json
 ```
 
 如果当前轮次未能直接进入下一步，还应同步写入：
@@ -27,8 +27,8 @@ powershell -File .\scripts\status-apply.ps1 -PayloadPath .\docs\examples\align-s
 - `reopen_alignment` 是回退动作，不是 `RoundResult`
 - 只有重新进入下一轮正式对齐时，才增加 `RoundNumber`
 
-### 2. Apply alignment memory
+### 2. 回写对齐记忆
 
 ```powershell
-powershell -File .\scripts\memory-apply.ps1 -PayloadPath .\docs\examples\align-memory.sample.json
+powershell -File .\scripts\tools\memory-apply.ps1 -PayloadPath .\docs\examples\align-memory.sample.json
 ```

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{需求名称}} - 交付型原型</title>
+  <style>
+    body { margin: 0; font-family: "Microsoft YaHei UI", "PingFang SC", sans-serif; background: #f6f2ea; color: #1f2430; }
+    .shell { width: min(1280px, calc(100vw - 32px)); margin: 24px auto 40px; }
+    .hero, .panel, .screen { background: #fffaf3; border: 1px solid #dfcfb5; border-radius: 24px; box-shadow: 0 18px 46px rgba(66, 44, 20, 0.08); }
+    .hero { padding: 28px; margin-bottom: 18px; }
+    .hero h1 { margin: 0 0 8px; font-size: 36px; }
+    .hero p { margin: 0; line-height: 1.8; color: #586170; }
+    .grid { display: grid; grid-template-columns: 280px 1fr; gap: 20px; }
+    .panel { padding: 18px; position: sticky; top: 18px; height: fit-content; }
+    .screen { padding: 20px; margin-bottom: 18px; }
+    .tag { display: inline-block; padding: 8px 12px; border-radius: 999px; background: #f3ddd1; color: #7f3f22; font-weight: 700; margin-bottom: 8px; }
+    .anno-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .anno { width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; border-radius: 14px; background: #fff; border: 1px solid #dfcfb5; font-weight: 800; color: #7f3f22; }
+    .mock { margin-top: 16px; padding: 18px; border-radius: 20px; background: #fff; border: 1px solid #e9ddca; min-height: 220px; }
+    @media (max-width: 960px) { .grid { grid-template-columns: 1fr; } .panel { position: static; } }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <section class="hero">
+      <h1>{{需求名称}} / 交付型原型</h1>
+      <p>{{原型定位说明}}。页面里只展示页面、流程、状态、动作和编号标注；详细规则、权限、异常和验收统一回到 PRD。</p>
+    </section>
+    <div class="grid">
+      <aside class="panel">
+        <h2>使用说明</h2>
+        <p>研发先看原型理解页面与流程，再翻 PRD 补规则和边界。</p>
+        <ul>
+          <li>页面数量：{{页面数量}}</li>
+          <li>主流程：{{主流程摘要}}</li>
+          <li>关键分支：{{关键分支摘要}}</li>
+          <li>异常流程：{{异常流程摘要}}</li>
+        </ul>
+      </aside>
+      <main>
+        <section class="screen">
+          <span class="tag">P1</span>
+          <h2>{{页面一名称}}</h2>
+          <p>{{页面一作用}}</p>
+          <div class="anno-row"><span class="anno">01</span><span class="anno">02</span><span class="anno">03</span></div>
+          <div class="mock">{{页面一原型内容}}</div>
+        </section>
+        <section class="screen">
+          <span class="tag">P2</span>
+          <h2>{{页面二名称}}</h2>
+          <p>{{页面二作用}}</p>
+          <div class="anno-row"><span class="anno">04</span><span class="anno">05</span><span class="anno">06</span></div>
+          <div class="mock">{{页面二原型内容}}</div>
+        </section>
+        <section class="screen">
+          <span class="tag">P3</span>
+          <h2>{{页面三名称}}</h2>
+          <p>{{页面三作用}}</p>
+          <div class="anno-row"><span class="anno">07</span><span class="anno">08</span><span class="anno">09</span></div>
+          <div class="mock">{{页面三原型内容}}</div>
+        </section>
+        <section class="screen">
+          <span class="tag">P4</span>
+          <h2>{{页面四名称}}</h2>
+          <p>{{页面四作用}}</p>
+          <div class="anno-row"><span class="anno">10</span><span class="anno">11</span><span class="anno">12</span></div>
+          <div class="mock">{{页面四原型内容}}</div>
+        </section>
+        <section class="screen">
+          <span class="tag">编号表</span>
+          <h2>编号与 PRD 引用</h2>
+          <p>页面里只放短标注，详细规则统一回到 PRD。这里用于快速核对编号是否已经挂到对应规则段落。</p>
+          <div class="mock">
+            <div class="mock-header">
+              <strong>编号引用表</strong>
+            </div>
+            <div class="mock" style="min-height:auto;padding:18px;">
+              <p>01-03 -> {{页面一PRD引用}}</p>
+              <p>04-06 -> {{页面二PRD引用}}</p>
+              <p>07-09 -> {{页面三PRD引用}}</p>
+              <p>10-12 -> {{页面四PRD引用}}</p>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,4 +1,4 @@
-# Fix Runbook
+﻿# Fix Runbook
 
 ## 目标
 
@@ -19,7 +19,7 @@
 ### 2. 生成复写判定 JSON
 
 ```powershell
-powershell -File .\scripts\overwrite-judge.ps1 `
+powershell -File .\scripts\tools\overwrite-judge.ps1 `
   -AffectedUpstreamJson '["docs/ohmypm/ohmypm-memory.md"]' `
   -ConflictType review_reversal `
   -Severity high `
@@ -31,13 +31,13 @@ powershell -File .\scripts\overwrite-judge.ps1 `
 ### 3. 应用复写判定
 
 ```powershell
-powershell -File .\scripts\overwrite-apply.ps1 -JudgeJsonPath .\docs\cache\overwrite-result.json
+powershell -File .\scripts\tools\overwrite-apply.ps1 -JudgeJsonPath .\docs\ohmypm\cache\overwrite-result.json
 ```
 
 ### 4. 更新项目记忆
 
 ```powershell
-powershell -File .\scripts\memory-apply.ps1 -PayloadPath .\docs\examples\fix-memory.sample.json
+powershell -File .\scripts\tools\memory-apply.ps1 -PayloadPath .\docs\examples\fix-memory.sample.json
 ```
 
 注意：

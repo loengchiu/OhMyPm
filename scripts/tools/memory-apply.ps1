@@ -91,5 +91,7 @@ foreach ($update in @($payload.updates)) {
     $lines = @(Apply-SectionUpdate -Lines $lines -Update $update)
 }
 
-$lines | Set-Content -LiteralPath $Path -Encoding utf8
+$content = ($lines -join [Environment]::NewLine)
+$utf8Bom = New-Object System.Text.UTF8Encoding($true)
+[System.IO.File]::WriteAllText((Resolve-Path -LiteralPath $Path), $content, $utf8Bom)
 Write-Host "[OhMyPm] ohmypm-memory.md batch updated." -ForegroundColor Green

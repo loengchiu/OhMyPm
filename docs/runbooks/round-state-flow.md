@@ -1,10 +1,10 @@
-# Round State Flow
+# 轮次状态流转
 
-## Goal
+## 目标
 
-Provide one compact reference for how round state, fallback state, and change state move across the main OhMyPm loop.
+提供一份简明参考，说明轮次状态、回退状态和变更状态如何在 OhMyPm 主循环中流转。
 
-## Core Rules
+## 核心规则
 
 - `loop_state.round_result` only uses:
   - `continue_alignment`
@@ -15,125 +15,125 @@ Provide one compact reference for how round state, fallback state, and change st
   - `internal_repair`
   - `need_materials`
   - `reopen_alignment`
-- `reopen_alignment` is a fallback action, not a round result
-- `round_number` only increments when a new formal alignment round starts
+- `reopen_alignment` 是回退动作，不是轮次结果
+- 只有正式进入新一轮对齐时，才递增 `round_number`
 
-## Main Flow
+## 主流程
 
 ### 1. Respond
 
-Use when the current request needs the first credible answer.
+用于当前请求需要第一版可信回应时。
 
-Typical output:
+典型输出：
 
-- a current version plan
-- open questions
-- rough module estimate
-- optional alignment prototype suggestion
+- 当前版本方案
+- 未澄清问题
+- 模块级粗估
+- 可选的对齐型原型建议
 
-Typical state write:
+典型状态写法：
 
 - `RoundResult=continue_alignment`
-- `FallbackType` empty
+- `FallbackType` 为空
 
-Reference:
+参考：
 
 - `docs/examples/respond-status.sample.json`
 
 ### 2. Align
 
-Use when new feedback, screenshots, or clarifications arrive.
+用于收到新反馈、截图或补充澄清时。
 
-Typical output:
+典型输出：
 
-- updated change points
-- updated module list
-- updated estimate and schedule impact
-- updated round history summary
+- 更新后的变化点
+- 更新后的模块清单
+- 更新后的工时和排期影响
+- 更新后的轮次历史摘要
 
-Possible state write:
+可能的状态写法：
 
-- keep aligning:
+- 继续对齐：
   - `RoundResult=continue_alignment`
-- wait for materials:
+- 等待资料：
   - `RoundResult=need_materials`
   - `FallbackType=need_materials`
-- do internal repair:
+- 先做内部整理：
   - `RoundResult=need_internal_repair`
   - `FallbackType=internal_repair`
-- ready for preflight:
+- 可进入 preflight：
   - `RoundResult=ready_for_preflight`
   - `FallbackType` empty
 
-Reference:
+参考：
 
 - `docs/examples/align-status.sample.json`
 - `docs/examples/fallback-status.sample.json`
 
 ### 3. Preflight
 
-Use only when the current round is stable enough for formal delivery check.
+仅在当前轮次已经稳定到足以做正式交付检查时使用。
 
-Entry rule:
+进入条件：
 
-- `RoundResult` must already be `ready_for_preflight`
+- `RoundResult` 必须已经是 `ready_for_preflight`
 
-If preflight passes:
+如果 preflight 通过：
 
-- move to formal delivery
+- 进入正式交付
 
-If preflight fails:
+如果 preflight 不通过：
 
-- choose one fallback:
+- 选择一种回退方式：
   - `internal_repair`
   - `need_materials`
   - `reopen_alignment`
 
-Important:
+注意：
 
-- do not rewrite `RoundResult` to `reopen_alignment`
-- if fallback is `reopen_alignment`, the next formal alignment start creates the next `RoundNumber`
+- 不要把 `RoundResult` 改写成 `reopen_alignment`
+- 如果 fallback 是 `reopen_alignment`，下一次正式进入对齐时才创建新的 `RoundNumber`
 
-Reference:
+参考：
 
 - `docs/examples/preflight-status.sample.json`
 - `docs/examples/reopen-alignment.sample.json`
 
 ### 4. Change Control
 
-Use after formal delivery when new scope enters.
+用于正式交付后出现新增范围时。
 
-Classify first:
+先做分类：
 
 - `minor_patch`
 - `within_module`
 - `new_module`
 - `structural_change`
 
-Decision rule:
+判定规则：
 
-- `new_module` and `structural_change` require PM confirmation
-- if structure is overturned, prefer `reopen_alignment` instead of silent merge
+- `new_module` 和 `structural_change` 需要 PM 确认
+- 如果主结构被推翻，优先选择 `reopen_alignment`，不要静默合并
 
-Reference:
+参考：
 
 - `docs/examples/change-status.sample.json`
 
-## Quick Checks
+## 快速判断
 
-### Can I increase the round number?
+### 什么时候可以增加轮次编号？
 
-Only if a new formal alignment round is starting.
+只有正式开启新一轮对齐时才可以。
 
-### Can I use `reopen_alignment` as round result?
+### 能不能把 `reopen_alignment` 写成轮次结果？
 
-No. It only belongs to `fallback_state.fallback_type`.
+不能。它只属于 `fallback_state.fallback_type`。
 
-### When should I update `loop_state.history_summary`?
+### 什么时候更新 `loop_state.history_summary`？
 
-Update it when:
+通常在以下场景更新：
 
-- 2-3 formal rounds have accumulated
-- a structural change happened
-- preflight is about to start
-- a later session needs quick takeover
+- 已累计 2-3 轮正式对齐
+- 发生了结构性变化
+- 即将进入 preflight
+- 后续会话需要快速接管
