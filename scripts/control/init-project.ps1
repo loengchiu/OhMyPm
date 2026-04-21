@@ -1,6 +1,6 @@
-﻿param(
-    [string]$DocsDir = "docs",
-    [string]$OhMyPmDir = "ohmypm"
+param(
+    [string]$RuntimeDir = ".ohmypm",
+    [string]$OutputDir = "output"
 )
 
 function Ensure-Dir {
@@ -12,31 +12,32 @@ function Ensure-Dir {
 
 $scriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 $repoRoot = Resolve-Path (Join-Path $scriptRoot '..\..')
+$projectRoot = Resolve-Path -LiteralPath '.'
 
-$sourceStatus = Join-Path $repoRoot 'docs\ohmypm\ohmypm-status.json'
-$sourceMemory = Join-Path $repoRoot 'docs\ohmypm\ohmypm-memory.md'
-$sourceSystemTemplate = Join-Path $repoRoot 'docs\ohmypm\system-memory\_template.md'
+$sourceStatus = Join-Path $repoRoot '.ohmypm\status.json'
+$sourceMemory = Join-Path $repoRoot '.ohmypm\memory.md'
+$sourceSystemTemplate = Join-Path $repoRoot '.ohmypm\system-memory\_template.md'
 
-$targetDocs = Resolve-Path -LiteralPath '.' | ForEach-Object { Join-Path $_ $DocsDir }
-$targetOhMyPm = Join-Path $targetDocs $OhMyPmDir
-$targetSystemMemory = Join-Path $targetOhMyPm 'system-memory'
-$targetCache = Join-Path $targetOhMyPm 'cache'
-$targetDeliverables = Join-Path $targetOhMyPm 'deliverables'
-$targetAlignment = Join-Path $targetOhMyPm 'alignment'
-$targetStatusDir = Join-Path $targetOhMyPm 'status'
-$targetMemoryDir = Join-Path $targetOhMyPm 'memory'
+$targetRuntime = Join-Path $projectRoot $RuntimeDir
+$targetSystemMemory = Join-Path $targetRuntime 'system-memory'
+$targetCache = Join-Path $targetRuntime 'cache'
+$targetAlignment = Join-Path $targetRuntime 'alignment'
+$targetOutput = Join-Path $projectRoot $OutputDir
+$targetPrd = Join-Path $targetOutput 'prd'
+$targetPrototype = Join-Path $targetOutput 'prototype'
+$targetReview = Join-Path $targetOutput 'review'
 
-Ensure-Dir $targetDocs
-Ensure-Dir $targetOhMyPm
+Ensure-Dir $targetRuntime
 Ensure-Dir $targetSystemMemory
 Ensure-Dir $targetCache
-Ensure-Dir $targetDeliverables
 Ensure-Dir $targetAlignment
-Ensure-Dir $targetStatusDir
-Ensure-Dir $targetMemoryDir
+Ensure-Dir $targetOutput
+Ensure-Dir $targetPrd
+Ensure-Dir $targetPrototype
+Ensure-Dir $targetReview
 
-$statusTarget = Join-Path $targetOhMyPm 'ohmypm-status.json'
-$memoryTarget = Join-Path $targetOhMyPm 'ohmypm-memory.md'
+$statusTarget = Join-Path $targetRuntime 'status.json'
+$memoryTarget = Join-Path $targetRuntime 'memory.md'
 $systemTemplateTarget = Join-Path $targetSystemMemory '_template.md'
 
 if (-not (Test-Path -LiteralPath $statusTarget)) {
@@ -51,4 +52,4 @@ if (-not (Test-Path -LiteralPath $systemTemplateTarget)) {
     Copy-Item -LiteralPath $sourceSystemTemplate -Destination $systemTemplateTarget
 }
 
-Write-Host "[OhMyPm] project initialized at $targetOhMyPm" -ForegroundColor Green
+Write-Host "[OhMyPm] project initialized at $targetRuntime and $targetOutput" -ForegroundColor Green

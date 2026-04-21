@@ -23,9 +23,9 @@ switch ($HostKind) {
             $startMarker
             '# OhMyPm Global Rules'
             ''
-            'If the current project root contains `docs/ohmypm/ohmypm-status.json`,'
+            'If the current project root contains `.ohmypm/status.json`,'
             "read ${ompRoot}\AGENTS.md and follow all rules in that file."
-            'If `docs/ohmypm/ohmypm-status.json` does not exist, ignore this rule and do not run any OhMyPm workflow.'
+            'If `.ohmypm/status.json` does not exist, ignore this rule and do not run any OhMyPm workflow.'
             $endMarker
         ) -join "`r`n"
 
@@ -57,9 +57,9 @@ switch ($HostKind) {
             '---'
             '# OhMyPm Global Rules'
             ''
-            'If the current project root contains `docs/ohmypm/ohmypm-status.json`,'
+            'If the current project root contains `.ohmypm/status.json`,'
             "read ${ompRoot}\AGENTS.md and follow all rules in that file."
-            'If `docs/ohmypm/ohmypm-status.json` does not exist, ignore this rule and do not run any OhMyPm workflow.'
+            'If `.ohmypm/status.json` does not exist, ignore this rule and do not run any OhMyPm workflow.'
         ) -join "`r`n"
 
         Set-Content -LiteralPath $path -Value $content -Encoding UTF8
@@ -76,9 +76,9 @@ switch ($HostKind) {
             $startMarker
             '# OhMyPm Global Rules'
             ''
-            'If the current project root contains `docs/ohmypm/ohmypm-status.json`,'
+            'If the current project root contains `.ohmypm/status.json`,'
             "read ${ompRoot}\AGENTS.md and follow all rules in that file."
-            'If `docs/ohmypm/ohmypm-status.json` does not exist, ignore this rule and do not run any OhMyPm workflow.'
+            'If `.ohmypm/status.json` does not exist, ignore this rule and do not run any OhMyPm workflow.'
             $endMarker
         ) -join "`r`n"
 
@@ -107,9 +107,9 @@ switch ($HostKind) {
         $content = @(
             '# OhMyPm Global Rules'
             ''
-            'If the current project root contains `docs/ohmypm/ohmypm-status.json`,'
+            'If the current project root contains `.ohmypm/status.json`,'
             "read ${ompRoot}\AGENTS.md and follow all rules in that file."
-            'If `docs/ohmypm/ohmypm-status.json` does not exist, ignore this rule and do not run any OhMyPm workflow.'
+            'If `.ohmypm/status.json` does not exist, ignore this rule and do not run any OhMyPm workflow.'
         ) -join "`r`n"
 
         Set-Content -LiteralPath $path -Value $content -Encoding UTF8
@@ -128,9 +128,9 @@ switch ($HostKind) {
             '---'
             '# OhMyPm Global Rules'
             ''
-            'If the current project root contains `docs/ohmypm/ohmypm-status.json`,'
+            'If the current project root contains `.ohmypm/status.json`,'
             "read ${ompRoot}\AGENTS.md and follow all rules in that file."
-            'If `docs/ohmypm/ohmypm-status.json` does not exist, ignore this rule and do not run any OhMyPm workflow.'
+            'If `.ohmypm/status.json` does not exist, ignore this rule and do not run any OhMyPm workflow.'
         ) -join "`r`n"
 
         Set-Content -LiteralPath $path -Value $content -Encoding UTF8
@@ -149,9 +149,9 @@ switch ($HostKind) {
             '---'
             '# OhMyPm Global Rules'
             ''
-            'If the current project root contains `docs/ohmypm/ohmypm-status.json`,'
+            'If the current project root contains `.ohmypm/status.json`,'
             "read ${ompRoot}\AGENTS.md and follow all rules in that file."
-            'If `docs/ohmypm/ohmypm-status.json` does not exist, ignore this rule and do not run any OhMyPm workflow.'
+            'If `.ohmypm/status.json` does not exist, ignore this rule and do not run any OhMyPm workflow.'
         ) -join "`r`n"
 
         Set-Content -LiteralPath $path -Value $content -Encoding UTF8
@@ -159,3 +159,4 @@ switch ($HostKind) {
 }
 
 Write-Output 'global-rules:ok'
+

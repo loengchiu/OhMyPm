@@ -1,9 +1,9 @@
 param(
     [Parameter(Mandatory = $true)]
-    [ValidateSet("omp-respond", "omp-align", "omp-preflight", "omp-deliver", "omp-change")]
+    [ValidateSet("omp-reply", "omp-align", "omp-ready", "omp-deliver", "omp-change")]
     [string]$Gate,
 
-    [string]$Path = "docs/ohmypm/ohmypm-status.json"
+    [string]$Path = ".ohmypm/status.json"
 )
 
 function Fail {
@@ -81,7 +81,7 @@ function AddAskBackError {
 }
 
 if (-not (Test-Path -LiteralPath $Path)) {
-    Fail "docs/ohmypm/ohmypm-status.json not found."
+    Fail ".ohmypm/status.json not found."
 }
 
 $status = Get-Content -Raw -LiteralPath $Path | ConvertFrom-Json
@@ -97,7 +97,7 @@ if (HasItems $status.blockers) {
 }
 
 switch ($Gate) {
-    "omp-respond" {
+    "omp-reply" {
         if (-not (HasText $status.current_version)) {
             $errors.Add("current_version is missing")
         }
@@ -170,13 +170,13 @@ switch ($Gate) {
             $errors.Add("next_recommended is empty")
         }
     }
-    "omp-preflight" {
+    "omp-ready" {
         if (-not (IsOneOf $status.loop_state.round_result $roundResultEnums)) {
             AddEnumError -List $errors -FieldName "loop_state.round_result" -Value $status.loop_state.round_result -Allowed $roundResultEnums
         }
 
         if ($status.loop_state.round_result -ne "ready_for_preflight") {
-            $errors.Add("loop_state.round_result must be ready_for_preflight before omp-preflight")
+            $errors.Add("loop_state.round_result must be ready_for_preflight before omp-ready")
         }
 
         if (HasText $status.fallback_state.fallback_type) {
@@ -185,7 +185,7 @@ switch ($Gate) {
             }
 
             if ($status.fallback_state.fallback_type -eq "reopen_alignment") {
-                $errors.Add("fallback_state.fallback_type=reopen_alignment must return to alignment instead of entering omp-preflight")
+                $errors.Add("fallback_state.fallback_type=reopen_alignment must return to alignment instead of entering omp-ready")
             }
         }
 
@@ -281,3 +281,4 @@ if ($errors.Count -gt 0) {
 }
 
 Write-Host "[OhMyPm] gate passed: $Gate" -ForegroundColor Green
+

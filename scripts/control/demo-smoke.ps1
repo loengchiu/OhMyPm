@@ -1,6 +1,6 @@
-﻿param(
-    [string]$StatusPath = "docs/ohmypm/ohmypm-status.json",
-    [string]$MemoryPath = "docs/ohmypm/ohmypm-memory.md"
+param(
+    [string]$StatusPath = ".ohmypm/status.json",
+    [string]$MemoryPath = ".ohmypm/memory.md"
 )
 
 function Fail {
@@ -11,7 +11,7 @@ function Fail {
 
 $scriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 $repoRoot = Resolve-Path (Join-Path $scriptRoot "..\..")
-$cacheDir = Join-Path $repoRoot "docs\ohmypm\cache"
+$cacheDir = Join-Path $repoRoot ".ohmypm\cache"
 
 if (-not (Test-Path -LiteralPath $StatusPath)) {
     Fail "project status file not found: $StatusPath"
@@ -90,3 +90,4 @@ finally {
         Remove-Item -LiteralPath $memoryBackup -Force
     }
 }
+

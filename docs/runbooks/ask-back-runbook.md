@@ -14,16 +14,16 @@
 以下运行时节点一旦命中条件，就必须中断并转入 ask-back：
 
 - `scripts/tools/stage-gate.ps1`
-- `omp-respond`
-- `omp-preflight`
+- `omp-reply`
+- `omp-ready`
 - `omp-change`
 
 ## 触发场景
 
 至少在以下场景必须触发 ask-back：
 
-- 生成回应稿时被关键事实缺口卡住
-- 交付前检查前仍然有待确认项
+- 先回应时被关键事实缺口卡住
+- 开工检查前仍然有待确认项
 - 变更分类还未得到 PM 确认
 - 范围边界尚未确认，但已经影响模块清单、工时或排期
 

@@ -1,0 +1,82 @@
+﻿{
+  "scenario_mode": "sample_validation",
+  "collaboration_context": {
+    "scenario_mode": "sample_validation",
+    "pm_business_askback_enabled": false,
+    "sample_notice": "当前审批路径扩展示例仅用于机制验证与链路打通，不代表真实项目需求。样例中的业务参数、阈值和角色映射不得向 PM 追问真实答案。"
+  },
+  "current_mode": "alignment_loop",
+  "current_stage": "omp-review",
+  "current_version": "v0.6",
+  "last_action": "Control dispatch -> 评审",
+  "next_recommended": "现在建议你做的下一步是：进入 评审，并只加载 skills/omp-review/SKILL.md 与当前动作必要规则。",
+  "context_summary": "当前审批路径扩展示例已经形成一条可回放的机制验证主链路。prototype-v1、PRD-v1 和 review 结论已经一致标记为样例场景，不再向 PM 追问任何虚拟业务口径。当前样例链路没有未修复的评审阻塞。",
+  "stable_baselines": {
+    "response_plan": ".\\README.md",
+    "prototype": "output/prototype/prototype-v1/index.html",
+    "prd": "output/prd/prd-v1/PRD-v1.md",
+    "review_pack": "output/review/review-v1.json"
+  },
+  "memory_refs": {
+    "project_memory": ".ohmypm/memory.md",
+    "system_memory_cards": [
+      ".ohmypm/system-memory/_template.md"
+    ]
+  },
+  "latest_artifacts": {
+    "response_notes": [
+      ".\\product-definition.md",
+      "docs/templates/response-note.template.md",
+      ".ohmypm/alignment/internal/current-response-note.md",
+      ".ohmypm/alignment/internal/interface-boundary-note.md",
+      ".ohmypm/alignment/internal/acceptance-coverage-note.md",
+      ".ohmypm/alignment/support/stable-alignment-package.md",
+      ".ohmypm/alignment/support/delivery-inheritance-note.md",
+      ".ohmypm/alignment/support/preflight-handoff-checklist.md",
+      ".ohmypm/alignment/support/formal-interface-spec.md",
+      ".ohmypm/alignment/support/formal-acceptance-spec.md",
+      ".ohmypm/alignment/internal/prototype-handoff-note.md",
+      ".ohmypm/alignment/internal/prototype-v1-draft.md",
+      ".ohmypm/alignment/internal/prototype-v1-structure.md",
+      "output/prototype/prototype-v1/index.html",
+      "output/prd/prd-v1/PRD-v1.md"
+    ],
+    "prototypes": [
+      ".ohmypm/alignment/internal/prototype-v1-draft.md",
+      ".ohmypm/alignment/internal/prototype-v1-structure.md",
+      "output/prototype/prototype-v1/index.html"
+    ],
+    "prd": "output/prd/prd-v1/PRD-v1.md",
+    "review_records": [
+      "output/review/review-v1.json"
+    ],
+    "fix_records": [],
+    "change_records": []
+  },
+  "loop_state": {
+    "round_number": 2,
+    "round_goal": "Absorb stakeholder feedback into the current version plan",
+    "round_inputs": [
+      "Stakeholder feedback on approval path",
+      "One new screenshot"
+    ],
+    "current_output": "当前样例原型、样例 PRD 和样例评审记录已经收敛为一条通过的机制验证链路。",
+    "round_result": "ready_for_preflight",
+    "history_summary": "第 1 轮形成了第一版可信回应。第 2 轮根据反馈更新了范围、模块清单和排期影响。随后的一轮清理把样例链路收敛成可回放基线：它合并了对齐结论，承接到原型和 PRD 交付，产出真实 HTML 原型与第一版 PRD，并在不新增轮次的前提下清掉了样例评审阻塞。"
+  },
+  "fallback_state": {
+    "fallback_type": "",
+    "fallback_reason": ""
+  },
+  "change_state": {
+    "change_category": "within_module",
+    "change_category_confirmed_by_pm": true
+  },
+  "blockers": [],
+  "pending_confirmations": [],
+  "review_state": {
+    "last_review_result": "pass",
+    "must_fix_before_next_stage": []
+  },
+  "overwrite_queue": []
+}

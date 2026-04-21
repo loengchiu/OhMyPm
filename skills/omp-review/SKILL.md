@@ -1,4 +1,4 @@
-﻿---
+---
 name: omp-review
 description: "组织评审会材料、执行多角色评审团、输出评审结论并回写。"
 ---
@@ -9,8 +9,8 @@ description: "组织评审会材料、执行多角色评审团、输出评审结
 
 第 0 层：最小状态
 
-1. `docs/ohmypm/ohmypm-status.json`
-2. `docs/ohmypm/ohmypm-memory.md` 的最小必要摘要
+1. `.ohmypm/status.json`
+2. `.ohmypm/memory.md` 的最小必要摘要
 
 第 1 层：当前动作 skill
 
@@ -37,11 +37,11 @@ description: "组织评审会材料、执行多角色评审团、输出评审结
 1. 确认当前已有可评审版本
 2. 归并评审输入，形成材料包
 3. 若需要长材料或外部知识，只允许读摘要、索引和局部片段
-4. 调用 `omp-review-panel`
+4. 调用 `omp-review`
 5. 产出统一评审 JSON
 6. 长文生成后只保留摘要、索引和稳定路径
 7. 调用 `scripts/tools/review-apply.ps1`
-8. 将评审摘要回写到 `docs/ohmypm/ohmypm-memory.md`
+8. 将评审摘要回写到 `.ohmypm/memory.md`
 
 ## 必读状态
 
@@ -57,7 +57,15 @@ description: "组织评审会材料、执行多角色评审团、输出评审结
 - 风险问题
 - 建议问题
 - 统一结论
+- 三级风险分层结果
+- 复评清单
 - 后续动作
+
+三级风险分层结果最少包含：
+
+- `blocking_items`
+- `major_items`
+- `suggestions`
 
 ## 建议脚本
 
@@ -69,6 +77,8 @@ description: "组织评审会材料、执行多角色评审团、输出评审结
 - 评审会是正式流程节点，不是普通聊天确认
 - 评审材料包至少应覆盖：当前版本方案摘要、原型、PRD 或关键规则说明、本轮变化点、风险点、待决策点、模块级粗估和排期影响
 - 评审结论必须归并为：事实问题、风险问题、建议问题、统一结论
+- 风险问题必须再归并为：阻断项、重要项、建议项
+- 统一结论必须按三级风险判定规则给出，不得只凭语气判断
 - 若评审结论推翻稳定基线，应转入 `omp-fix` 并触发复写判定
 - 不得默认同时读取多个 skill
 - 不得为了保险一次读取很多 contract
@@ -83,10 +93,10 @@ description: "组织评审会材料、执行多角色评审团、输出评审结
 
 ## 回写要求
 
-- 更新 `docs/ohmypm/ohmypm-memory.md` 中的：
+- 更新 `.ohmypm/memory.md` 中的：
   - `评审摘要`
   - 必要时 `复写记录`
-- 更新 `docs/ohmypm/ohmypm-status.json` 中的：
+- 更新 `.ohmypm/status.json` 中的：
   - `current_stage`
   - `last_action`
   - `next_recommended`
@@ -94,3 +104,4 @@ description: "组织评审会材料、执行多角色评审团、输出评审结
   - `review_state.must_fix_before_next_stage`
   - `latest_artifacts.review_records`
   - 必要时 `overwrite_queue`
+

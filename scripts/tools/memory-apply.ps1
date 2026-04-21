@@ -1,7 +1,7 @@
 param(
     [Parameter(Mandatory = $true)]
     [string]$PayloadPath,
-    [string]$Path = "docs/ohmypm/ohmypm-memory.md"
+    [string]$Path = ".ohmypm/memory.md"
 )
 
 function Fail {
@@ -95,3 +95,4 @@ $content = ($lines -join [Environment]::NewLine)
 $utf8Bom = New-Object System.Text.UTF8Encoding($true)
 [System.IO.File]::WriteAllText((Resolve-Path -LiteralPath $Path), $content, $utf8Bom)
 Write-Host "[OhMyPm] ohmypm-memory.md batch updated." -ForegroundColor Green
+

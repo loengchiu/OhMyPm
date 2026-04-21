@@ -44,7 +44,7 @@
 
 默认缓存路径：
 
-- `docs/ohmypm/cache/material-extract.md`
+- `.ohmypm/cache/material-extract.md`
 
 结构化提取至少包含：
 
@@ -81,3 +81,4 @@
 - `high`
 
 当风险为 `high` 时，不得继续整篇输入或整篇输出。
+

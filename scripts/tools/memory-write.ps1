@@ -1,5 +1,5 @@
 param(
-    [string]$Path = "docs/ohmypm/ohmypm-memory.md",
+    [string]$Path = ".ohmypm/memory.md",
     [string]$SectionTitle,
     [int]$SectionNumber = 0,
     [Parameter(Mandatory = $true)]
@@ -77,3 +77,4 @@ $content = ($updated -join [Environment]::NewLine)
 $utf8Bom = New-Object System.Text.UTF8Encoding($true)
 [System.IO.File]::WriteAllText((Resolve-Path -LiteralPath $Path), $content, $utf8Bom)
 Write-Host "[OhMyPm] ohmypm-memory.md updated: $SectionTitle" -ForegroundColor Green
+

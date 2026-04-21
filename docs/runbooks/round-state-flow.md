@@ -1,4 +1,4 @@
-# 轮次状态流转
+﻿# 轮次状态流转
 
 ## 目标
 
@@ -53,7 +53,7 @@
 
 可能的状态写法：
 
-- 继续对齐：
+- 对齐：
   - `RoundResult=continue_alignment`
 - 等待资料：
   - `RoundResult=need_materials`

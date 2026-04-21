@@ -1,9 +1,9 @@
-﻿param(
+param(
     [string]$IntentText = "",
-    [ValidateSet("", "omp-intake", "omp-respond", "omp-ask-back", "omp-align", "omp-preflight", "omp-deliver-prototype", "omp-deliver-prd", "omp-review", "omp-change", "omp-fix")]
+    [ValidateSet("", "omp-listen", "omp-reply", "omp-check", "omp-align", "omp-ready", "omp-proto", "omp-prd", "omp-review", "omp-change", "omp-fix")]
     [string]$ForceSkill = "",
-    [string]$StatusPath = "docs/ohmypm/ohmypm-status.json",
-    [string]$MemoryPath = "docs/ohmypm/ohmypm-memory.md",
+    [string]$StatusPath = ".ohmypm/status.json",
+    [string]$MemoryPath = ".ohmypm/memory.md",
     [switch]$AsJson
 )
 
@@ -131,3 +131,4 @@ if ($AsJson) {
 else {
     Write-Output $nextRecommended
 }
+

@@ -1,4 +1,4 @@
-﻿# Review Runbook
+# Review Runbook
 
 ## 目标
 
@@ -13,7 +13,7 @@
 
 ### 1. 检查前提
 
-- `docs/ohmypm/ohmypm-status.json` 已存在
+- `.ohmypm/status.json` 已存在
 - 至少已有可评审版本
 - 当前评审对象已判清
 
@@ -53,3 +53,4 @@ powershell -File .\scripts\tools\memory-apply.ps1 -PayloadPath .\docs\examples\r
 ```
 
 若评审结论推翻基线，应转入 `omp-fix`。
+

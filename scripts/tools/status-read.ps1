@@ -1,5 +1,5 @@
 param(
-    [string]$Path = "docs/ohmypm/ohmypm-status.json"
+    [string]$Path = ".ohmypm/status.json"
 )
 
 if (-not (Test-Path -LiteralPath $Path)) {
@@ -8,3 +8,4 @@ if (-not (Test-Path -LiteralPath $Path)) {
 }
 
 Get-Content -Raw -LiteralPath $Path
+

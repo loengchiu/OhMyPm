@@ -1,16 +1,16 @@
 # OhMyPm 工作流
 
-当当前项目根目录存在 `docs/ohmypm/ohmypm-status.json` 时，OhMyPm 工作流激活。
+当当前项目根目录存在 `.ohmypm/status.json` 时，OhMyPm 工作流激活。
 
 ## 1. 激活条件
 
-- `docs/ohmypm/ohmypm-status.json` 存在：进入 OhMyPm 工作流
-- `docs/ohmypm/ohmypm-status.json` 不存在：只允许初始化、纯咨询或创建初始化文件
+- `.ohmypm/status.json` 存在：进入 OhMyPm 工作流
+- `.ohmypm/status.json` 不存在：只允许初始化、纯咨询或创建初始化文件
 
 ## 2. 主控权判断
 
 - 用户默认通过自然语言使用 OhMyPm
-- 用户更像在做新需求、继续对齐、问当前卡点、判断变化归属：优先由 `OhMyPm` 接管
+- 用户更像在做新需求、对齐、问当前卡点、判断变化归属：优先由 `OhMyPm` 接管
 - 用户更像在做正式阶段主线推进：优先由 `ShitPM` 接管
 - `OhMyPm` 只维护自己的协作层状态与产物，不得写入 `docs/project-status.json`
 - `docs/project-status.json` 永远只属于 `ShitPM`
@@ -20,14 +20,14 @@
 若当前由 `OhMyPm` 接管，固定按以下顺序执行：
 
 1. 入口层：判断当前意图、主控权和真实/样例场景
-2. 状态层：只读 `docs/ohmypm/ohmypm-status.json` 与 `docs/ohmypm/ohmypm-memory.md` 的最小必要摘要
+2. 状态层：只读 `.ohmypm/status.json` 与 `.ohmypm/memory.md` 的最小必要摘要
 3. 决策层：只读取当前动作对应的一个 skill 与必要规则
 4. 交付层：仅在重动作时读取交付规则、局部材料和稳定基线
 5. 归档层：只回写稳定路径、摘要、索引和状态
 
 ## 4. 动作路由原则
 
-- 外部固定动作只保留：接收需求、生成回应稿、继续对齐、交付前检查、生成原型、生成 PRD、开评审、处理变更、修正问题
+- 外部固定动作只保留：听需求、先回应、对齐、开工检查、做原型、写 PRD、评审、改需求、修问题
 - 系统必须先自动判断当前动作，再决定读取哪个 skill
 - 短命令只作为调试入口、强制入口和高级用户入口
 - ask-back 必须主动触发，不得要求 PM 先自己想起命令
@@ -47,3 +47,4 @@
 - 不得让 `OhMyPm` 的中间材料直接污染正式产物树
 
 细规则统一下沉到 `contracts/`，动作执行说明下沉到 `skills/`，人读说明下沉到 `docs/`。
+

@@ -29,22 +29,24 @@ powershell -File .\installers\install.ps1
 
 当项目根目录存在以下文件时，OhMyPm 工作流激活：
 
-- `docs/ohmypm/ohmypm-status.json`
-- `docs/ohmypm/ohmypm-memory.md`
+- `.ohmypm/status.json`
+- `.ohmypm/memory.md`
 
 ## 入口
 
 公开入口为：
 
 - `/ompgo`
-- `/omprespond`
-- `/ompaskback`
+- `/omplisten`
+- `/ompreply`
+- `/ompcheck`
 - `/ompalign`
-- `/omppreflight`
-- `/ompprototype`
+- `/ompready`
+- `/ompproto`
 - `/ompprd`
 - `/ompreview`
 - `/ompchange`
 - `/ompfix`
 
 也支持直接自然语言。
+

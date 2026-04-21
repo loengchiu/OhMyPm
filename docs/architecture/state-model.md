@@ -16,7 +16,7 @@ OhMyPm 需要同时维护三类持久信息：
 
 建议路径：
 
-- `docs/ohmypm/ohmypm-status.json`
+- `.ohmypm/status.json`
 
 职责：
 
@@ -28,7 +28,7 @@ OhMyPm 需要同时维护三类持久信息：
 
 建议路径：
 
-- `docs/ohmypm/ohmypm-memory.md`
+- `.ohmypm/memory.md`
 
 职责：
 
@@ -40,13 +40,13 @@ OhMyPm 需要同时维护三类持久信息：
 
 建议路径：
 
-- `docs/ohmypm/system-memory/`
+- `.ohmypm/system-memory/`
 
 每个系统或子系统一个卡片，例如：
 
-- `docs/ohmypm/system-memory/oms.md`
-- `docs/ohmypm/system-memory/crm-member.md`
-- `docs/ohmypm/system-memory/invoice-center.md`
+- `.ohmypm/system-memory/oms.md`
+- `.ohmypm/system-memory/crm-member.md`
+- `.ohmypm/system-memory/invoice-center.md`
 
 职责：
 
@@ -63,7 +63,7 @@ OhMyPm 需要同时维护三类持久信息：
 ```json
 {
   "current_mode": "alignment_loop",
-  "current_stage": "omp-respond",
+  "current_stage": "omp-reply",
   "current_version": "v0.3",
   "last_action": "",
   "next_recommended": "",
@@ -75,7 +75,7 @@ OhMyPm 需要同时维护三类持久信息：
     "review_pack": ""
   },
   "memory_refs": {
-    "project_memory": "docs/ohmypm/ohmypm-memory.md",
+    "project_memory": ".ohmypm/memory.md",
     "system_memory_cards": []
   },
   "latest_artifacts": {
@@ -118,7 +118,7 @@ OhMyPm 需要同时维护三类持久信息：
 
 - `需求接收`
 - `回应/校验循环`
-- `交付前检查`
+- `开工检查`
 - `正式交付`
 - `变更控制`
 
@@ -135,9 +135,9 @@ OhMyPm 需要同时维护三类持久信息：
 
 主控层实际只认五个大节点：
 
-- 接收需求
+- 听需求
 - 回应/对齐
-- 交付前检查
+- 开工检查
 - 正式交付
 - 变更控制
 
@@ -149,11 +149,11 @@ OhMyPm 需要同时维护三类持久信息：
 
 最小迁移关系固定为：
 
-- 接收需求 -> 回应/对齐
-- 回应/对齐 -> 交付前检查
-- 交付前检查 -> 正式交付
-- 正式交付 -> 开评审
-- 开评审 -> 修正问题 或 变更控制
+- 听需求 -> 回应/对齐
+- 回应/对齐 -> 开工检查
+- 开工检查 -> 正式交付
+- 正式交付 -> 评审
+- 评审 -> 修问题 或 变更控制
 - 变更控制 -> 回应/对齐 或 正式交付
 
 ask-back 不是单独主节点，它是阻塞解除动作：
@@ -335,7 +335,7 @@ ask-back 不是单独主节点，它是阻塞解除动作：
 - `系统记忆引用`
 - `新增资料记录`
 
-### `docs/ohmypm/system-memory/*.md` 负责
+### `.ohmypm/system-memory/*.md` 负责
 
 - 某个系统长期稳定的知识是什么
 - 哪些边界、权限、兼容性和坑点可跨项目复用
@@ -377,5 +377,6 @@ ask-back 不是单独主节点，它是阻塞解除动作：
 需要新增的部分：
 
 - `ohmypm-memory.md` 作为项目语义主存
-- `docs/ohmypm/system-memory/` 作为跨项目知识主存
+- `.ohmypm/system-memory/` 作为跨项目知识主存
 - `overwrite_queue` 和复写记录，用于管理下游修正上游
+

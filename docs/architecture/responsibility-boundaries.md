@@ -33,5 +33,6 @@
 5. 只加载一个 `skills/omp-*/SKILL.md`
 6. 只补当前动作必要的 `contracts/*.md`
 7. 需要时调用 `scripts/tools/*.ps1`
-8. 回写 `docs/ohmypm/ohmypm-status.json`
+8. 回写 `.ohmypm/status.json`
 9. 对外只保留唯一下一步
+

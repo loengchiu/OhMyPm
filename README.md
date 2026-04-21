@@ -1,10 +1,10 @@
-﻿# OhMyPm
+# OhMyPm
 
 ## 当前定位
 
 `OhMyPm` 仍然保持自己的定位：
 
-- 一个帮助 PM 在复杂存量系统环境中接收需求、持续对齐并生成正式交付的辅助器
+- 一个帮助 PM 在复杂存量系统环境中听需求、持续对齐并生成正式交付的辅助器
 
 当前要落实的不是定位变更，而是共存边界。
 
@@ -39,15 +39,15 @@
 
 对外固定动作只保留以下几类：
 
-- 接收需求
-- 生成回应稿
-- 继续对齐
-- 交付前检查
-- 生成原型
-- 生成 PRD
-- 开评审
-- 处理变更
-- 修正问题
+- 听需求
+- 先回应
+- 对齐
+- 开工检查
+- 做原型
+- 写 PRD
+- 评审
+- 改需求
+- 修问题
 
 你不需要记住这些动作背后的内部实现名。  
 系统会根据当前状态自动判断现在该走哪一步。
@@ -92,8 +92,8 @@ powershell -File .\scripts\control\ompgo.ps1
 
 当前协作层自己的状态与记忆固定放在：
 
-- `docs/ohmypm/ohmypm-status.json`
-- `docs/ohmypm/ohmypm-memory.md`
+- `.ohmypm/status.json`
+- `.ohmypm/memory.md`
 
 只有 `ShitPM` 可以继续使用：
 
@@ -103,11 +103,11 @@ powershell -File .\scripts\control\ompgo.ps1
 
 `OhMyPm` 的中间材料、样例、交付前产物和缓存，统一收在：
 
-- `docs/ohmypm/status/`
-- `docs/ohmypm/memory/`
-- `docs/ohmypm/alignment/`
-- `docs/ohmypm/deliverables/`
-- `docs/ohmypm/cache/`
+- `.ohmypm/status/`
+- `.ohmypm/memory/`
+- `.ohmypm/alignment/`
+- `output/`
+- `.ohmypm/cache/`
 
 `OhMyPm` 产物不是正式项目产物树。只有在明确进入正式项目层后，才允许把结果单向交接给 `ShitPM`。
 
@@ -119,9 +119,9 @@ powershell -File .\scripts\control\ompgo.ps1
 
 最小交接对象应位于：
 
-- `docs/ohmypm/handoff.md`
+- `.ohmypm/handoff.md`
   或
-- `docs/ohmypm/handoff.json`
+- `.ohmypm/handoff.json`
 
 它是未来可选的 `ShitPM` 输入，不是 `ShitPM` 状态文件本身。
 
@@ -139,3 +139,4 @@ powershell -File .\scripts\control\demo-smoke.ps1
 - `contracts/loading.md`
 - `docs/architecture/workflow.md`
 - `docs/architecture/responsibility-boundaries.md`
+

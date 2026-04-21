@@ -2,7 +2,7 @@
 
 ## 目标
 
-把 `omp-preflight` 执行成一条完整链：
+把 `omp-ready` 执行成一条完整链：
 
 1. 检查正式交付门禁
 2. 核对六项闭合条件
@@ -13,7 +13,7 @@
 ### 1. 门禁检查
 
 ```powershell
-powershell -File .\scripts\tools\stage-gate.ps1 -Gate omp-preflight
+powershell -File .\scripts\tools\stage-gate.ps1 -Gate omp-ready
 ```
 
 ### 2. 回写 preflight 状态

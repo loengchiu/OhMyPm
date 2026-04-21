@@ -1,4 +1,4 @@
-﻿---
+---
 name: omp-fix
 description: "修正已有产物缺陷，并在需要时触发下游修正上游的判定复写。"
 ---
@@ -9,8 +9,8 @@ description: "修正已有产物缺陷，并在需要时触发下游修正上游
 
 第 0 层：最小状态
 
-1. `docs/ohmypm/ohmypm-status.json`
-2. `docs/ohmypm/ohmypm-memory.md` 的最小必要摘要
+1. `.ohmypm/status.json`
+2. `.ohmypm/memory.md` 的最小必要摘要
 
 第 1 层：当前动作 skill
 
@@ -34,7 +34,7 @@ description: "修正已有产物缺陷，并在需要时触发下游修正上游
 
 1. 确认当前修复对象和目标版本
 2. 判断问题是否仅为局部修订，还是已影响上游结论
-3. 若影响上游，调用 `omp-overwrite-judge`
+3. 若影响上游，调用 `omp-governance`
 4. 产出复写判定 JSON
 5. 调用 `scripts/tools/overwrite-apply.ps1`
 6. 回写状态与项目记忆
@@ -71,12 +71,13 @@ description: "修正已有产物缺陷，并在需要时触发下游修正上游
 
 ## 回写要求
 
-- 更新 `docs/ohmypm/ohmypm-memory.md` 中的：
+- 更新 `.ohmypm/memory.md` 中的：
   - `复写记录`
   - 必要时 `当前建议`
-- 更新 `docs/ohmypm/ohmypm-status.json` 中的：
+- 更新 `.ohmypm/status.json` 中的：
   - `current_stage`
   - `last_action`
   - `next_recommended`
   - `overwrite_queue`
   - 必要时 `stable_baselines.*`
+

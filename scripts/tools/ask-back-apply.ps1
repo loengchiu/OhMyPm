@@ -1,9 +1,9 @@
 param(
-    [string]$Path = "docs/ohmypm/ohmypm-status.json",
+    [string]$Path = ".ohmypm/status.json",
     [string]$AnsweredConfirmation,
     [string]$PendingConfirmationsJson,
     [string]$ChangeCategoryConfirmedByPm,
-    [string]$LastAction = "Applied PM confirmation from omp-ask-back",
+    [string]$LastAction = "Applied PM confirmation from omp-check",
     [string]$NextRecommended = "继续回到刚才被卡住的阶段，并按最新确认结果重新判断是否可以推进。",
     [string]$ContextSummary
 )
@@ -79,3 +79,4 @@ $json = $status | ConvertTo-Json -Depth 10
 $utf8Bom = New-Object System.Text.UTF8Encoding($true)
 [System.IO.File]::WriteAllText((Resolve-Path -LiteralPath $Path), $json, $utf8Bom)
 Write-Host "[OhMyPm] ask-back status applied." -ForegroundColor Green
+

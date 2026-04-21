@@ -1,5 +1,5 @@
-﻿param(
-    [string]$Path = "docs/ohmypm/ohmypm-status.json"
+param(
+    [string]$Path = ".ohmypm/status.json"
 )
 
 function Fail {
@@ -46,30 +46,30 @@ function Get-CurrentNode {
     $mode = "$($Status.current_mode)".Trim()
 
     if ($stage -eq "omp-change" -or $mode -eq "change_control") {
-        return "处理变更"
+        return "改需求"
     }
 
     if ($stage -eq "omp-fix") {
-        return "修正问题"
+        return "修问题"
     }
 
     if ($stage -eq "omp-review") {
-        return "开评审"
+        return "评审"
     }
 
-    if ($stage -in @("omp-deliver-prototype", "omp-deliver-prd") -or $mode -eq "formal_delivery") {
+    if ($stage -in @("omp-proto", "omp-prd") -or $mode -eq "formal_delivery") {
         return "正式交付"
     }
 
-    if ($stage -eq "omp-preflight" -or $Status.loop_state.round_result -eq "ready_for_preflight") {
-        return "交付前检查"
+    if ($stage -eq "omp-ready" -or $Status.loop_state.round_result -eq "ready_for_preflight") {
+        return "开工检查"
     }
 
-    if ($stage -in @("omp-respond", "omp-align", "omp-ask-back") -or $mode -eq "alignment_loop") {
+    if ($stage -in @("omp-reply", "omp-align", "omp-check") -or $mode -eq "alignment_loop") {
         return "回应/对齐"
     }
 
-    return "接收需求"
+    return "听需求"
 }
 
 function Get-PreferredSkill {
@@ -90,7 +90,7 @@ function Get-PreferredSkill {
         if ($IsSampleScenario) {
             return "omp-align"
         }
-        return "omp-ask-back"
+        return "omp-check"
     }
 
     if (HasText $Status.fallback_state.fallback_type) {
@@ -101,45 +101,45 @@ function Get-PreferredSkill {
         return "omp-review"
     }
 
-    if ($Status.current_stage -eq "omp-preflight") {
+    if ($Status.current_stage -eq "omp-ready") {
         if (-not (HasText $Status.stable_baselines.prototype)) {
-            return "omp-deliver-prototype"
+            return "omp-proto"
         }
 
         if (-not (HasText $Status.stable_baselines.prd)) {
-            return "omp-deliver-prd"
+            return "omp-prd"
         }
 
         return "omp-review"
     }
 
-    if ($Status.current_stage -eq "omp-deliver-prototype") {
+    if ($Status.current_stage -eq "omp-proto") {
         if (-not (HasText $Status.stable_baselines.prd)) {
-            return "omp-deliver-prd"
+            return "omp-prd"
         }
         return "omp-review"
     }
 
-    if ($Status.current_stage -eq "omp-deliver-prd") {
+    if ($Status.current_stage -eq "omp-prd") {
         return "omp-review"
     }
 
     if ($Status.loop_state.round_result -eq "ready_for_preflight") {
-        return "omp-preflight"
+        return "omp-ready"
     }
 
     if ($Status.current_mode -eq "alignment_loop") {
         if ($Status.loop_state.round_number -ge 1) {
             return "omp-align"
         }
-        return "omp-respond"
+        return "omp-reply"
     }
 
-    if ($Status.current_stage -eq "omp-intake") {
-        return "omp-respond"
+    if ($Status.current_stage -eq "omp-listen") {
+        return "omp-reply"
     }
 
-    return "omp-respond"
+    return "omp-reply"
 }
 
 function Get-AllowedSkills {
@@ -149,18 +149,18 @@ function Get-AllowedSkills {
     )
 
     if ($Status.current_mode -eq "change_control" -or $Status.current_stage -eq "omp-change") {
-        return @("omp-change", "omp-ask-back", "omp-fix")
+        return @("omp-change", "omp-check", "omp-fix")
     }
 
-    if ($PreferredSkill -in @("omp-deliver-prototype", "omp-deliver-prd", "omp-review", "omp-fix")) {
-        return @("omp-deliver-prototype", "omp-deliver-prd", "omp-review", "omp-fix", "omp-change")
+    if ($PreferredSkill -in @("omp-proto", "omp-prd", "omp-review", "omp-fix")) {
+        return @("omp-proto", "omp-prd", "omp-review", "omp-fix", "omp-change")
     }
 
-    if ($PreferredSkill -eq "omp-preflight" -or $Status.loop_state.round_result -eq "ready_for_preflight") {
-        return @("omp-preflight", "omp-deliver-prototype", "omp-deliver-prd")
+    if ($PreferredSkill -eq "omp-ready" -or $Status.loop_state.round_result -eq "ready_for_preflight") {
+        return @("omp-ready", "omp-proto", "omp-prd")
     }
 
-    return @("omp-respond", "omp-align", "omp-ask-back", "omp-preflight")
+    return @("omp-reply", "omp-align", "omp-check", "omp-ready")
 }
 
 if (-not (Test-Path -LiteralPath $Path)) {
@@ -189,3 +189,4 @@ $result = [ordered]@{
 }
 
 $result | ConvertTo-Json -Depth 10
+

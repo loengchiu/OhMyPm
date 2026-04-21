@@ -1,8 +1,8 @@
-﻿param(
+param(
     [string]$IntentText = "",
-    [ValidateSet("", "omp-intake", "omp-respond", "omp-ask-back", "omp-align", "omp-preflight", "omp-deliver-prototype", "omp-deliver-prd", "omp-review", "omp-change", "omp-fix")]
+    [ValidateSet("", "omp-listen", "omp-reply", "omp-check", "omp-align", "omp-ready", "omp-proto", "omp-prd", "omp-review", "omp-change", "omp-fix")]
     [string]$ForceSkill = "",
-    [string]$StatusPath = "docs/ohmypm/ohmypm-status.json"
+    [string]$StatusPath = ".ohmypm/status.json"
 )
 
 function Fail {
@@ -20,16 +20,16 @@ function Get-ActionName {
     param([string]$Skill)
 
     switch ($Skill) {
-        "omp-intake" { return "接收需求" }
-        "omp-respond" { return "生成回应稿" }
-        "omp-ask-back" { return "提唯一问题" }
-        "omp-align" { return "继续对齐" }
-        "omp-preflight" { return "交付前检查" }
-        "omp-deliver-prototype" { return "生成原型" }
-        "omp-deliver-prd" { return "生成 PRD" }
-        "omp-review" { return "开评审" }
-        "omp-change" { return "处理变更" }
-        "omp-fix" { return "修正问题" }
+        "omp-listen" { return "听需求" }
+        "omp-reply" { return "先回应" }
+        "omp-check" { return "推进检查" }
+        "omp-align" { return "对齐" }
+        "omp-ready" { return "开工检查" }
+        "omp-proto" { return "做原型" }
+        "omp-prd" { return "写 PRD" }
+        "omp-review" { return "评审" }
+        "omp-change" { return "改需求" }
+        "omp-fix" { return "修问题" }
         default { return $Skill }
     }
 }
@@ -38,11 +38,11 @@ function Get-GateName {
     param([string]$Skill)
 
     switch ($Skill) {
-        "omp-respond" { return "omp-respond" }
+        "omp-reply" { return "omp-reply" }
         "omp-align" { return "omp-align" }
-        "omp-preflight" { return "omp-preflight" }
-        "omp-deliver-prototype" { return "omp-deliver" }
-        "omp-deliver-prd" { return "omp-deliver" }
+        "omp-ready" { return "omp-ready" }
+        "omp-proto" { return "omp-deliver" }
+        "omp-prd" { return "omp-deliver" }
         "omp-change" { return "omp-change" }
         default { return "" }
     }
@@ -52,12 +52,12 @@ function Get-RequiredContracts {
     param([string]$Skill)
 
     switch ($Skill) {
-        "omp-respond" { return @("contracts/context-guard.md") }
-        "omp-ask-back" { return @("contracts/ask-back.md") }
+        "omp-reply" { return @("contracts/context-guard.md") }
+        "omp-check" { return @("contracts/gates.md", "contracts/ask-back.md") }
         "omp-align" { return @("contracts/context-guard.md", "contracts/ask-back.md") }
-        "omp-preflight" { return @("contracts/gates.md") }
-        "omp-deliver-prototype" { return @("contracts/delivery.md", "contracts/gates.md", "contracts/context-guard.md") }
-        "omp-deliver-prd" { return @("contracts/delivery.md", "contracts/gates.md", "contracts/context-guard.md", "contracts/anchors.md") }
+        "omp-ready" { return @("contracts/gates.md") }
+        "omp-proto" { return @("contracts/delivery.md", "contracts/gates.md", "contracts/context-guard.md") }
+        "omp-prd" { return @("contracts/delivery.md", "contracts/gates.md", "contracts/context-guard.md", "contracts/anchors.md") }
         "omp-review" { return @("contracts/review.md") }
         "omp-change" { return @("contracts/gates.md", "contracts/ask-back.md") }
         "omp-fix" { return @("contracts/overwrite.md") }
@@ -77,15 +77,16 @@ function Resolve-ExplicitSkill {
         return $PreferredSkill
     }
 
+    if ($text -match "听需求|listen|初始化") { return "omp-listen" }
     if ($text -match "评审|review") { return "omp-review" }
     if ($text -match "变更|change") { return "omp-change" }
     if ($text -match "修正|修复|fix") { return "omp-fix" }
-    if ($text -match "原型|prototype") { return "omp-deliver-prototype" }
-    if ($text -match "prd") { return "omp-deliver-prd" }
-    if ($text -match "预检|preflight|交付前检查|检查能不能进正式交付") { return "omp-preflight" }
-    if ($text -match "追问|ask-back|确认的点|唯一问题") { return "omp-ask-back" }
+    if ($text -match "做原型|原型|proto|prototype") { return "omp-proto" }
+    if ($text -match "prd") { return "omp-prd" }
+    if ($text -match "开工检查|预检|preflight|开工检查|检查能不能进正式交付") { return "omp-ready" }
+    if ($text -match "推进检查|追问|ask-back|确认的点|唯一问题") { return "omp-check" }
     if ($text -match "对齐|调整") { return "omp-align" }
-    if ($text -match "回应|需求|先看|先帮我|新需求") { return "omp-respond" }
+    if ($text -match "先回应|回应|回个话|回话|reply|需求|先看|先帮我|新需求") { return "omp-reply" }
     if ($text -match "继续|下一步|继续吧|往下走") { return $PreferredSkill }
 
     return $PreferredSkill
@@ -113,8 +114,9 @@ $result = [ordered]@{
     action_name = $actionName
     gate_name = $gateName
     required_contracts = $contracts
-    delivery_layer_activated = ($skill -in @("omp-deliver-prototype", "omp-deliver-prd", "omp-review", "omp-fix", "omp-change"))
+    delivery_layer_activated = ($skill -in @("omp-proto", "omp-prd", "omp-review", "omp-fix", "omp-change"))
     allowed_skills = @($state.allowed_skills)
 }
 
 $result | ConvertTo-Json -Depth 10
+

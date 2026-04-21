@@ -1,4 +1,4 @@
-﻿# Fix Runbook
+# Fix Runbook
 
 ## 目标
 
@@ -20,7 +20,7 @@
 
 ```powershell
 powershell -File .\scripts\tools\overwrite-judge.ps1 `
-  -AffectedUpstreamJson '["docs/ohmypm/ohmypm-memory.md"]' `
+  -AffectedUpstreamJson '[".ohmypm/memory.md"]' `
   -ConflictType review_reversal `
   -Severity high `
   -ActionLevel restart_alignment `
@@ -44,3 +44,4 @@ powershell -File .\scripts\tools\memory-apply.ps1 -PayloadPath .\docs\examples\f
 
 - 若复写结果为 `restart_alignment`，下一步必须返回对齐链
 - 不得继续假装处于已稳定的正式交付阶段
+

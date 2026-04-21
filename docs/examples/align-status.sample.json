@@ -1,9 +1,9 @@
-{
+﻿{
   "Stage": "omp-align",
   "Mode": "alignment_loop",
   "Version": "v0.6",
   "LastAction": "Aligned the plan after stakeholder feedback",
-  "NextRecommended": "Run omp-preflight if no structural change appears",
+  "NextRecommended": "Run omp-ready if no structural change appears",
   "ContextSummary": "Alignment round updated scope, module list, and schedule impact",
   "RoundNumber": 2,
   "RoundGoal": "Absorb stakeholder feedback into the current version plan",

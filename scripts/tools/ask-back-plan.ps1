@@ -1,5 +1,5 @@
-﻿param(
-    [string]$Path = "docs/ohmypm/ohmypm-status.json"
+param(
+    [string]$Path = ".ohmypm/status.json"
 )
 
 function Fail {
@@ -153,3 +153,4 @@ $result = @{
 }
 
 $result | ConvertTo-Json -Depth 10
+

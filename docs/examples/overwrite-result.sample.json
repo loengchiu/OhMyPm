@@ -1,6 +1,6 @@
 {
   "affected_upstream": [
-    "docs/ohmypm/ohmypm-memory.md"
+    ".ohmypm/memory.md"
   ],
   "conflict_type": "review_reversal",
   "severity": "high",
@@ -12,3 +12,4 @@
   "can_continue": false,
   "reason": "Review conclusion reversed a baseline assumption"
 }
+

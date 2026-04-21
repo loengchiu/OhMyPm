@@ -1,12 +1,14 @@
 {
-  "Stage": "omp-deliver-prototype",
+  "Stage": "omp-proto",
   "Mode": "formal_delivery",
   "Version": "v0.7",
   "LastAction": "Produced the first delivery prototype package",
-  "NextRecommended": "Start omp-deliver-prd and complete the minimum rule body for template validation",
+  "NextRecommended": "Start omp-prd and complete the minimum rule body for template validation",
   "ContextSummary": "Formal delivery prototype is ready as the first reading artifact for the minimum prototype -> PRD chain",
   "BaselineField": "prototype",
-  "BaselinePath": "docs/ohmypm/deliverables/prototype-v1/index.html",
+  "BaselinePath": "output/prototype/prototype-v1/index.html",
   "ArtifactField": "prototypes",
-  "ArtifactPath": "docs/ohmypm/deliverables/prototype-v1/index.html"
+  "ArtifactPath": "output/prototype/prototype-v1/index.html"
 }
+
+

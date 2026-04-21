@@ -1,9 +1,9 @@
-{
-  "Stage": "omp-preflight",
+﻿{
+  "Stage": "omp-ready",
   "Mode": "alignment_loop",
   "Version": "v0.7",
   "LastAction": "Completed preflight checks for formal delivery",
-  "NextRecommended": "Start omp-deliver-prototype",
+  "NextRecommended": "Start omp-proto",
   "ContextSummary": "Preflight passed and the plan is ready for formal delivery",
   "RoundResult": "ready_for_preflight",
   "PendingConfirmationsJson": "[]",

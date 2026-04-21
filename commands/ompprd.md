@@ -1,6 +1,6 @@
 ﻿# /ompprd
 
-直接进入 `omp-deliver-prd`，用于生成正式 PRD。
+直接进入 `omp-prd`，用于生成正式 PRD。
 
 进入前应确认：
 

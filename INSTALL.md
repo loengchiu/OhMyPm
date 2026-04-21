@@ -1,4 +1,4 @@
-﻿# OhMyPm 安装指令
+# OhMyPm 安装指令
 
 你正在为用户安装 OhMyPm。请按以下步骤执行：
 
@@ -33,7 +33,7 @@ powershell -File .\installers\install.ps1
 安装器会：
 
 - 为支持的宿主写入 OhMyPm 全局规则
-- 让宿主在项目根目录存在 `docs/ohmypm/ohmypm-status.json` 时自动读取 `AGENTS.md`
+- 让宿主在项目根目录存在 `.ohmypm/status.json` 时自动读取 `AGENTS.md`
 - 让宿主在项目未激活时忽略 OhMyPm 规则
 
 ## 4. 项目启用
@@ -42,19 +42,20 @@ powershell -File .\installers\install.ps1
 
 当前最小文件为：
 
-- `docs/ohmypm/ohmypm-status.json`
-- `docs/ohmypm/ohmypm-memory.md`
+- `.ohmypm/status.json`
+- `.ohmypm/memory.md`
 
 ## 5. 公开入口
 
 安装完成后，公开短命令入口为：
 
 - `/ompgo`
-- `/omprespond`
-- `/ompaskback`
+- `/omplisten`
+- `/ompreply`
+- `/ompcheck`
 - `/ompalign`
-- `/omppreflight`
-- `/ompprototype`
+- `/ompready`
+- `/ompproto`
 - `/ompprd`
 - `/ompreview`
 - `/ompchange`
@@ -77,3 +78,4 @@ powershell -File .\scripts\control\demo-smoke.ps1
 - `docs/usage.md`
 - `docs/runbooks/demo-flow.md`
 - `docs/runbooks/round-state-flow.md`
+

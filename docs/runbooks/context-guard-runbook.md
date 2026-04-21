@@ -1,8 +1,8 @@
-﻿# Context Guard Runbook
+# Context Guard Runbook
 
 ## 目标
 
-把 `omp-context-guard` 执行成一条完整链：
+把上下文控制机制执行成一条完整链：
 
 1. 判断上下文风险
 2. 生成分块计划
@@ -27,10 +27,11 @@ powershell -File .\scripts\tools\material-extract.ps1 -InputPath .\product-defin
 
 默认缓存文件：
 
-- `docs/ohmypm/cache/material-extract.md`
+- `.ohmypm/cache/material-extract.md`
 
 后续只读取：
 
 - 分块计划
 - 缓存提取结果
 - 必要的原文局部片段
+

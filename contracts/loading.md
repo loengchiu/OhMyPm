@@ -34,8 +34,8 @@
 
 默认只读：
 
-- `docs/ohmypm/ohmypm-status.json`
-- `docs/ohmypm/ohmypm-memory.md` 的最小必要摘要
+- `.ohmypm/status.json`
+- `.ohmypm/memory.md` 的最小必要摘要
 
 本层只回答：
 
@@ -59,24 +59,24 @@
 
 固定动作与实现映射：
 
-- 接收需求 -> `omp-intake`
-- 生成回应稿 -> `omp-respond`
-- 继续对齐 -> `omp-align`
-- 提唯一问题 -> `omp-ask-back`
-- 交付前检查 -> `omp-preflight`
-- 生成原型 -> `omp-deliver-prototype`
-- 生成 PRD -> `omp-deliver-prd`
-- 开评审 -> `omp-review`
-- 处理变更 -> `omp-change`
-- 修正问题 -> `omp-fix`
+- 听需求 -> `omp-listen`
+- 先回应 -> `omp-reply`
+- 对齐 -> `omp-align`
+- 提唯一问题 -> `omp-check`
+- 开工检查 -> `omp-ready`
+- 做原型 -> `omp-proto`
+- 写 PRD -> `omp-prd`
+- 评审 -> `omp-review`
+- 改需求 -> `omp-change`
+- 修问题 -> `omp-fix`
 
 最小规则读取：
 
 - 涉及长材料或长输出时补读 `contracts/context-guard.md`
 - 需要提问时补读 `contracts/ask-back.md`
-- 交付前检查或变更判断时补读 `contracts/gates.md`
+- 开工检查或变更判断时补读 `contracts/gates.md`
 - 进入正式交付时补读 `contracts/delivery.md`
-- 生成 PRD 详细需求说明时补读 `contracts/anchors.md`
+- 写 PRD 详细需求说明时补读 `contracts/anchors.md`
 - 做评审时补读 `contracts/review.md`
 - 涉及复写时补读 `contracts/overwrite.md`
 - 涉及记忆时补读 `contracts/memory.md`
@@ -92,11 +92,11 @@
 
 只有在进入重动作时才进入本层：
 
-- 生成原型
-- 生成 PRD
-- 开评审
-- 处理变更
-- 修正问题
+- 做原型
+- 写 PRD
+- 评审
+- 改需求
+- 修问题
 
 本层允许：
 
@@ -136,3 +136,4 @@
 - 给 PM 一串菜单自己选
 - 直接把内部状态字段丢给 PM
 - 让 PM 通过 usage 或 runbook 决定下一步
+

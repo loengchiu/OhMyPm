@@ -1,4 +1,4 @@
-﻿# 开发样例回放流程
+# 开发样例回放流程
 
 ## 目标
 
@@ -28,8 +28,8 @@ powershell -File .\scripts\control\init-project.ps1
 建议先备份：
 
 ```powershell
-Copy-Item .\docs\ohmypm\ohmypm-status.json .\docs\ohmypm\cache\ohmypm-status.demo.backup.json -Force
-Copy-Item .\docs\ohmypm\ohmypm-memory.md .\docs\ohmypm\cache\ohmypm-memory.demo.backup.md -Force
+Copy-Item .\.ohmypm\status.json .\.ohmypm\cache\status.demo.backup.json -Force
+Copy-Item .\.ohmypm\memory.md .\.ohmypm\cache\memory.demo.backup.md -Force
 ```
 
 ## 路径 A：回应 -> 对齐 -> preflight 通过
@@ -46,7 +46,7 @@ powershell -File .\scripts\tools\memory-apply.ps1 -PayloadPath .\docs\examples\r
 - `RoundNumber=1`
 - `RoundResult=continue_alignment`
 
-### 2. 反馈后继续对齐
+### 2. 反馈后对齐
 
 ```powershell
 powershell -File .\scripts\tools\status-apply.ps1 -PayloadPath .\docs\examples\align-status.sample.json
@@ -68,7 +68,7 @@ powershell -File .\scripts\tools\memory-apply.ps1 -PayloadPath .\docs\examples\p
 预期状态：
 
 - 当前方案已经可进入正式交付
-- 下一步可以进入 `omp-deliver-prototype`
+- 下一步可以进入 `omp-proto`
 
 ### 4. 交付型原型
 
@@ -147,6 +147,7 @@ powershell -File .\scripts\tools\status-apply.ps1 -PayloadPath .\docs\examples\c
 如果前面做了备份，回放完成后可按下面方式恢复：
 
 ```powershell
-Copy-Item .\docs\ohmypm\cache\ohmypm-status.demo.backup.json .\docs\ohmypm\ohmypm-status.json -Force
-Copy-Item .\docs\ohmypm\cache\ohmypm-memory.demo.backup.md .\docs\ohmypm\ohmypm-memory.md -Force
+Copy-Item .\.ohmypm\cache\status.demo.backup.json .\.ohmypm\status.json -Force
+Copy-Item .\.ohmypm\cache\memory.demo.backup.md .\.ohmypm\memory.md -Force
 ```
+

@@ -1,7 +1,7 @@
 param(
     [Parameter(Mandatory = $true)]
     [string]$InputPath,
-    [string]$CachePath = "docs/ohmypm/cache/material-extract.md",
+    [string]$CachePath = ".ohmypm/cache/material-extract.md",
     [int]$DirectReadThreshold = 3000
 )
 
@@ -75,3 +75,4 @@ $result = [ordered]@{
 }
 
 $result | ConvertTo-Json -Depth 10
+

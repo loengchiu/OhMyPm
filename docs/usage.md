@@ -1,4 +1,4 @@
-﻿# 使用说明
+# 使用说明
 
 ## 1. 初始化
 
@@ -20,8 +20,8 @@ powershell -File <OHMYPM_PATH>\scripts\control\init-project.ps1
 
 当项目根目录存在以下文件时，OhMyPm 激活：
 
-- `docs/ohmypm/ohmypm-status.json`
-- `docs/ohmypm/ohmypm-memory.md`
+- `.ohmypm/status.json`
+- `.ohmypm/memory.md`
 
 ## 2. 默认入口
 
@@ -32,15 +32,15 @@ powershell -File <OHMYPM_PATH>\scripts\control\init-project.ps1
 
 对外固定动作只保留：
 
-- 接收需求
-- 生成回应稿
-- 继续对齐
-- 交付前检查
-- 生成原型
-- 生成 PRD
-- 开评审
-- 处理变更
-- 修正问题
+- 听需求
+- 先回应
+- 对齐
+- 开工检查
+- 做原型
+- 写 PRD
+- 评审
+- 改需求
+- 修问题
 
 短命令只保留为：
 
@@ -51,11 +51,12 @@ powershell -File <OHMYPM_PATH>\scripts\control\init-project.ps1
 可用短命令：
 
 - `/ompgo`
-- `/omprespond`
-- `/ompaskback`
+- `/omplisten`
+- `/ompreply`
+- `/ompcheck`
 - `/ompalign`
-- `/omppreflight`
-- `/ompprototype`
+- `/ompready`
+- `/ompproto`
 - `/ompprd`
 - `/ompreview`
 - `/ompchange`
@@ -81,7 +82,7 @@ powershell -File .\scripts\control\ompgo.ps1
 运行时固定按五层加载：
 
 1. 入口层：判断当前意图、主控权和真实/样例场景
-2. 状态层：只读 `docs/ohmypm/ohmypm-status.json` 和 `docs/ohmypm/ohmypm-memory.md` 的最小必要摘要
+2. 状态层：只读 `.ohmypm/status.json` 和 `.ohmypm/memory.md` 的最小必要摘要
 3. 决策层：只按当前动作读取一个 skill 和少量必要规则
 4. 交付层：只在重动作时读取交付规则、局部材料和稳定基线
 5. 归档层：只回写稳定路径、摘要、索引和状态
@@ -107,12 +108,12 @@ powershell -File .\scripts\control\ompgo.ps1
 
 ## 5. 常见动作
 
-### 5.1 生成回应稿
+### 5.1 先回应
 
 进入这个动作前，先读取：
 
-- `docs/ohmypm/ohmypm-status.json`
-- `docs/ohmypm/ohmypm-memory.md`
+- `.ohmypm/status.json`
+- `.ohmypm/memory.md`
 - 必要时 `contracts/context-guard.md`
 
 输出至少要覆盖：
@@ -123,16 +124,16 @@ powershell -File .\scripts\control\ompgo.ps1
 - 未澄清问题
 - 模块级粗估
 
-### 5.2 继续对齐
+### 5.2 对齐
 
 进入这个动作后：
 
 - 更新本轮变化点
 - 更新模块清单
 - 更新粗估和排期影响
-- 判断是否继续对齐，还是进入交付前检查
+- 判断是否对齐，还是进入开工检查
 
-### 5.3 交付前检查
+### 5.3 开工检查
 
 这个动作只检查六项高价值闭合：
 
@@ -145,7 +146,7 @@ powershell -File .\scripts\control\ompgo.ps1
 
 只有通过这一关，才允许进入正式交付。
 
-### 5.4 生成原型与 PRD
+### 5.4 做原型与写 PRD
 
 正式交付固定包含：
 
@@ -157,7 +158,7 @@ powershell -File .\scripts\control\ompgo.ps1
 - 原型负责让研发和评审先理解页面、流程和关键交互
 - PRD 负责归档规则、异常、权限、数据影响和验收说明
 
-### 5.5 开评审
+### 5.5 评审
 
 评审会需要形成统一结论，而不是普通确认。
 
@@ -168,11 +169,11 @@ powershell -File .\scripts\control\ompgo.ps1
 - 建议问题
 - 统一结论
 
-### 5.6 ask-back
+### 5.6 推进检查
 
-当存在最阻塞推进的问题时，应主动进入 ask-back，而不是继续推进。
+当存在最阻塞推进的问题时，应主动进入 `omp-check`，而不是继续推进。
 
-ask-back 只做一件事：
+`omp-check` 只做一件事：
 
 - 向 PM 提一个最阻塞的问题
 
@@ -213,3 +214,4 @@ powershell -File .\scripts\tools\ask-back-apply.ps1 `
 快捷验证：
 
 - `powershell -File .\scripts\control\demo-smoke.ps1`
+
