@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>P2 审批详情</title>
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+  <aside class="outline-panel" id="outlinePanel">
+    <button class="outline-toggle" id="outlineToggle" type="button" aria-label="切换页面大纲">≡</button>
+    <div class="outline-inner">
+      <h2 class="outline-title">审批路径扩展</h2>
+      <p class="outline-text">主流程：待办列表识别命中专项复核的单据 → 进入审批详情判断 → 提交专项复核 → 在流程记录里查看结果并回流。</p>
+      <div class="outline-list">
+        <a class="outline-link" href="index.html"><div class="outline-item"><strong>1. 页面列表 / P1 待办列表</strong><span>入口页。看筛选、命中标记和进入审批详情。</span></div></a>
+        <a class="outline-link" href="p2-approval-detail.html"><div class="outline-item"><strong>P2 审批详情</strong><span>主处理页。看命中原因、状态承接和主动作。</span></div></a>
+        <a class="outline-link" href="p3-special-review-modal.html"><div class="outline-item"><strong>P3 提交专项复核弹窗</strong><span>动作页。看复核人选择、补充说明和通知联动。</span></div></a>
+        <a class="outline-link" href="p4-review-result.html"><div class="outline-item"><strong>P4 流程记录与复核结果</strong><span>结果页。看处理进度、通知结果和流程回流。</span></div></a>
+      </div>
+    </div>
+  </aside>
+
+  <div class="shell">
+    <section class="page-block">
+      <div class="canvas">
+        <div class="app-frame">
+          <div class="main-content">
+            <div class="topbar">
+              <span class="topbar-title">审批详情 / AP20260422001</span>
+              <div class="topbar-actions"><span><a class="link" href="index.html">返回列表</a></span><span>采购审批</span></div>
+            </div>
+            <div class="page-content">
+              <div class="summary-strip">
+                <span class="badge warning">当前状态：待提交专项复核<button class="note-dot" data-note-target="note-p2-08">08</button></span>
+                <span class="badge">命中条件：高金额 + 风险项<button class="note-dot" data-note-target="note-p2-09">09</button></span>
+                <span class="badge success">通知模块待联动</span>
+              </div>
+              <div class="two-col">
+                <div class="info-block">
+                  <div class="info-title">基础信息</div>
+                  <div class="info-list">
+                    <span>单据编号：AP20260422001</span>
+                    <span>申请人：张三</span>
+                    <span>申请金额：¥ 520,000</span>
+                    <span>业务条线：采购审批</span>
+                  </div>
+                </div>
+                <div class="info-block">
+                  <div class="info-title">专项复核命中说明<button class="note-dot" data-note-target="note-p2-13">13</button></div>
+                  <div class="info-list">
+                    <span>金额超过专项复核阈值</span>
+                    <span>采购类别命中风险清单</span>
+                    <span>需要指定专项复核人</span>
+                  </div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="toolbar">
+                  <span class="btn primary">提交专项复核<button class="note-dot" data-note-target="note-p2-14">14</button></span>
+                  <span class="btn">退回修改</span>
+                  <span class="btn"><a class="link" href="p4-review-result.html">查看流程记录</a></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="note-layer">
+    <div class="note-card" id="note-p2-08"><div class="note-header"><strong>P2-08 当前状态承接</strong><button class="note-close" data-note-close>×</button></div><div class="note-body"><div class="note-block"><strong>说明</strong><span>详情页要明确告诉审批人，这笔单据当前不是普通审批，而是待提交专项复核。</span></div><div class="note-block"><strong>PRD</strong><span>R-05 详情状态展示规则</span></div></div></div>
+    <div class="note-card" id="note-p2-09"><div class="note-header"><strong>P2-09 命中口径展示</strong><button class="note-close" data-note-close>×</button></div><div class="note-body"><div class="note-block"><strong>说明</strong><span>在详情页直接展示命中原因，避免审批人不知道为什么会多出专项复核环节。</span></div><div class="note-block"><strong>PRD</strong><span>R-06 命中口径说明规则</span></div></div></div>
+    <div class="note-card" id="note-p2-13"><div class="note-header"><strong>P2-13 复核人承接</strong><button class="note-close" data-note-close>×</button></div><div class="note-body"><div class="note-block"><strong>说明</strong><span>如果后续需要指定专项复核人，详情页必须提前交代清楚，不要埋在 PRD 里。</span></div><div class="note-block"><strong>PRD</strong><span>R-07 专项复核人承接规则</span></div></div></div>
+    <div class="note-card" id="note-p2-14"><div class="note-header"><strong>P2-14 主处理动作</strong><button class="note-close" data-note-close>×</button></div><div class="note-body"><div class="note-block"><strong>说明</strong><span>审批人点击后进入专项复核提交弹窗，流程从当前审批节点转入专项复核节点。</span></div><div class="note-block"><strong>PRD</strong><span>R-08 提交专项复核动作</span></div></div></div>
+  </div>
+
+  <script src="shared.js"></script>
+</body>
+</html>

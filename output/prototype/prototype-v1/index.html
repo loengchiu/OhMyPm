@@ -3,688 +3,105 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>审批路径扩展 - 第一版交付型原型（机制验证样例）</title>
-  <style>
-    :root {
-      --bg: #f6f1e8;
-      --surface: #fffaf2;
-      --surface-strong: #f0e3cf;
-      --ink: #1d232b;
-      --muted: #5c6673;
-      --line: #d8c6ab;
-      --accent: #b6542d;
-      --accent-soft: #f4d8c9;
-      --accent-deep: #7c3418;
-      --ok: #2d6a4f;
-      --warn: #9f4f1f;
-      --shadow: 0 18px 50px rgba(71, 45, 21, 0.12);
-      --radius: 20px;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: "Microsoft YaHei UI", "PingFang SC", "Noto Sans SC", sans-serif;
-      color: var(--ink);
-      background:
-        radial-gradient(circle at top left, rgba(182, 84, 45, 0.10), transparent 28%),
-        radial-gradient(circle at right 15%, rgba(124, 52, 24, 0.10), transparent 22%),
-        linear-gradient(180deg, #fcf7ef 0%, var(--bg) 100%);
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    .shell {
-      width: min(1280px, calc(100vw - 32px));
-      margin: 24px auto 48px;
-    }
-
-    .hero {
-      background: linear-gradient(135deg, rgba(124, 52, 24, 0.95), rgba(182, 84, 45, 0.88));
-      color: #fff8f0;
-      border-radius: 28px;
-      padding: 28px;
-      box-shadow: var(--shadow);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero::after {
-      content: "";
-      position: absolute;
-      inset: auto -60px -70px auto;
-      width: 220px;
-      height: 220px;
-      border-radius: 50%;
-      background: rgba(255, 243, 231, 0.08);
-    }
-
-    .hero h1 {
-      margin: 0 0 8px;
-      font-size: clamp(28px, 4vw, 42px);
-      line-height: 1.1;
-    }
-
-    .hero p {
-      margin: 0;
-      max-width: 840px;
-      color: rgba(255, 248, 240, 0.86);
-      line-height: 1.7;
-    }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-      gap: 18px;
-      margin-top: 22px;
-    }
-
-    .hero-card {
-      background: rgba(255, 248, 240, 0.12);
-      border: 1px solid rgba(255, 244, 235, 0.16);
-      border-radius: 18px;
-      padding: 16px 18px;
-      backdrop-filter: blur(8px);
-    }
-
-    .hero-card h2 {
-      margin: 0 0 10px;
-      font-size: 14px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: rgba(255, 245, 236, 0.72);
-    }
-
-    .hero-card ul {
-      margin: 0;
-      padding-left: 18px;
-      line-height: 1.7;
-    }
-
-    .sticky-nav {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin: 18px 0 22px;
-    }
-
-    .chip {
-      padding: 10px 14px;
-      background: rgba(255, 250, 242, 0.96);
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      color: var(--accent-deep);
-      font-size: 14px;
-      box-shadow: 0 6px 16px rgba(71, 45, 21, 0.06);
-    }
-
-    .flowbar {
-      background: var(--surface);
-      border: 1px solid var(--line);
-      border-radius: 24px;
-      padding: 18px;
-      box-shadow: var(--shadow);
-      margin-bottom: 22px;
-    }
-
-    .flowbar h2 {
-      margin: 0 0 14px;
-      font-size: 18px;
-    }
-
-    .flowline {
-      display: grid;
-      grid-template-columns: repeat(6, minmax(0, 1fr));
-      gap: 12px;
-    }
-
-    .flow-step {
-      background: linear-gradient(180deg, #fffdf8, #f8edde);
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      padding: 14px;
-      min-height: 110px;
-      position: relative;
-    }
-
-    .flow-step strong {
-      display: block;
-      margin-bottom: 6px;
-      color: var(--accent-deep);
-    }
-
-    .layout {
-      display: grid;
-      grid-template-columns: 280px 1fr;
-      gap: 20px;
-      align-items: start;
-    }
-
-    .sidebar {
-      position: sticky;
-      top: 18px;
-      display: grid;
-      gap: 16px;
-    }
-
-    .panel {
-      background: var(--surface);
-      border: 1px solid var(--line);
-      border-radius: 22px;
-      padding: 18px;
-      box-shadow: var(--shadow);
-    }
-
-    .panel h3 {
-      margin: 0 0 12px;
-      font-size: 18px;
-    }
-
-    .panel p,
-    .panel li {
-      color: var(--muted);
-      line-height: 1.7;
-    }
-
-    .screen-stack {
-      display: grid;
-      gap: 22px;
-    }
-
-    .screen {
-      background: var(--surface);
-      border: 1px solid var(--line);
-      border-radius: 26px;
-      padding: 20px;
-      box-shadow: var(--shadow);
-    }
-
-    .screen-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: start;
-      gap: 16px;
-      margin-bottom: 18px;
-    }
-
-    .screen-tag {
-      display: inline-flex;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: var(--accent-soft);
-      color: var(--accent-deep);
-      font-weight: 700;
-      font-size: 13px;
-      margin-bottom: 8px;
-    }
-
-    .screen h2 {
-      margin: 0;
-      font-size: 28px;
-    }
-
-    .screen p {
-      margin: 8px 0 0;
-      color: var(--muted);
-      line-height: 1.7;
-    }
-
-    .annotation-strip {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      justify-content: flex-end;
-      max-width: 360px;
-    }
-
-    .anno {
-      min-width: 40px;
-      height: 40px;
-      border-radius: 14px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(180deg, #fff, #f5dccc);
-      border: 1px solid var(--line);
-      color: var(--accent-deep);
-      font-weight: 800;
-      box-shadow: 0 8px 20px rgba(71, 45, 21, 0.08);
-    }
-
-    .mock {
-      border-radius: 24px;
-      background: #fff;
-      border: 1px solid #eadcc7;
-      overflow: hidden;
-    }
-
-    .mock-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 16px 18px;
-      background: linear-gradient(180deg, #fff8ed, #f5e7d3);
-      border-bottom: 1px solid #eadcc7;
-    }
-
-    .mock-header strong {
-      font-size: 18px;
-    }
-
-    .mock-toolbar,
-    .grid,
-    .detail-grid,
-    .timeline,
-    .notify-grid {
-      padding: 18px;
-    }
-
-    .mock-toolbar {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 12px;
-      background: #fffdf8;
-      border-bottom: 1px solid #f0e7db;
-    }
-
-    .field,
-    .stat,
-    .action-card,
-    .notify-card,
-    .legend {
-      background: #fffaf4;
-      border: 1px solid #eadcc7;
-      border-radius: 16px;
-      padding: 14px;
-    }
-
-    .field small,
-    .stat small,
-    .legend small,
-    .notify-card small {
-      display: block;
-      color: var(--muted);
-      margin-bottom: 6px;
-    }
-
-    .grid {
-      display: grid;
-      gap: 12px;
-    }
-
-    .row {
-      display: grid;
-      grid-template-columns: 1.2fr 1fr 1fr 150px;
-      gap: 12px;
-      align-items: center;
-      background: #fffcf7;
-      border: 1px solid #f0e7db;
-      border-radius: 18px;
-      padding: 14px;
-    }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 10px;
-      border-radius: 999px;
-      background: rgba(182, 84, 45, 0.10);
-      color: var(--accent-deep);
-      font-weight: 700;
-      font-size: 13px;
-    }
-
-    .detail-grid {
-      display: grid;
-      grid-template-columns: 1.2fr 0.8fr;
-      gap: 16px;
-      background: #fffdf8;
-    }
-
-    .stack {
-      display: grid;
-      gap: 12px;
-    }
-
-    .actions {
-      display: grid;
-      gap: 10px;
-    }
-
-    .action-card {
-      display: grid;
-      gap: 8px;
-    }
-
-    .action-card strong {
-      color: var(--accent-deep);
-    }
-
-    .timeline {
-      display: grid;
-      gap: 12px;
-      background: #fffdf8;
-    }
-
-    .timeline-item {
-      display: grid;
-      grid-template-columns: 96px 1fr auto;
-      gap: 12px;
-      align-items: center;
-      border: 1px solid #eee1ca;
-      border-radius: 18px;
-      padding: 14px;
-      background: #fffaf4;
-    }
-
-    .notify-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 14px;
-      background: #fffdf8;
-    }
-
-    .legend-list {
-      display: grid;
-      gap: 10px;
-    }
-
-    .legend-item {
-      display: grid;
-      grid-template-columns: 52px 1fr;
-      gap: 10px;
-      align-items: start;
-    }
-
-    .legend-item .anno {
-      width: 52px;
-    }
-
-    @media (max-width: 1024px) {
-      .hero-grid,
-      .layout,
-      .detail-grid,
-      .notify-grid,
-      .flowline {
-        grid-template-columns: 1fr;
-      }
-
-      .sidebar {
-        position: static;
-      }
-
-      .mock-toolbar,
-      .row,
-      .timeline-item {
-        grid-template-columns: 1fr;
-      }
-
-      .annotation-strip {
-        justify-content: start;
-      }
-    }
-  </style>
+  <title>P1 待办列表</title>
+  <link rel="stylesheet" href="shared.css">
 </head>
 <body>
-  <div class="shell">
-    <section class="hero">
-      <h1>审批路径扩展 / 第一版交付型原型（机制验证样例）</h1>
-      <p>这不是说明稿，而是可直接进入评审理解的原型本体。当前页面用于验证 OhMyPm 主链路和交付分工是否能跑通，不代表真实项目审批需求。页面中的金额阈值、风险条件、专项复核角色等业务内容仅作为样例占位，不应向 PM 追问真实答案。当前样例占位值固定为：金额阈值 >= 100000，风险标签 = RISK_HIGH，专项复核角色按业务线 A/B/默认映射到 ROLE_SPECIAL_REVIEW_A / ROLE_SPECIAL_REVIEW_B / ROLE_SPECIAL_REVIEW_DEFAULT。</p>
-      <div class="hero-grid">
-        <div class="hero-card">
-          <h2>本版覆盖</h2>
-          <ul>
-            <li>4 个页面视角：入口列表、详情处理、流转记录、通知触达</li>
-            <li>4 条流程：主流程、关键分支、异常流程、联动流程</li>
-            <li>18 个编号标注：入口、分支、状态、通知、留痕、异常、规则引用</li>
-          </ul>
-        </div>
-        <div class="hero-card">
-          <h2>当前定位</h2>
-          <ul>
-            <li>评审会主展示物</li>
-            <li>研发第一阅读入口</li>
-            <li>PRD 规则正文的前置导航</li>
-          </ul>
-        </div>
+  <aside class="outline-panel" id="outlinePanel">
+    <button class="outline-toggle" id="outlineToggle" type="button" aria-label="切换页面大纲">≡</button>
+    <div class="outline-inner">
+      <h2 class="outline-title">审批路径扩展</h2>
+      <p class="outline-text">主流程：待办列表识别命中专项复核的单据 → 进入审批详情判断 → 提交专项复核 → 在流程记录里查看结果并回流。</p>
+      <div class="outline-list">
+        <a class="outline-link" href="index.html"><div class="outline-item"><strong>1. 页面列表 / P1 待办列表</strong><span>入口页。看筛选、命中标记和进入审批详情。</span></div></a>
+        <a class="outline-link" href="p2-approval-detail.html"><div class="outline-item"><strong>P2 审批详情</strong><span>主处理页。看命中原因、状态承接和主动作。</span></div></a>
+        <a class="outline-link" href="p3-special-review-modal.html"><div class="outline-item"><strong>P3 提交专项复核弹窗</strong><span>动作页。看复核人选择、补充说明和通知联动。</span></div></a>
+        <a class="outline-link" href="p4-review-result.html"><div class="outline-item"><strong>P4 流程记录与复核结果</strong><span>结果页。看处理进度、通知结果和流程回流。</span></div></a>
       </div>
-    </section>
-
-    <nav class="sticky-nav">
-      <a class="chip" href="#p1">P1 入口与列表</a>
-      <a class="chip" href="#p2">P2 详情与处理</a>
-      <a class="chip" href="#p3">P3 流转记录</a>
-      <a class="chip" href="#p4">P4 通知触达</a>
-    </nav>
-
-    <section class="flowbar">
-      <h2>最小主链路</h2>
-      <div class="flowline">
-        <div class="flow-step"><strong>Respond</strong> 业务提出“审批路径扩展”需求，系统形成当前版本方案。</div>
-        <div class="flow-step"><strong>Ask-Back</strong> 确认这次是否仍属于当前版本，以及是否仍算原能力增强。</div>
-        <div class="flow-step"><strong>Align</strong> 固定范围、模块归属、工时和排期口径。</div>
-        <div class="flow-step"><strong>Preflight</strong> 确认已能说明主流程、模块闭合、接口边界与验收口径。</div>
-        <div class="flow-step"><strong>Prototype</strong> 用页面和流程展示新增路径与联动影响。</div>
-        <div class="flow-step"><strong>PRD</strong> 用规则、异常、验收补足正式归档内容。</div>
-      </div>
-    </section>
-
-    <div class="layout">
-      <aside class="sidebar">
-        <section class="panel">
-          <h3>当前结论</h3>
-          <p>本轮内容仍属于现有审批能力内部增强，不单独拆模块。工作量增加来自路径分支、状态同步、通知联动和留痕复杂度上升。</p>
-        </section>
-        <section class="panel">
-          <h3>编号说明</h3>
-          <div class="legend-list">
-            <div class="legend-item"><span class="anno">01</span><p>入口和触发条件</p></div>
-            <div class="legend-item"><span class="anno">06</span><p>新增审批路径进入条件</p></div>
-            <div class="legend-item"><span class="anno">09</span><p>状态变化点</p></div>
-            <div class="legend-item"><span class="anno">13</span><p>异常记录</p></div>
-            <div class="legend-item"><span class="anno">18</span><p>联动一致性校验</p></div>
-          </div>
-        </section>
-        <section class="panel">
-          <h3>原型边界</h3>
-          <p>页面讲清位置、流程、状态和联动。判定条件、例外场景、通知规则、异常规则和验收标准继续由 PRD 承接。</p>
-        </section>
-      </aside>
-
-      <main class="screen-stack">
-        <section class="screen" id="p1">
-          <div class="screen-top">
-            <div>
-              <span class="screen-tag">P1</span>
-              <h2>审批入口与待办列表页</h2>
-              <p>这一页负责让人看见新增审批路径从哪里进入，以及状态变化如何回写到列表结果。</p>
-            </div>
-            <div class="annotation-strip">
-              <span class="anno">01</span>
-              <span class="anno">02</span>
-              <span class="anno">03</span>
-              <span class="anno">04</span>
-            </div>
-          </div>
-          <div class="mock">
-            <div class="mock-header">
-              <strong>审批中心 / 待办列表</strong>
-              <span class="badge">当前版本增强</span>
-            </div>
-            <div class="mock-toolbar">
-              <div class="field"><small>01 入口位置</small>审批中心主入口</div>
-              <div class="field"><small>02 触发条件</small>命中新审批路径规则</div>
-              <div class="field"><small>03 状态标签</small>待审批 / 特殊分支 / 已处理</div>
-              <div class="field"><small>04 结果联动</small>列表状态与详情结果同步</div>
-            </div>
-            <div class="grid">
-              <div class="row">
-                <div>
-                  <strong>采购审批单 A-2026-0419</strong>
-                  <p>命中新审批路径，需进入特殊分支判断</p>
-                </div>
-                <div><span class="badge">待审批</span></div>
-                <div><span class="badge">特殊分支</span></div>
-                <div><span class="badge">查看详情</span></div>
-              </div>
-              <div class="row">
-                <div>
-                  <strong>采购审批单 A-2026-0420</strong>
-                  <p>沿用原路径，不进入新增分支</p>
-                </div>
-                <div><span class="badge">待审批</span></div>
-                <div><span class="badge">原路径</span></div>
-                <div><span class="badge">查看详情</span></div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section class="screen" id="p2">
-          <div class="screen-top">
-            <div>
-              <span class="screen-tag">P2</span>
-              <h2>审批详情与处理页</h2>
-              <p>这是主流程核心页，负责展示审批对象信息、当前节点、可执行动作和新增分支如何出现。</p>
-            </div>
-            <div class="annotation-strip">
-              <span class="anno">05</span>
-              <span class="anno">06</span>
-              <span class="anno">07</span>
-              <span class="anno">08</span>
-              <span class="anno">09</span>
-              <span class="anno">10</span>
-            </div>
-          </div>
-          <div class="mock">
-            <div class="mock-header">
-              <strong>审批详情 / A-2026-0419</strong>
-              <span class="badge">状态变更会联动通知与留痕</span>
-            </div>
-            <div class="detail-grid">
-              <div class="stack">
-                <div class="stat"><small>05 当前审批节点</small><strong>节点 2 / 风险复核</strong></div>
-                <div class="stat"><small>06 新增审批路径进入条件</small><strong>样例占位：金额 &gt;= 100000 且风险标签 = RISK_HIGH</strong></div>
-                <div class="stat"><small>08 结果判断分支</small><strong>命中分支后进入专项复核，否则沿用原路径</strong></div>
-                <div class="stat"><small>09 状态变化点</small><strong>处理中 → 特殊复核中 → 已完成</strong></div>
-              </div>
-              <div class="actions">
-                <div class="action-card">
-                  <small>07 主流程处理动作</small>
-                  <strong>提交专项复核</strong>
-                  <span>触发新增路径、写入留痕、准备通知</span>
-                </div>
-                <div class="action-card">
-                  <small>07 主流程处理动作</small>
-                  <strong>按原路径通过</strong>
-                  <span>不进入新增路径，保留原规则</span>
-                </div>
-                <div class="action-card">
-                  <small>10 PRD 引用</small>
-                  <strong>规则引用入口</strong>
-                  <span>判定条件、例外场景、异常处理查看 PRD</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section class="screen" id="p3">
-          <div class="screen-top">
-            <div>
-              <span class="screen-tag">P3</span>
-              <h2>审批流转记录 / 轨迹视图</h2>
-              <p>这一页负责把主流程、特殊分支和异常动作完整留痕，方便追溯和评审。</p>
-            </div>
-            <div class="annotation-strip">
-              <span class="anno">11</span>
-              <span class="anno">12</span>
-              <span class="anno">13</span>
-              <span class="anno">14</span>
-            </div>
-          </div>
-          <div class="mock">
-            <div class="mock-header">
-              <strong>流转记录 / 节点轨迹</strong>
-              <span class="badge">追溯与异常核对入口</span>
-            </div>
-            <div class="timeline">
-              <div class="timeline-item">
-                <div><strong>11</strong><br>09:20</div>
-                <div>进入审批详情，系统识别为可能命中新审批路径</div>
-                <div><span class="badge">节点进入</span></div>
-              </div>
-              <div class="timeline-item">
-                <div><strong>12</strong><br>09:28</div>
-                <div>提交专项复核，写入动作结果并更新主状态</div>
-                <div><span class="badge">动作结果</span></div>
-              </div>
-              <div class="timeline-item">
-                <div><strong>14</strong><br>09:29</div>
-                <div>进入特殊分支，轨迹中标记“新增路径已生效”</div>
-                <div><span class="badge">特殊分支</span></div>
-              </div>
-              <div class="timeline-item">
-                <div><strong>13</strong><br>09:36</div>
-                <div>若发起退回或重新提交，异常结果在这里保留完整记录</div>
-                <div><span class="badge">异常记录</span></div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section class="screen" id="p4">
-          <div class="screen-top">
-            <div>
-              <span class="screen-tag">P4</span>
-              <h2>通知触达视图</h2>
-              <p>这一页负责展示哪些动作会触发通知、通知给谁，以及通知结果是否与状态和留痕一致。</p>
-            </div>
-            <div class="annotation-strip">
-              <span class="anno">15</span>
-              <span class="anno">16</span>
-              <span class="anno">17</span>
-              <span class="anno">18</span>
-            </div>
-          </div>
-          <div class="mock">
-            <div class="mock-header">
-              <strong>通知触达 / 联动校验</strong>
-              <span class="badge">状态、通知、留痕一致性</span>
-            </div>
-            <div class="notify-grid">
-              <div class="notify-card">
-                <small>15 通知触发点</small>
-                <strong>提交专项复核后触发</strong>
-                <p>动作成功后，系统向当前业务线对应的样例专项复核角色发送待处理通知。</p>
-              </div>
-              <div class="notify-card">
-                <small>16 通知对象</small>
-                <strong>样例专项复核角色 / 当前审批责任人</strong>
-                <p>根据节点角色与当前路径结果动态决定接收对象。</p>
-              </div>
-              <div class="notify-card">
-                <small>17 不触发条件</small>
-                <strong>沿用原路径且未进入新增分支</strong>
-                <p>不新增通知，只沿用原有提醒规则。</p>
-              </div>
-              <div class="notify-card">
-                <small>18 一致性校验</small>
-                <strong>通知结果必须与状态和留痕一致</strong>
-                <p>若通知已发出，则 P1 状态标签与 P3 轨迹必须同步能看见相同结果。</p>
-              </div>
-            </div>
-          </div>
-        </section>
-      </main>
     </div>
+  </aside>
+
+  <div class="shell">
+    <section class="page-block">
+      <div class="canvas">
+        <div class="app-frame">
+          <div class="app-shell">
+            <aside class="sidebar">
+              <div class="sidebar-logo">审批中心</div>
+              <nav class="sidebar-nav">
+                <a class="sidebar-nav-item active" href="index.html">待办列表</a>
+                <a class="sidebar-nav-item" href="p2-approval-detail.html">审批详情</a>
+                <a class="sidebar-nav-item" href="p3-special-review-modal.html">专项复核处理</a>
+                <a class="sidebar-nav-item" href="p4-review-result.html">流程记录</a>
+              </nav>
+            </aside>
+            <div class="main-content">
+              <div class="topbar">
+                <span class="topbar-title">待办列表</span>
+                <div class="topbar-actions"><span>审批人</span><span>今日待办 24</span></div>
+              </div>
+              <div class="page-content">
+                <div class="filter-bar">
+                  <span class="field">单据编号 / 申请人<button class="note-dot" data-note-target="note-p1-01">01</button></span>
+                  <span class="select">业务条线</span>
+                  <span class="select">是否命中专项复核<button class="note-dot" data-note-target="note-p1-03">03</button></span>
+                  <span class="btn primary">查询</span>
+                  <span class="btn">重置</span>
+                </div>
+                <div class="summary-strip">
+                  <span class="badge warning">命中专项复核：6 单<button class="note-dot" data-note-target="note-p1-04">04</button></span>
+                  <span class="badge success">待我审批：12 单</span>
+                  <span class="badge">普通流程：18 单</span>
+                </div>
+                <div class="card">
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>单据编号</th>
+                        <th>业务条线</th>
+                        <th>申请人</th>
+                        <th>当前节点</th>
+                        <th>专项复核标记</th>
+                        <th>操作</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><span class="link">AP20260422001</span><button class="note-dot table" data-note-target="note-p1-05">05</button></td>
+                        <td>采购审批</td>
+                        <td>张三</td>
+                        <td>部门负责人审批</td>
+                        <td><span class="badge warning">命中专项复核</span><button class="note-dot table" data-note-target="note-p1-06">06</button></td>
+                        <td><span class="actions"><a href="p2-approval-detail.html" class="link">进入审批</a></span><button class="note-dot table" data-note-target="note-p1-07">07</button></td>
+                      </tr>
+                      <tr>
+                        <td><span class="link">AP20260422002</span></td>
+                        <td>合同审批</td>
+                        <td>李四</td>
+                        <td>业务复核</td>
+                        <td><span class="badge">普通流程</span></td>
+                        <td><span class="actions"><span>进入审批</span></span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
+
+  <div class="note-layer">
+    <div class="note-card" id="note-p1-01"><div class="note-header"><strong>P1-01 关键检索入口</strong><button class="note-close" data-note-close>×</button></div><div class="note-body"><div class="note-block"><strong>说明</strong><span>支持按单据编号、申请人快速找到待办记录，方便审批人先定位目标单据。</span></div><div class="note-block"><strong>PRD</strong><span>R-01 列表检索口径</span></div></div></div>
+    <div class="note-card" id="note-p1-03"><div class="note-header"><strong>P1-03 专项复核筛选</strong><button class="note-close" data-note-close>×</button></div><div class="note-body"><div class="note-block"><strong>说明</strong><span>可直接筛出“命中专项复核”的待办，避免混在普通流程里看不出来。</span></div><div class="note-block"><strong>PRD</strong><span>R-02 专项复核筛选规则</span></div></div></div>
+    <div class="note-card" id="note-p1-04"><div class="note-header"><strong>P1-04 列表汇总提醒</strong><button class="note-close" data-note-close>×</button></div><div class="note-body"><div class="note-block"><strong>说明</strong><span>在列表顶部用汇总条告诉审批人当前有多少笔单据会进入专项复核。</span></div><div class="note-block"><strong>PRD</strong><span>R-03 命中状态展示规则</span></div></div></div>
+    <div class="note-card" id="note-p1-05"><div class="note-header"><strong>P1-05 单据主入口</strong><button class="note-close" data-note-close>×</button></div><div class="note-body"><div class="note-block"><strong>说明</strong><span>点击单据编号或操作入口都可以进入审批详情，研发需要知道详情页是当前主承接页。</span></div><div class="note-block"><strong>PRD</strong><span>R-04 列表进入详情动作</span></div></div></div>
+    <div class="note-card" id="note-p1-06"><div class="note-header"><strong>P1-06 列表状态标记</strong><button class="note-close" data-note-close>×</button></div><div class="note-body"><div class="note-block"><strong>说明</strong><span>在列表层提前告知这笔审批后续会进入专项复核，而不是到详情页才发现。</span></div><div class="note-block"><strong>PRD</strong><span>R-03 命中状态展示规则</span></div></div></div>
+    <div class="note-card" id="note-p1-07"><div class="note-header"><strong>P1-07 进入详情动作</strong><button class="note-close" data-note-close>×</button></div><div class="note-body"><div class="note-block"><strong>说明</strong><span>审批人从这里进入审批详情页，后续判断和处理都在详情页完成。</span></div><div class="note-block"><strong>PRD</strong><span>R-04 列表进入详情动作</span></div></div></div>
+  </div>
+
+  <script src="shared.js"></script>
 </body>
 </html>
