@@ -1,0 +1,6 @@
+{
+  "change_category": "structural_change",
+  "change_category_confirmed_by_pm": true,
+  "next_action": "Reopen alignment because the added request changes the main structure of the current version",
+  "change_record_path": "output/review/change-v2.json"
+}

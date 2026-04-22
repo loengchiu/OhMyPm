@@ -8,7 +8,7 @@ OhMyPm 需要同时维护三类持久信息：
 - 项目记忆：本项目已经确认了什么、还没确认什么
 - 系统记忆：跨项目可复用的系统知识是什么
 
-因此，最小数据模型采用三层文件结构。
+因此，最小数据模型采用“项目内两层 + 外部系统记忆仓”结构。
 
 ## 2. 文件分层
 
@@ -36,17 +36,16 @@ OhMyPm 需要同时维护三类持久信息：
 - 作为跨会话恢复项目语境的主文件
 - 为追问机制、评审会机制和回写机制提供事实基础
 
-### 2.3 系统记忆卡
+### 2.3 外部系统记忆卡
 
 建议路径：
 
-- `.ohmypm/system-memory/`
+- `D:\work\PMsyscard\wiki\systems\`
 
 每个系统或子系统一个卡片，例如：
 
-- `.ohmypm/system-memory/oms.md`
-- `.ohmypm/system-memory/crm-member.md`
-- `.ohmypm/system-memory/invoice-center.md`
+- `D:\work\PMsyscard\wiki\systems\审计系统.md`
+- `D:\work\PMsyscard\wiki\systems\财务共享.md`
 
 职责：
 
@@ -68,6 +67,34 @@ OhMyPm 需要同时维护三类持久信息：
   "last_action": "",
   "next_recommended": "",
   "context_summary": "",
+  "context_package": {
+    "request_summary": "",
+    "business_stage": "",
+    "system_or_page_clues": [],
+    "material_paths": [],
+    "context_gaps": []
+  },
+  "traceability": {
+    "meta": {
+      "version": "",
+      "scope_summary": "",
+      "business_goal": "",
+      "in_scope": [],
+      "out_of_scope": [],
+      "open_questions": [],
+      "confirmed_facts": [],
+      "can_progress": false
+    },
+    "anchors": {
+      "modules": []
+    },
+    "artifact_contract": {
+      "prototype_covers": [],
+      "prd_covers": [],
+      "shared_refs": [],
+      "must_not_repeat": []
+    }
+  },
   "stable_baselines": {
     "response_plan": "",
     "prototype": "",
@@ -75,8 +102,9 @@ OhMyPm 需要同时维护三类持久信息：
     "review_pack": ""
   },
   "memory_refs": {
-    "project_memory": ".ohmypm/memory.md",
-    "system_memory_cards": []
+      "project_memory": ".ohmypm/memory.md",
+      "system_memory_index": "D:\\work\\PMsyscard\\wiki\\index.md",
+      "system_memory_cards": []
   },
   "latest_artifacts": {
     "response_notes": [],
@@ -130,6 +158,8 @@ OhMyPm 需要同时维护三类持久信息：
 - `loop_state.history_summary` 用于保存滚动的轮次历史摘要，便于跨会话回顾
 - `fallback_state` 用于记录门禁不通过后当前应回退到哪一类处理
 - `change_state` 用于记录变更门禁的分类初判与是否已被 PM 确认
+- `context_package` 用于记录听需求阶段的最小上下文包
+- `traceability` 用于记录当前版本的最小追溯元数据，供交付、评审和回退判断使用
 
 ### 运行时状态机
 
@@ -163,6 +193,7 @@ ask-back 不是单独主节点，它是阻塞解除动作：
 
 当前脚本层依赖这些状态字段完成最小迁移判断：
 
+- `context_package.*`
 - `current_mode`
 - `current_stage`
 - `loop_state.round_result`
@@ -170,6 +201,12 @@ ask-back 不是单独主节点，它是阻塞解除动作：
 - `pending_confirmations`
 - `review_state.must_fix_before_next_stage`
 - `change_state.*`
+
+追溯相关字段建议优先用于门禁和交付判断：
+
+- `traceability.meta.*`
+- `traceability.anchors.modules`
+- `traceability.artifact_contract.*`
 
 ## 4. 项目记忆文件模型
 
@@ -335,7 +372,7 @@ ask-back 不是单独主节点，它是阻塞解除动作：
 - `系统记忆引用`
 - `新增资料记录`
 
-### `.ohmypm/system-memory/*.md` 负责
+### `D:\work\PMsyscard\wiki\systems\*.md` 负责
 
 - 某个系统长期稳定的知识是什么
 - 哪些边界、权限、兼容性和坑点可跨项目复用
@@ -377,6 +414,6 @@ ask-back 不是单独主节点，它是阻塞解除动作：
 需要新增的部分：
 
 - `ohmypm-memory.md` 作为项目语义主存
-- `.ohmypm/system-memory/` 作为跨项目知识主存
+- `D:\work\PMsyscard\wiki\` 作为跨项目知识主存
 - `overwrite_queue` 和复写记录，用于管理下游修正上游
 

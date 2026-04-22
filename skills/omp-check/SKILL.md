@@ -5,30 +5,19 @@ description: "推进检查。判断当前能不能继续推进；若不能，决
 
 # 推进检查
 
-## 读取顺序
+## 最小读取
 
-第 0 层：最小状态
-
-1. `.ohmypm/status.json`
-2. `.ohmypm/memory.md` 的最小必要摘要
-
-第 1 层：当前动作 skill
-
-3. 当前只执行 `omp-check`，不得默认并读其他 skill
-
-第 2 层：当前动作必要 contract
-
-4. `contracts/gates.md`
-5. 必要时 `contracts/ask-back.md`
-
-第 3 层：条件触发读取
-
-6. 仅当需要核对当前阶段阻塞类型时，再局部读取当前阶段对应 contract
+- 先读 `.ohmypm/status.json`
+- 再读 `.ohmypm/memory.md` 的最小必要摘要
+- 当前只执行 `omp-check`
+- 默认只补 `contracts/gates.md`、`contracts/checkpoint.md`、`contracts/boundary-guard.md`
+- 需要追问时再补 `contracts/ask-back.md`
 
 ## 目标
 
 - 判断当前动作能否继续推进
 - 给出门禁通过、阻断原因或回退建议
+- 把当前判断收口成统一的 Checkpoint 结论
 - 当无法继续推进时，只追当前最阻塞的一个问题
 - 判断当前问题应转成 PM 追问，还是内部修正或样例占位
 
@@ -39,6 +28,7 @@ description: "推进检查。判断当前能不能继续推进；若不能，决
 - 优先一次只追一个问题
 - 若已有证据可从现有资料中查出，先查证，不先问人
 - 必须先判断当前是真实项目协作还是机制验证样例 / demo
+- 必须先判断当前是否已发生边界越界：样例污染真实、未确认伪装已确认、脱锚扩写
 - 若当前是机制验证样例 / demo，不得向 PM 追问样例中的虚拟业务口径；应改为占位值、样例说明或内部修正
 - 未得到回答前，必要时保留到 `pending_confirmations`
 - 不得默认一次追多个问题

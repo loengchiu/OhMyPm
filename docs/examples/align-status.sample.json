@@ -5,11 +5,13 @@
   "LastAction": "Aligned the plan after stakeholder feedback",
   "NextRecommended": "Run omp-ready if no structural change appears",
   "ContextSummary": "Alignment round updated scope, module list, and schedule impact",
+  "ContextPackageJson": "{\"request_summary\":\"在审批能力内增加专项复核分支\",\"business_stage\":\"审批\",\"system_or_page_clues\":[\"审批详情页\"],\"material_paths\":[\"docs/examples/respond-status.sample.json\"],\"context_gaps\":[]}",
   "RoundNumber": 2,
   "RoundGoal": "Absorb stakeholder feedback into the current version plan",
   "RoundInputsJson": "[\"Stakeholder feedback on approval path\",\"One new screenshot\"]",
   "CurrentOutput": "Aligned version plan with updated scope and module impact",
   "RoundResult": "ready_for_preflight",
   "LoopHistorySummary": "Round 1 formed the first response. Round 2 absorbed stakeholder feedback and stabilized the module impact.",
-  "PendingConfirmationsJson": "[]"
+  "PendingConfirmationsJson": "[]",
+  "TraceabilityJson": "{\"meta\":{\"version\":\"v0.6\",\"scope_summary\":\"对齐当前版本方案并稳定模块影响\",\"business_goal\":\"吸收反馈并收敛到可开工判断的方案\",\"in_scope\":[\"审批能力\",\"通知模块\"],\"out_of_scope\":[\"新建独立审批系统\"],\"open_questions\":[],\"confirmed_facts\":[\"属于原审批能力增强\"],\"can_progress\":true},\"anchors\":{\"modules\":[{\"module_name\":\"审批能力\",\"scope_role\":\"primary\",\"module_goal\":\"增加专项复核分支\",\"in_scope\":true,\"notes\":\"\",\"pages\":[]},{\"module_name\":\"通知模块\",\"scope_role\":\"affected\",\"module_goal\":\"承接通知联动影响\",\"in_scope\":true,\"notes\":\"\",\"pages\":[]}]},\"artifact_contract\":{\"prototype_covers\":[],\"prd_covers\":[],\"shared_refs\":[],\"must_not_repeat\":[]}}"
 }

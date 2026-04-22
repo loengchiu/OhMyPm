@@ -5,31 +5,19 @@ description: "做原型。生成交付型原型，作为当前最小主链中的
 
 # 做原型
 
-## 读取顺序
+## 最小读取
 
-第 0 层：最小状态
-
-1. `.ohmypm/status.json`
-2. `.ohmypm/memory.md` 的最小必要摘要
-
-第 1 层：当前动作 skill
-
-3. 当前只执行 `omp-proto`，不得默认并读其他 skill
-
-第 2 层：当前动作必要 contract
-
-4. `contracts/gates.md`
-5. `contracts/delivery.md`
-6. `contracts/context-guard.md`
-
-第 3 层：条件触发读取
-
-7. 只有当当前原型需要依赖外部知识或长材料时，才允许做局部回查
+- 先读 `.ohmypm/status.json`
+- 再读 `.ohmypm/memory.md` 的最小必要摘要
+- 当前只执行 `omp-proto`
+- 默认只补 `contracts/gates.md`、`contracts/delivery.md`、`contracts/context-guard.md`、`contracts/traceability.md`、`contracts/boundary-guard.md`
+- 外部知识和长材料只允许局部回查
 
 ## 目标
 
 - 生成交付型原型
 - 明确页面落点、主流程、页面用途、用户动作、关键状态、关键交互标注和页面间关系
+- 保证原型挂在当前模块 / 页面 / 流程锚点上
 - 验证原型模板是否足够承接这类需求
 
 ## 必读状态
@@ -62,6 +50,8 @@ description: "做原型。生成交付型原型，作为当前最小主链中的
 
 - 未通过正式交付门禁，不得开始
 - 标注方式采用编号，不在页面铺大量正文
+- 原型不得脱离当前追溯元数据和锚点生成
+- 不得把 OMP 方法论、契约说明或“模板试跑”元话语写进正式原型正文
 - 若 `fallback_state.fallback_type` 非空，不得伪装进入交付型原型
 - 当前版本完成原型后，默认直接进入 `omp-prd`
 - 不得默认同时读取多个 skill

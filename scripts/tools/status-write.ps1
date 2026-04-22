@@ -6,6 +6,8 @@ param(
     [string]$LastAction,
     [string]$NextRecommended,
     [string]$ContextSummary,
+    [string]$ContextPackageJson,
+    [string]$TraceabilityJson,
     [string]$BaselineField,
     [string]$BaselinePath,
     [string]$ArtifactField,
@@ -118,6 +120,32 @@ if ($PSBoundParameters.ContainsKey("LastAction")) { $status.last_action = $LastA
 if ($PSBoundParameters.ContainsKey("NextRecommended")) { $status.next_recommended = $NextRecommended }
 if ($PSBoundParameters.ContainsKey("ContextSummary")) { $status.context_summary = $ContextSummary }
 
+if ($PSBoundParameters.ContainsKey("ContextPackageJson")) {
+    if ([string]::IsNullOrWhiteSpace($ContextPackageJson)) {
+        Fail "ContextPackageJson cannot be empty"
+    }
+
+    try {
+        $status.context_package = $ContextPackageJson | ConvertFrom-Json
+    }
+    catch {
+        Fail "invalid JSON for ContextPackageJson"
+    }
+}
+
+if ($PSBoundParameters.ContainsKey("TraceabilityJson")) {
+    if ([string]::IsNullOrWhiteSpace($TraceabilityJson)) {
+        Fail "TraceabilityJson cannot be empty"
+    }
+
+    try {
+        $status.traceability = $TraceabilityJson | ConvertFrom-Json
+    }
+    catch {
+        Fail "invalid JSON for TraceabilityJson"
+    }
+}
+
 if ($PSBoundParameters.ContainsKey("BaselineField")) {
     if (-not $PSBoundParameters.ContainsKey("BaselinePath")) {
         Fail "BaselinePath is required when BaselineField is provided."
@@ -228,10 +256,11 @@ if (($PSBoundParameters.ContainsKey("FallbackType") -or $PSBoundParameters.Conta
     Fail "FallbackType=reopen_alignment cannot coexist with RoundResult=ready_for_preflight"
 }
 
-if (($PSBoundParameters.ContainsKey("ChangeCategory") -or $PSBoundParameters.ContainsKey("ChangeCategoryConfirmedByPm")) -and
-    (($status.change_state.change_category -eq "new_module") -or ($status.change_state.change_category -eq "structural_change"))) {
-    if (-not $status.change_state.change_category_confirmed_by_pm) {
-        Fail "ChangeCategoryConfirmedByPm is required for new_module or structural_change"
+$isHeavyChangeCategory = ($status.change_state.change_category -eq "new_module") -or ($status.change_state.change_category -eq "structural_change")
+$isChangeDecisionStage = $status.current_stage -in @("omp-change", "omp-check")
+if (($PSBoundParameters.ContainsKey("ChangeCategory") -or $PSBoundParameters.ContainsKey("ChangeCategoryConfirmedByPm")) -and $isHeavyChangeCategory) {
+    if ((-not $status.change_state.change_category_confirmed_by_pm) -and (-not $isChangeDecisionStage)) {
+        Fail "ChangeCategoryConfirmedByPm is required before leaving omp-change/omp-check for new_module or structural_change"
     }
 }
 

@@ -9,16 +9,13 @@ description: "对齐。根据反馈更新方案、变化点、模块判断与粗
 
 - 决策层动作
 
-## 读取顺序
+## 最小读取
 
-1. 读取最小状态：
-  - `.ohmypm/status.json`
-  - `.ohmypm/memory.md` 的最小必要摘要
-2. 只读取当前 skill
-3. 只读取必要规则：
-  - `contracts/context-guard.md`
-  - 必要时 `contracts/ask-back.md`
-4. 若需要长材料或外部知识，只允许局部回查
+- 先读 `.ohmypm/status.json`
+- 再读 `.ohmypm/memory.md` 的最小必要摘要
+- 当前只执行 `omp-align`
+- 默认只补 `contracts/context-guard.md`
+- 需要追问时再补 `contracts/ask-back.md`
 
 ## 目标
 

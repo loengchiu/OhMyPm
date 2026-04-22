@@ -45,6 +45,8 @@ powershell -File .\scripts\tools\review-apply.ps1 -ReviewJsonPath .\docs\ohmypm\
 - `review_state.last_review_result`
 - `review_state.must_fix_before_next_stage`
 - `next_recommended`
+- 必要时 `current_stage`
+- 必要时 `fallback_state`
 
 ### 4. 更新项目记忆
 
@@ -52,5 +54,10 @@ powershell -File .\scripts\tools\review-apply.ps1 -ReviewJsonPath .\docs\ohmypm\
 powershell -File .\scripts\tools\memory-apply.ps1 -PayloadPath .\docs\examples\review-memory.sample.json
 ```
 
-若评审结论推翻基线，应转入 `omp-fix`。
+回写后当前行为固定为：
+
+- `pass`：保留在评审态
+- `conditional_pass`：转入 `omp-fix`
+- `rework_required`：转入 `omp-fix`
+- `defer`：转入 `omp-check`
 

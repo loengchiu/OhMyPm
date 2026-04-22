@@ -6,5 +6,7 @@
   "NextRecommended": "Reopen alignment and rebuild delivery scope around the new module",
   "ContextSummary": "A post-delivery request was confirmed as a new module and cannot be silently merged",
   "ChangeCategory": "new_module",
-  "ChangeCategoryConfirmedByPm": true
+  "ChangeCategoryConfirmedByPm": true,
+  "ArtifactField": "change_records",
+  "ArtifactPath": "output/review/change-v1.json"
 }

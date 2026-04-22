@@ -5,7 +5,9 @@
   "LastAction": "Completed preflight checks for formal delivery",
   "NextRecommended": "Start omp-proto",
   "ContextSummary": "Preflight passed and the plan is ready for formal delivery",
+  "ContextPackageJson": "{\"request_summary\":\"在审批能力内增加专项复核分支\",\"business_stage\":\"审批\",\"system_or_page_clues\":[\"审批详情页\"],\"material_paths\":[\"output/prototype/prototype-v1/index.html\",\"output/prd/prd-v1/PRD-v1.md\"],\"context_gaps\":[]}",
   "RoundResult": "ready_for_preflight",
   "PendingConfirmationsJson": "[]",
-  "BlockersJson": "[]"
+  "BlockersJson": "[]",
+  "TraceabilityJson": "{\"meta\":{\"version\":\"v0.7\",\"scope_summary\":\"方案已满足进入最小正式交付链条件\",\"business_goal\":\"进入原型与PRD交付\",\"in_scope\":[\"审批能力\",\"通知模块\"],\"out_of_scope\":[\"新建独立审批系统\"],\"open_questions\":[],\"confirmed_facts\":[\"模块、页面和流程已初步闭合\"],\"can_progress\":true},\"anchors\":{\"modules\":[{\"module_name\":\"审批能力\",\"scope_role\":\"primary\",\"module_goal\":\"增加专项复核分支\",\"in_scope\":true,\"notes\":\"\",\"pages\":[{\"page_name\":\"审批详情页\",\"page_role\":\"changed\",\"page_goal\":\"承接专项复核入口与状态展示\",\"entry_point\":\"待办列表/审批详情\",\"states\":[\"待处理\",\"专项复核中\"],\"flows\":[{\"flow_name\":\"专项复核流程\",\"flow_role\":\"branch\",\"trigger\":\"命中金额或风险条件\",\"actors\":[\"审批人\",\"专项复核人\"],\"actions\":[{\"action_name\":\"提交专项复核\",\"actor\":\"审批人\",\"result\":\"进入专项复核中\",\"rules_ref\":[\"R-01\"],\"prototype_ref\":[\"P2-01\"]}],\"exceptions\":[],\"acceptance_points\":[\"命中条件后进入专项复核\"]}]}]},{\"module_name\":\"通知模块\",\"scope_role\":\"affected\",\"module_goal\":\"承接专项复核通知联动\",\"in_scope\":true,\"notes\":\"\",\"pages\":[]}]},\"artifact_contract\":{\"prototype_covers\":[\"页面落点\",\"流程\",\"状态\",\"动作\",\"标注编号\"],\"prd_covers\":[\"规则\",\"异常\",\"权限\",\"数据影响\",\"验收口径\"],\"shared_refs\":[\"P2-01 <-> R-01\"],\"must_not_repeat\":[\"原型已清楚展示的页面结构正文\"]}}"
 }

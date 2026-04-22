@@ -5,24 +5,13 @@ description: "修正已有产物缺陷，并在需要时触发下游修正上游
 
 # Fix
 
-## 读取顺序
+## 最小读取
 
-第 0 层：最小状态
-
-1. `.ohmypm/status.json`
-2. `.ohmypm/memory.md` 的最小必要摘要
-
-第 1 层：当前动作 skill
-
-3. 当前只执行 `omp-fix`，不得默认并读其他 skill
-
-第 2 层：当前动作必要 contract
-
-4. `contracts/overwrite.md`
-
-第 3 层：条件触发读取
-
-5. 仅当修复来源明确来自评审结论时，再读取 `contracts/review.md`
+- 先读 `.ohmypm/status.json`
+- 再读 `.ohmypm/memory.md` 的最小必要摘要
+- 当前只执行 `omp-fix`
+- 默认只补 `contracts/overwrite.md`、`contracts/boundary-guard.md`、`contracts/traceability.md`
+- 涉及评审回流时再补 `contracts/review.md`
 
 ## 目标
 
@@ -64,6 +53,7 @@ description: "修正已有产物缺陷，并在需要时触发下游修正上游
 - 下游不得默默覆盖上游结论
 - 若复写判定为 `restart_alignment`，下一步必须明确回到对齐链，不得继续假装处于正式交付
 - 修复如果只解决局部缺陷，可保留当前阶段；若推翻基线，则必须同步更新 `overwrite_queue`
+- 若 `overwrite_queue` 非空，应优先处理修复，不得跳回继续交付
 - 不得默认同时读取多个 skill
 - 不得为了保险一次读取很多 contract
 - 对外默认表现为会自己判断下一步的协作型大 skill

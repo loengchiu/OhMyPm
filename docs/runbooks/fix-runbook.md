@@ -44,4 +44,9 @@ powershell -File .\scripts\tools\memory-apply.ps1 -PayloadPath .\docs\examples\f
 
 - 若复写结果为 `restart_alignment`，下一步必须返回对齐链
 - 不得继续假装处于已稳定的正式交付阶段
+- 当前脚本会同步把：
+  - `current_stage` 切到 `omp-align`
+  - `current_mode` 切到 `alignment_loop`
+  - `fallback_type` 写成 `reopen_alignment`
+  - `loop_state.round_result` 改回 `continue_alignment`
 

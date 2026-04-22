@@ -24,6 +24,8 @@
 - 下游不得默默覆盖上游结论
 - 版本关系未判清时必须停止推进
 - 复写后必须更新稳定基线或撤销稳定状态
+- `restart_alignment` 不得继续保留 `ready_for_preflight`
+- `restart_alignment` 必须把当前推进状态拉回对齐链
 
 ## 5. 冲突分类
 
@@ -54,3 +56,23 @@
 - `writeback_targets`
 - `can_continue`
 - `reason`
+
+## 8. 回写约束
+
+复写判定应用到状态时，至少应满足：
+
+- `patch`
+  - 保持 `omp-fix`
+  - `fallback_type=internal_repair`
+- `rollback_upstream`
+  - 保持 `omp-fix`
+  - `fallback_type=internal_repair`
+- `restart_alignment`
+  - 转入 `omp-align`
+  - `current_mode=alignment_loop`
+  - `fallback_type=reopen_alignment`
+  - `loop_state.round_result=continue_alignment`
+
+补充规则：
+
+- `restart_alignment` 时，`can_continue` 必须为 `false`

@@ -8,7 +8,7 @@
 
 ## 主控层
 
-- 已完成：`AGENTS.md` 瘦身、五层加载总原则、`scripts/control/ompgo.ps1` 单一主控入口、`scripts/control/` 与 `scripts/tools/` 分层
+- 已完成：`AGENTS.md` 瘦身、五层加载总原则、`scripts/control/ompgo.ps1` 单一主控入口、`scripts/control/` 与 `scripts/tools/` 分层、变更闭环脚本第一版
 - 半完成：总装入口目前负责路由、门禁检查、ask-back 触发和状态回写，但动作执行仍由宿主 skill 完成
 - 还没落地：跨动作统一日志面板和更细的执行遥测
 
@@ -20,6 +20,6 @@
 
 ## 开发脚手架层
 
-- 已完成：样例回放、状态/记忆 payload、runbook、底层工具脚本
+- 已完成：样例回放、状态/记忆 payload、runbook、底层工具脚本、改需求/修问题的回退与复写联动
 - 半完成：样例脚手架仍保留较多开发视角文案
 - 还没落地：进一步降噪，让正式协作入口完全不感知样例开发材料

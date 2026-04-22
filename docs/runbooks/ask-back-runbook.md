@@ -59,8 +59,13 @@ powershell -File .\scripts\tools\ask-back-plan.ps1
 ```powershell
 powershell -File .\scripts\tools\ask-back-apply.ps1 `
   -AnsweredConfirmation 'Need confirmation on scope boundary' `
-  -ChangeCategoryConfirmedByPm $true `
   -NextRecommended '回到刚才被卡住的阶段，并按最新确认结果重新判断是否可以推进。'
+```
+
+若需要直接应用变更分类结果，也可使用：
+
+```powershell
+powershell -File .\scripts\tools\change-apply.ps1 -ChangeJsonPath .\docs\examples\change-apply-structural.sample.json
 ```
 
 预期结果：
@@ -68,3 +73,9 @@ powershell -File .\scripts\tools\ask-back-apply.ps1 `
 - 对应的 `pending_confirmations` 项被移除
 - PM 确认状态被更新
 - 被卡住的动作可以重新判断是否继续
+
+补充说明：
+
+- `status-write.ps1` 允许在 `omp-change` / `omp-check` 阶段保留 `ChangeCategoryConfirmedByPm=false`
+- 这表示“AI 已初判，但仍等待 PM 拍板”
+- 一旦要离开这两个阶段进入更重动作，`new_module` / `structural_change` 必须先拿到 PM 确认

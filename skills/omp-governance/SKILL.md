@@ -5,20 +5,13 @@ description: "治理。统一处理基线一致性、复写判断、产物承接
 
 # 治理
 
-## 读取顺序
+## 最小读取
 
-第 0 层：最小状态
-
-1. `.ohmypm/status.json`
-2. `.ohmypm/memory.md` 的最小必要摘要
-
-第 1 层：当前动作 skill
-
-3. 当前只执行 `omp-governance`，不得默认并读其他 skill
-
-第 2 层：当前动作必要 contract
-
-4. 必要时 `contracts/overwrite.md`
+- 先读 `.ohmypm/status.json`
+- 再读 `.ohmypm/memory.md` 的最小必要摘要
+- 当前只执行 `omp-governance`
+- 默认只补当前治理动作真正需要的 contract
+- 涉及复写判断时再补 `contracts/overwrite.md`
 
 ## 目标
 

@@ -5,31 +5,20 @@ description: "组织评审会材料、执行多角色评审团、输出评审结
 
 # Review
 
-## 读取顺序
+## 最小读取
 
-第 0 层：最小状态
-
-1. `.ohmypm/status.json`
-2. `.ohmypm/memory.md` 的最小必要摘要
-
-第 1 层：当前动作 skill
-
-3. 当前只执行 `omp-review`，不得默认并读其他 skill
-
-第 2 层：当前动作必要 contract
-
-4. `contracts/review.md`
-
-第 3 层：条件触发读取
-
-5. 仅当需要核对交付物分工边界时，再读取 `contracts/delivery.md`
-6. 仅当评审结论已影响上游稳定基线时，再读取 `contracts/overwrite.md`
+- 先读 `.ohmypm/status.json`
+- 再读 `.ohmypm/memory.md` 的最小必要摘要
+- 当前只执行 `omp-review`
+- 默认只补 `contracts/review.md`、`contracts/traceability.md`、`contracts/boundary-guard.md`
+- 涉及交付分工或复写时再补 `contracts/delivery.md`、`contracts/overwrite.md`
 
 ## 目标
 
 - 形成评审材料包
 - 组织多角色评审团
 - 输出评审结论
+- 检查当前产物是否仍挂在同一套追溯元数据上
 - 回写评审结果
 
 ## 执行顺序
@@ -79,6 +68,8 @@ description: "组织评审会材料、执行多角色评审团、输出评审结
 - 评审结论必须归并为：事实问题、风险问题、建议问题、统一结论
 - 风险问题必须再归并为：阻断项、重要项、建议项
 - 统一结论必须按三级风险判定规则给出，不得只凭语气判断
+- 评审时必须检查当前原型、PRD 是否仍引用同一版本、同一范围和同一组核心锚点
+- 评审时必须检查是否存在：样例污染真实、未确认伪装已确认、元话语污染正式产物
 - 若评审结论推翻稳定基线，应转入 `omp-fix` 并触发复写判定
 - 不得默认同时读取多个 skill
 - 不得为了保险一次读取很多 contract

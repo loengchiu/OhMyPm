@@ -8,9 +8,22 @@
   "current_mode": "alignment_loop",
   "current_stage": "omp-review",
   "current_version": "v0.6",
-  "last_action": "Control dispatch -> 评审",
-  "next_recommended": "现在建议你做的下一步是：进入 评审，并只加载 skills/omp-review/SKILL.md 与当前动作必要规则。",
+  "last_action": "Control dispatch -> 改需求",
+  "next_recommended": "现在建议你做的下一步是：进入 改需求，并只加载 skills/omp-change/SKILL.md 与当前动作必要规则。",
   "context_summary": "当前审批路径扩展示例已经形成一条可回放的机制验证主链路。prototype-v1、PRD-v1 和 review 结论已经一致标记为样例场景，不再向 PM 追问任何虚拟业务口径。当前样例链路没有未修复的评审阻塞。",
+  "context_package": {
+    "request_summary": "在审批能力内增加专项复核分支",
+    "business_stage": "审批",
+    "system_or_page_clues": [
+      "审批详情页",
+      "待办列表/审批详情"
+    ],
+    "material_paths": [
+      "output/prototype/prototype-v1/index.html",
+      "output/prd/prd-v1/PRD-v1.md"
+    ],
+    "context_gaps": []
+  },
   "stable_baselines": {
     "response_plan": ".\\README.md",
     "prototype": "output/prototype/prototype-v1/index.html",
@@ -19,8 +32,9 @@
   },
   "memory_refs": {
     "project_memory": ".ohmypm/memory.md",
+    "system_memory_index": "D:\\work\\PMsyscard\\wiki\\index.md",
     "system_memory_cards": [
-      ".ohmypm/system-memory/_template.md"
+      "D:\\work\\PMsyscard\\wiki\\systems\\审计系统.md"
     ]
   },
   "latest_artifacts": {
@@ -78,5 +92,107 @@
     "last_review_result": "pass",
     "must_fix_before_next_stage": []
   },
-  "overwrite_queue": []
+  "overwrite_queue": [],
+  "traceability": {
+    "meta": {
+      "version": "v0.6",
+      "scope_summary": "审批能力内增加专项复核分支",
+      "business_goal": "让高金额或高风险审批进入专项复核",
+      "in_scope": [
+        "审批能力",
+        "通知模块"
+      ],
+      "out_of_scope": [
+        "新建独立审批系统"
+      ],
+      "open_questions": [],
+      "confirmed_facts": [
+        "属于原审批能力增强，不是新模块",
+        "样例链路仅用于机制验证"
+      ],
+      "can_progress": true
+    },
+    "anchors": {
+      "modules": [
+        {
+          "module_name": "审批能力",
+          "scope_role": "primary",
+          "module_goal": "增加专项复核分支",
+          "in_scope": true,
+          "notes": "",
+          "pages": [
+            {
+              "page_name": "审批详情页",
+              "page_role": "changed",
+              "page_goal": "展示专项复核入口和处理状态",
+              "entry_point": "待办列表/审批详情",
+              "states": [
+                "待处理",
+                "专项复核中",
+                "复核通过",
+                "复核驳回"
+              ],
+              "flows": [
+                {
+                  "flow_name": "专项复核流程",
+                  "flow_role": "branch",
+                  "trigger": "命中金额或风险条件",
+                  "actors": [
+                    "审批人",
+                    "专项复核人"
+                  ],
+                  "actions": [
+                    {
+                      "action_name": "提交专项复核",
+                      "actor": "审批人",
+                      "result": "进入专项复核中",
+                      "rules_ref": "R-01",
+                      "prototype_ref": "P2-01"
+                    }
+                  ],
+                  "exceptions": [
+                    "复核人缺失",
+                    "超时未处理"
+                  ],
+                  "acceptance_points": [
+                    "命中条件后必须进入专项复核"
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "module_name": "通知模块",
+          "scope_role": "affected",
+          "module_goal": "承接专项复核通知联动",
+          "in_scope": true,
+          "notes": "",
+          "pages": []
+        }
+      ]
+    },
+    "artifact_contract": {
+      "prototype_covers": [
+        "页面落点",
+        "流程",
+        "状态",
+        "动作",
+        "标注编号"
+      ],
+      "prd_covers": [
+        "规则",
+        "异常",
+        "权限",
+        "数据影响",
+        "验收口径"
+      ],
+      "shared_refs": [
+        "P2-01 <-> R-01"
+      ],
+      "must_not_repeat": [
+        "原型已清楚展示的页面结构正文"
+      ]
+    }
+  }
 }

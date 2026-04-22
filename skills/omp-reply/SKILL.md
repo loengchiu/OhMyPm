@@ -9,22 +9,21 @@ description: "先回应。形成当前理解、当前版本方案、待确认项
 
 - 决策层动作
 
-## 读取顺序
+## 最小读取
 
-1. 读取最小状态：
-  - `.ohmypm/status.json`
-  - `.ohmypm/memory.md` 的最小必要摘要
-2. 只读取当前 skill
-3. 只读取必要规则：
-  - `contracts/context-guard.md`
-  - 必要时 `contracts/ask-back.md`
-4. 若需要长材料或外部知识，只允许局部回查
+- 先读 `.ohmypm/status.json`
+- 再读 `.ohmypm/memory.md` 的最小必要摘要
+- 当前只执行 `omp-reply`
+- 默认只补 `contracts/context-guard.md`、`contracts/context-package.md`、`contracts/traceability.md`
+- 需要追问时再补 `contracts/ask-back.md`
 
 ## 目标
 
 - 给出当前理解
 - 给出当前版本方案
 - 记录未确认事实与未澄清问题
+- 补齐最小上下文包中的缺口状态
+- 补齐当前版本的最小追溯元数据
 - 给出模块级粗估、复杂度来源和排期影响判断
 
 ## 对外动作名

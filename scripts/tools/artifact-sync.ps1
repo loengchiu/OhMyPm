@@ -5,6 +5,8 @@ param(
     [string]$LastAction,
     [string]$NextRecommended,
     [string]$ContextSummary,
+    [string]$ContextPackageJson,
+    [string]$TraceabilityJson,
     [string]$BaselineField,
     [string]$BaselinePath,
     [string]$ArtifactField,

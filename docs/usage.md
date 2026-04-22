@@ -114,7 +114,7 @@ powershell -File .\scripts\control\ompgo.ps1
 
 - `.ohmypm/status.json`
 - `.ohmypm/memory.md`
-- 必要时 `contracts/context-guard.md`
+- 必要时 `contracts/context-guard.md`、`contracts/context-package.md` 与 `contracts/boundary-guard.md`
 
 输出至少要覆盖：
 
@@ -193,6 +193,8 @@ powershell -File .\scripts\tools\ask-back-apply.ps1 `
 - `contracts/loading.md`
 - `contracts/ask-back.md`
 - `contracts/context-guard.md`
+- `contracts/context-package.md`
+- `contracts/boundary-guard.md`
 - `contracts/delivery.md`
 - `contracts/review.md`
 - `contracts/overwrite.md`
@@ -206,6 +208,7 @@ powershell -File .\scripts\tools\ask-back-apply.ps1 `
 - `docs/runbooks/prototype-runbook.md`
 - `docs/runbooks/prd-runbook.md`
 - `docs/runbooks/review-runbook.md`
+- `docs/runbooks/change-runbook.md`
 - `docs/runbooks/fix-runbook.md`
 - `docs/architecture/responsibility-boundaries.md`
 - `docs/architecture/action-cards.md`

@@ -6,5 +6,7 @@
   "NextRecommended": "Confirm change classification with PM and reopen alignment if needed",
   "ContextSummary": "A post-delivery request was classified before entering change handling",
   "ChangeCategory": "new_module",
-  "ChangeCategoryConfirmedByPm": false
+  "ChangeCategoryConfirmedByPm": false,
+  "ArtifactField": "change_records",
+  "ArtifactPath": "output/review/change-v1.json"
 }

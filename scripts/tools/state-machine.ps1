@@ -19,6 +19,21 @@ function HasItems {
     return @($Value).Count -gt 0
 }
 
+function HasMinimalContextPackage {
+    param([object]$Status)
+
+    if ($null -eq $Status.context_package) { return $false }
+
+    $package = $Status.context_package
+    $hasRequest = HasText $package.request_summary
+    $hasBusinessStage = HasText $package.business_stage
+    $hasClueField = $null -ne $package.PSObject.Properties["system_or_page_clues"]
+    $hasMaterialField = $null -ne $package.PSObject.Properties["material_paths"]
+    $hasGapField = $null -ne $package.PSObject.Properties["context_gaps"]
+
+    return ($hasRequest -and $hasBusinessStage -and $hasClueField -and $hasMaterialField -and $hasGapField)
+}
+
 function Get-ScenarioMode {
     param([object]$Status)
 
@@ -41,6 +56,10 @@ function Is-SampleScenario {
 
 function Get-CurrentNode {
     param([object]$Status)
+
+    if (-not (HasMinimalContextPackage $Status)) {
+        return "听需求"
+    }
 
     $stage = "$($Status.current_stage)".Trim()
     $mode = "$($Status.current_mode)".Trim()
@@ -78,12 +97,20 @@ function Get-PreferredSkill {
         [bool]$IsSampleScenario
     )
 
-    if (HasItems $Status.review_state.must_fix_before_next_stage) {
-        return "omp-fix"
+    if (-not (HasMinimalContextPackage $Status)) {
+        return "omp-listen"
     }
 
     if ($Status.current_mode -eq "change_control" -or $Status.current_stage -eq "omp-change") {
         return "omp-change"
+    }
+
+    if (HasItems $Status.overwrite_queue) {
+        return "omp-fix"
+    }
+
+    if (HasItems $Status.review_state.must_fix_before_next_stage) {
+        return "omp-fix"
     }
 
     if (HasItems $Status.pending_confirmations) {
@@ -148,8 +175,16 @@ function Get-AllowedSkills {
         [string]$PreferredSkill
     )
 
+    if ($PreferredSkill -eq "omp-listen") {
+        return @("omp-listen", "omp-reply", "omp-check")
+    }
+
     if ($Status.current_mode -eq "change_control" -or $Status.current_stage -eq "omp-change") {
         return @("omp-change", "omp-check", "omp-fix")
+    }
+
+    if ($PreferredSkill -eq "omp-fix") {
+        return @("omp-fix", "omp-review", "omp-change")
     }
 
     if ($PreferredSkill -in @("omp-proto", "omp-prd", "omp-review", "omp-fix")) {

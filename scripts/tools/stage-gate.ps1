@@ -23,6 +23,155 @@ function HasItems {
     return @($Value).Count -gt 0
 }
 
+function HasMinimalContextPackage {
+    param([object]$Status)
+
+    if ($null -eq $Status.context_package) { return $false }
+
+    $package = $Status.context_package
+    return ((HasText $package.request_summary) -and
+        (HasText $package.business_stage) -and
+        $null -ne $package.PSObject.Properties["system_or_page_clues"] -and
+        $null -ne $package.PSObject.Properties["material_paths"] -and
+        $null -ne $package.PSObject.Properties["context_gaps"])
+}
+
+function HasTraceabilityMeta {
+    param([object]$Status)
+
+    return ($null -ne $Status.traceability -and
+        $null -ne $Status.traceability.meta -and
+        (HasText $Status.traceability.meta.version) -and
+        (HasText $Status.traceability.meta.scope_summary) -and
+        (HasText $Status.traceability.meta.business_goal))
+}
+
+function HasModuleAnchors {
+    param([object]$Status)
+
+    if ($null -eq $Status.traceability -or $null -eq $Status.traceability.anchors) { return $false }
+    return HasItems $Status.traceability.anchors.modules
+}
+
+function HasPageOrFlowAnchors {
+    param([object]$Status)
+
+    if (-not (HasModuleAnchors $Status)) { return $false }
+
+    foreach ($module in @($Status.traceability.anchors.modules)) {
+        if ($null -eq $module) { continue }
+        if (-not (HasItems $module.pages)) { continue }
+
+        foreach ($page in @($module.pages)) {
+            if ($null -eq $page) { continue }
+            if ((HasText $page.page_name) -or (HasItems $page.flows)) {
+                return $true
+            }
+        }
+    }
+
+    return $false
+}
+
+function Get-TraceabilityActionRefs {
+    param([object]$Status)
+
+    $refs = New-Object System.Collections.Generic.List[string]
+    if (-not (HasModuleAnchors $Status)) { return @() }
+
+    foreach ($module in @($Status.traceability.anchors.modules)) {
+        if ($null -eq $module -or -not (HasItems $module.pages)) { continue }
+        foreach ($page in @($module.pages)) {
+            if ($null -eq $page -or -not (HasItems $page.flows)) { continue }
+            foreach ($flow in @($page.flows)) {
+                if ($null -eq $flow -or -not (HasItems $flow.actions)) { continue }
+                foreach ($action in @($flow.actions)) {
+                    if ($null -eq $action) { continue }
+
+                    $ruleRefs = @()
+                    $protoRefs = @()
+
+                    if ($null -ne $action.rules_ref) {
+                        $ruleRefs = @($action.rules_ref)
+                    }
+                    if ($null -ne $action.prototype_ref) {
+                        $protoRefs = @($action.prototype_ref)
+                    }
+
+                    foreach ($ruleRef in $ruleRefs) {
+                        foreach ($protoRef in $protoRefs) {
+                            if (HasText $ruleRef -and HasText $protoRef) {
+                                $refs.Add(("{0} <-> {1}" -f $protoRef.ToString().Trim(), $ruleRef.ToString().Trim()))
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return @($refs | Select-Object -Unique)
+}
+
+function HasTraceabilityReferenceMismatch {
+    param([object]$Status)
+
+    if ($null -eq $Status.traceability -or $null -eq $Status.traceability.artifact_contract) { return $true }
+
+    $expected = @(Get-TraceabilityActionRefs -Status $Status)
+    $shared = @($Status.traceability.artifact_contract.shared_refs | Where-Object { $null -ne $_ } | ForEach-Object { $_.ToString().Trim() } | Where-Object { $_ })
+
+    if ($expected.Count -eq 0) {
+        return $false
+    }
+
+    if ($shared.Count -eq 0) {
+        return $true
+    }
+
+    foreach ($item in $expected) {
+        if ($shared -notcontains $item) {
+            return $true
+        }
+    }
+
+    return $false
+}
+
+function HasConfirmedFactsBoundaryLeak {
+    param([object]$Status)
+
+    if ($null -eq $Status.traceability -or $null -eq $Status.traceability.meta) { return $false }
+
+    foreach ($fact in @($Status.traceability.meta.confirmed_facts)) {
+        if (-not (HasText $fact)) { continue }
+        $text = $fact.ToString().Trim()
+        if ($text -match "未确认|待确认|待澄清|open question|open_questions|pending confirmation") {
+            return $true
+        }
+    }
+
+    return $false
+}
+
+function HasOpenQuestionProgressConflict {
+    param([object]$Status)
+
+    if ($null -eq $Status.traceability -or $null -eq $Status.traceability.meta) { return $false }
+    if (-not (HasItems $Status.traceability.meta.open_questions)) { return $false }
+    if ($null -eq $Status.traceability.meta.can_progress) { return $false }
+
+    return [bool]$Status.traceability.meta.can_progress
+}
+
+function CanProgressByTraceability {
+    param([object]$Status)
+
+    if ($null -eq $Status.traceability -or $null -eq $Status.traceability.meta) { return $false }
+    if ($null -eq $Status.traceability.meta.can_progress) { return $false }
+    return [bool]$Status.traceability.meta.can_progress
+}
+
 function Get-ScenarioMode {
     param([object]$Status)
 
@@ -43,6 +192,35 @@ function IsSampleScenario {
     param([string]$ScenarioMode)
 
     return $ScenarioMode -in @("sample_validation", "demo_smoke", "demo", "sample")
+}
+
+function HasSampleOnlyContentInRealProject {
+    param([object]$Status)
+
+    $scenarioMode = Get-ScenarioMode $Status
+    if (IsSampleScenario $scenarioMode) { return $false }
+
+    $patterns = @("机制验证", "仅用于机制验证", "样例", "demo", "sample")
+
+    foreach ($pattern in $patterns) {
+        if (HasText $Status.context_summary -and $Status.context_summary -match $pattern) {
+            return $true
+        }
+
+        if ($null -ne $Status.collaboration_context -and (HasText $Status.collaboration_context.sample_notice) -and $Status.collaboration_context.sample_notice -match $pattern) {
+            return $true
+        }
+
+        if ($null -ne $Status.traceability -and $null -ne $Status.traceability.meta) {
+            foreach ($fact in @($Status.traceability.meta.confirmed_facts)) {
+                if (HasText $fact -and $fact -match $pattern) {
+                    return $true
+                }
+            }
+        }
+    }
+
+    return $false
 }
 
 function IsOneOf {
@@ -96,10 +274,30 @@ if (HasItems $status.blockers) {
     $errors.Add("blockers are not empty")
 }
 
+if (HasSampleOnlyContentInRealProject $status) {
+    $errors.Add("sample-only conclusions leaked into a real_project context")
+}
+
+if (HasConfirmedFactsBoundaryLeak $status) {
+    $errors.Add("unconfirmed content leaked into traceability.meta.confirmed_facts")
+}
+
+if (HasOpenQuestionProgressConflict $status) {
+    $errors.Add("traceability.meta.open_questions is not empty while can_progress=true")
+}
+
 switch ($Gate) {
     "omp-reply" {
+        if (-not (HasMinimalContextPackage $status)) {
+            $errors.Add("context_package is incomplete")
+        }
+
         if (-not (HasText $status.current_version)) {
             $errors.Add("current_version is missing")
+        }
+
+        if (-not (HasTraceabilityMeta $status)) {
+            $errors.Add("traceability.meta is incomplete")
         }
 
         $hasPlan = HasText $status.stable_baselines.response_plan
@@ -113,6 +311,18 @@ switch ($Gate) {
         }
     }
     "omp-align" {
+        if (-not (HasMinimalContextPackage $status)) {
+            $errors.Add("context_package is incomplete")
+        }
+
+        if (-not (HasTraceabilityMeta $status)) {
+            $errors.Add("traceability.meta is incomplete")
+        }
+
+        if (-not (HasModuleAnchors $status)) {
+            $errors.Add("traceability.anchors.modules is empty")
+        }
+
         if (-not ($status.loop_state.round_number -ge 1)) {
             $errors.Add("loop_state.round_number must be >= 1")
         }
@@ -171,6 +381,26 @@ switch ($Gate) {
         }
     }
     "omp-ready" {
+        if (-not (HasTraceabilityMeta $status)) {
+            $errors.Add("traceability.meta is incomplete")
+        }
+
+        if (-not (HasModuleAnchors $status)) {
+            $errors.Add("traceability.anchors.modules is empty")
+        }
+
+        if (-not (HasPageOrFlowAnchors $status)) {
+            $errors.Add("traceability page/flow anchors are missing")
+        }
+
+        if (HasTraceabilityReferenceMismatch $status) {
+            $errors.Add("traceability action refs and artifact_contract.shared_refs are not aligned")
+        }
+
+        if (-not (CanProgressByTraceability $status)) {
+            $errors.Add("traceability.meta.can_progress must be true before omp-ready")
+        }
+
         if (-not (IsOneOf $status.loop_state.round_result $roundResultEnums)) {
             AddEnumError -List $errors -FieldName "loop_state.round_result" -Value $status.loop_state.round_result -Allowed $roundResultEnums
         }
@@ -209,6 +439,26 @@ switch ($Gate) {
         }
     }
     "omp-deliver" {
+        if (-not (HasTraceabilityMeta $status)) {
+            $errors.Add("traceability.meta is incomplete")
+        }
+
+        if (-not (HasModuleAnchors $status)) {
+            $errors.Add("traceability.anchors.modules is empty")
+        }
+
+        if (-not (HasPageOrFlowAnchors $status)) {
+            $errors.Add("traceability page/flow anchors are missing")
+        }
+
+        if (HasTraceabilityReferenceMismatch $status) {
+            $errors.Add("traceability action refs and artifact_contract.shared_refs are not aligned")
+        }
+
+        if (-not (CanProgressByTraceability $status)) {
+            $errors.Add("traceability.meta.can_progress must be true before formal delivery")
+        }
+
         if (-not (IsOneOf $status.loop_state.round_result $roundResultEnums)) {
             AddEnumError -List $errors -FieldName "loop_state.round_result" -Value $status.loop_state.round_result -Allowed $roundResultEnums
         }

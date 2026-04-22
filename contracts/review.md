@@ -32,6 +32,8 @@
 - 核心流程无法闭合
 - 当前范围或版本边界不清
 - 原型或 PRD 明显脱锚
+- 样例结论污染了真实项目结论
+- 未确认事实被伪装成已确认事实并已影响核心判断
 - 关键验收口径缺失，无法判断是否做对
 - 存在明显权限、合规、资金、数据安全风险
 - 技术或系统依赖前提明显未成立
@@ -47,6 +49,7 @@
 - 角色、权限、数据影响交代不清
 - 交互表达存在明显理解歧义
 - 验收条件不够可执行
+- 正式产物混入明显方法论元话语或 OMP 契约说明
 
 ### 4.3 建议项
 
@@ -64,6 +67,8 @@
 - 未形成可评审版本时不得评审
 - 评审未通过不得伪装进入正式交付
 - 评审结论必须回写状态文件和项目记忆文件
+- `conditional_pass` 和 `rework_required` 必须转入 `omp-fix`
+- `defer` 必须退出当前正式推进，并转入检查或补材料路径
 
 ## 6. 多角色评审团默认角色
 
@@ -131,3 +136,21 @@
 - 阻断项必须进入复评清单
 - 重要项在 `conditional_pass` 下必须进入复评清单
 - 建议项可不进入复评清单
+
+## 10. 回写约束
+
+评审结果应用到状态时，至少应满足：
+
+- `pass`：
+  - 可保留在 `omp-review`
+  - 清空 `fallback_state`
+  - 清空 `must_fix_before_next_stage`
+- `conditional_pass`：
+  - 转入 `omp-fix`
+  - `fallback_type=internal_repair`
+- `rework_required`：
+  - 转入 `omp-fix`
+  - `fallback_type=internal_repair`
+- `defer`：
+  - 转入 `omp-check`
+  - `fallback_type=need_materials`
