@@ -1,4 +1,5 @@
-param(
+﻿param(
+    [string]$Path = '.ohmypm/status.json',
     [string]$Stage,
     [string]$Mode,
     [string]$Version,
@@ -6,7 +7,7 @@ param(
     [string]$NextRecommended,
     [string]$ContextSummary,
     [string]$ContextPackageJson,
-    [string]$TraceabilityJson,
+    [string]$AnchorsStateJson,
     [string]$BaselineField,
     [string]$BaselinePath,
     [string]$ArtifactField,
@@ -31,7 +32,9 @@ param(
 
 $scriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 $statusWrite = Join-Path $scriptRoot 'status-write.ps1'
-$forward = @{}
+$forward = @{
+    Path = $Path
+}
 
 foreach ($key in $PSBoundParameters.Keys) {
     if ($key -ne 'Path') {
@@ -40,3 +43,4 @@ foreach ($key in $PSBoundParameters.Keys) {
 }
 
 & $statusWrite @forward
+

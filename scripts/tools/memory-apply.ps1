@@ -1,7 +1,7 @@
-param(
+﻿param(
     [Parameter(Mandatory = $true)]
     [string]$PayloadPath,
-    [string]$Path = ".ohmypm/memory.md"
+    [string]$Path = '.ohmypm/memory.md'
 )
 
 function Fail {
@@ -47,7 +47,7 @@ function Apply-SectionUpdate {
     }
 
     if ($startIndex -lt 0) {
-        Fail "memory section not found"
+        Fail '项目记忆章节不存在'
     }
 
     $before = @()
@@ -64,28 +64,28 @@ function Apply-SectionUpdate {
     $updated = @()
     $updated += $before
     $updated += $contentLines
-    $updated += ""
+    $updated += ''
     $updated += $after
     return $updated
 }
 
 if (-not (Test-Path -LiteralPath $PayloadPath)) {
-    Fail "memory payload not found: $PayloadPath"
+    Fail "项目记忆更新载荷不存在：$PayloadPath"
 }
 
 if (-not (Test-Path -LiteralPath $Path)) {
-    Fail "ohmypm-memory.md not found."
+    Fail '项目记忆文件不存在：.ohmypm/memory.md'
 }
 
 $payload = Get-Content -Raw -LiteralPath $PayloadPath | ConvertFrom-Json
 if (-not $payload.updates) {
-    Fail "memory payload missing updates"
+    Fail '缺少字段：updates'
 }
 
 $lines = @(Get-Content -LiteralPath $Path)
 foreach ($update in @($payload.updates)) {
     if (-not $update.PSObject.Properties['Content']) {
-        Fail "memory update missing Content"
+        Fail '缺少字段：Content'
     }
 
     $lines = @(Apply-SectionUpdate -Lines $lines -Update $update)
@@ -94,5 +94,4 @@ foreach ($update in @($payload.updates)) {
 $content = ($lines -join [Environment]::NewLine)
 $utf8Bom = New-Object System.Text.UTF8Encoding($true)
 [System.IO.File]::WriteAllText((Resolve-Path -LiteralPath $Path), $content, $utf8Bom)
-Write-Host "[OhMyPm] ohmypm-memory.md batch updated." -ForegroundColor Green
-
+Write-Host '[OhMyPm] 项目记忆已批量更新。' -ForegroundColor Green

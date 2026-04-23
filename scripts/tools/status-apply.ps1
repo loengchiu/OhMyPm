@@ -1,4 +1,4 @@
-param(
+﻿param(
     [Parameter(Mandatory = $true)]
     [string]$PayloadPath
 )
@@ -10,7 +10,7 @@ function Fail {
 }
 
 if (-not (Test-Path -LiteralPath $PayloadPath)) {
-    Fail "status payload not found: $PayloadPath"
+    Fail "状态载荷文件不存在：$PayloadPath"
 }
 
 $payload = Get-Content -Raw -LiteralPath $PayloadPath | ConvertFrom-Json
@@ -26,7 +26,7 @@ $fieldMap = @{
     NextRecommended = 'NextRecommended'
     ContextSummary = 'ContextSummary'
     ContextPackageJson = 'ContextPackageJson'
-    TraceabilityJson = 'TraceabilityJson'
+    AnchorsStateJson = 'AnchorsStateJson'
     BaselineField = 'BaselineField'
     BaselinePath = 'BaselinePath'
     ArtifactField = 'ArtifactField'
@@ -57,3 +57,4 @@ foreach ($entry in $fieldMap.GetEnumerator()) {
 }
 
 & $artifactSync @forward
+

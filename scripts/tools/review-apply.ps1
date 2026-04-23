@@ -1,4 +1,4 @@
-param(
+﻿param(
     [Parameter(Mandatory = $true)]
     [string]$ReviewJsonPath
 )
@@ -17,23 +17,23 @@ function Ensure-OneOf {
     )
 
     if ([string]::IsNullOrWhiteSpace($Value)) {
-        Fail "$FieldName cannot be empty"
+        Fail "$FieldName 不能为空"
     }
 
     if ($Allowed -notcontains $Value) {
-        $allowedText = ($Allowed -join ", ")
-        Fail "$FieldName must be one of: $allowedText"
+        $allowedText = ($Allowed -join ', ')
+        Fail "$FieldName 可选值应为：$allowedText"
     }
 }
 
 if (-not (Test-Path -LiteralPath $ReviewJsonPath)) {
-    Fail "review json not found: $ReviewJsonPath"
+    Fail "评审结果文件不存在：$ReviewJsonPath"
 }
 
 $review = Get-Content -Raw -LiteralPath $ReviewJsonPath | ConvertFrom-Json
 
 if (-not $review.unified_conclusion) {
-    Fail "review json missing unified_conclusion"
+    Fail '缺少字段：unified_conclusion'
 }
 
 $result = $review.unified_conclusion.result
@@ -44,14 +44,14 @@ $mustFixItems = @($review.unified_conclusion.must_fix_before_next_stage)
 $canContinue = $review.unified_conclusion.can_continue
 
 if ($null -eq $canContinue) {
-    Fail "review json missing unified_conclusion.can_continue"
+    Fail '缺少字段：unified_conclusion.can_continue'
 }
 
 $scriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 $artifactSync = Join-Path $scriptRoot 'artifact-sync.ps1'
 
 $forward = @{
-    LastAction = 'Applied review panel result'
+    LastAction = 'review_apply'
     NextRecommended = $nextAction
     ReviewResult = $result
     ReviewMustFixJson = $mustFix
@@ -67,34 +67,35 @@ switch ($result) {
     'conditional_pass' {
         $forward.Stage = 'omp-fix'
         $forward.FallbackType = 'internal_repair'
-        $forward.FallbackReason = 'review returned conditional_pass and requires fixes before next stage'
+        $forward.FallbackReason = 'review_result=conditional_pass'
     }
     'rework_required' {
         $forward.Stage = 'omp-fix'
         $forward.FallbackType = 'internal_repair'
-        $forward.FallbackReason = 'review returned rework_required'
+        $forward.FallbackReason = 'review_result=rework_required'
     }
     'defer' {
         $forward.Stage = 'omp-check'
         $forward.FallbackType = 'need_materials'
-        $forward.FallbackReason = 'review returned defer'
+        $forward.FallbackReason = 'review_result=defer'
     }
 }
 
 if (($result -eq 'pass') -and ($mustFixItems.Count -gt 0)) {
-    Fail "pass result cannot keep must_fix_before_next_stage items"
+    Fail 'pass 结论下不得保留 must_fix_before_next_stage'
 }
 
 if (($result -in @('conditional_pass', 'rework_required')) -and ($mustFixItems.Count -eq 0)) {
-    Fail "$result requires must_fix_before_next_stage items"
+    Fail "$result 结论下必须存在 must_fix_before_next_stage"
 }
 
 if (($result -eq 'pass') -and (-not [bool]$canContinue)) {
-    Fail "pass result cannot set can_continue=false"
+    Fail 'pass 结论不能设置 can_continue=false'
 }
 
 if (($result -eq 'rework_required' -or $result -eq 'defer') -and [bool]$canContinue) {
-    Fail "$result cannot set can_continue=true"
+    Fail "$result 结论不能设置 can_continue=true"
 }
 
 & $artifactSync @forward
+

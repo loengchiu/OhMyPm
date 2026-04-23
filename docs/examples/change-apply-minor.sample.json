@@ -1,6 +1,0 @@
-{
-  "change_category": "minor_patch",
-  "change_category_confirmed_by_pm": true,
-  "next_action": "Treat this as a minor patch and repair it inside the current delivery scope",
-  "change_record_path": "output/review/change-v1.json"
-}

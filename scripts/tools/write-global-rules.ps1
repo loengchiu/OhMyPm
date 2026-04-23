@@ -1,4 +1,4 @@
-param(
+﻿param(
     [Parameter(Mandatory = $true)]
     [ValidateSet('codex', 'copilot', 'cursor', 'antigravity', 'trae', 'trae-cn')]
     [string]$HostKind

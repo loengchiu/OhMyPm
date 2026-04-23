@@ -30,11 +30,11 @@ description: "修正已有产物缺陷，并在需要时触发下游修正上游
 
 ## 必读状态
 
-- `stable_baselines.*`
+- `baselines.*`
 - `review_state`
 - `overwrite_queue`
-- `latest_artifacts.fix_records`
-- `loop_state`
+- `artifacts.fix_records`
+- `alignment_state`
 - `fallback_state`
 
 ## 阻断条件
@@ -56,7 +56,6 @@ description: "修正已有产物缺陷，并在需要时触发下游修正上游
 - 若 `overwrite_queue` 非空，应优先处理修复，不得跳回继续交付
 - 不得默认同时读取多个 skill
 - 不得为了保险一次读取很多 contract
-- 对外默认表现为会自己判断下一步的协作型大 skill
 - 输出最后必须只给一个“下一步唯一动作”
 
 ## 回写要求
@@ -69,5 +68,6 @@ description: "修正已有产物缺陷，并在需要时触发下游修正上游
   - `last_action`
   - `next_recommended`
   - `overwrite_queue`
-  - 必要时 `stable_baselines.*`
+  - 必要时 `baselines.*`
+
 

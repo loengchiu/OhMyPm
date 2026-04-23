@@ -30,7 +30,7 @@
 
 ### 2.4 稳定基线
 
-- 通过后，哪一类结论可以进入 `stable_baselines` 或稳定引用范围
+- 通过后，哪一类结论可以进入 `baselines` 或稳定引用范围
 
 ### 2.5 回退动作
 
@@ -89,7 +89,7 @@
   - 进入正式交付的放行或回退结论
 - 禁止越过条件：
   - `pending_confirmations` 非空
-  - `traceability.meta.can_progress=false`
+  - `anchors_state.meta.can_progress=false`
   - 页面 / 流程锚点缺失
 - 稳定基线：
   - 可进入交付的当前版本
@@ -138,3 +138,4 @@
 - Checkpoint 不是独立大阶段，而是阶段准出表达
 - 不得只说“能继续/不能继续”，却不说明稳定了什么
 - 不得把回退动作写成模糊话术
+

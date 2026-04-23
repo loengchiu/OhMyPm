@@ -1,4 +1,4 @@
-param(
+﻿param(
     [string]$RuntimeDir = ".ohmypm",
     [string]$OutputDir = "output"
 )
@@ -14,11 +14,10 @@ $scriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 $repoRoot = Resolve-Path (Join-Path $scriptRoot '..\..')
 $projectRoot = Resolve-Path -LiteralPath '.'
 
-$sourceStatus = Join-Path $repoRoot '.ohmypm\status.json'
-$sourceMemory = Join-Path $repoRoot '.ohmypm\memory.md'
+$sourceStatus = Join-Path $repoRoot 'docs\templates\init-status.template.json'
+$sourceMemory = Join-Path $repoRoot 'docs\templates\init-memory.template.md'
 $targetRuntime = Join-Path $projectRoot $RuntimeDir
 $targetCache = Join-Path $targetRuntime 'cache'
-$targetAlignment = Join-Path $targetRuntime 'alignment'
 $targetOutput = Join-Path $projectRoot $OutputDir
 $targetPrd = Join-Path $targetOutput 'prd'
 $targetPrototype = Join-Path $targetOutput 'prototype'
@@ -26,7 +25,6 @@ $targetReview = Join-Path $targetOutput 'review'
 
 Ensure-Dir $targetRuntime
 Ensure-Dir $targetCache
-Ensure-Dir $targetAlignment
 Ensure-Dir $targetOutput
 Ensure-Dir $targetPrd
 Ensure-Dir $targetPrototype

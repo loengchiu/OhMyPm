@@ -71,8 +71,9 @@
   - 转入 `omp-align`
   - `current_mode=alignment_loop`
   - `fallback_type=reopen_alignment`
-  - `loop_state.round_result=continue_alignment`
+  - `alignment_state.round_result=continue_alignment`
 
 补充规则：
 
 - `restart_alignment` 时，`can_continue` 必须为 `false`
+

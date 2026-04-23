@@ -1,4 +1,4 @@
-﻿# OhMyPm 门禁规则
+# OhMyPm 门禁规则
 
 ## 1. 总原则
 
@@ -131,7 +131,7 @@
 
 ### 3.1 轮次结果
 
-`loop_state.round_result` 只允许：
+`alignment_state.round_result` 只允许：
 
 - `continue_alignment`
 - `need_materials`
@@ -178,3 +178,4 @@
 - 当 `pending_confirmations` 非空时，除非当前动作明确处于 `internal_repair` 或 `need_materials`，否则不得静默推进到更重阶段
 - 当 `change_state.change_category_confirmed_by_pm=false` 时，AI 只能保留初判，不得把该分类当作最终结论继续推进正式交付或正式变更处理
 - 当前版本的正式交付门禁只服务最小主链，不要求同时把 review / change / fix 准备完
+

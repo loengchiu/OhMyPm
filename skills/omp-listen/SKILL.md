@@ -5,6 +5,10 @@ description: "听需求。建立当前需求任务、初始化协作上下文，
 
 # 听需求
 
+## 输出模板
+
+- `docs/templates/real-demand-intake.template.md`
+
 ## 最小读取
 
 - 先读 `.ohmypm/status.json`
@@ -29,6 +33,5 @@ description: "听需求。建立当前需求任务、初始化协作上下文，
 - 若信息不足，记录到 `pending_confirmations`
 - 不得默认同时读取多个 skill
 - 不得为了保险一次读取很多 contract
-- 对外默认表现为会自己判断下一步的协作型大 skill
 - 输出最后必须只给一个“下一步唯一动作”
 

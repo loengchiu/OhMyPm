@@ -1,4 +1,4 @@
-param(
+﻿param(
     [string[]]$Hosts = @('codex', 'copilot', 'cursor', 'antigravity', 'trae', 'trae-cn')
 )
 
@@ -6,7 +6,7 @@ $ErrorActionPreference = 'Stop'
 
 $scriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 $repoRoot = Resolve-Path (Join-Path $scriptRoot '..')
-$writer = Join-Path $repoRoot 'scripts\write-global-rules.ps1'
+$writer = Join-Path $repoRoot 'scripts\tools\write-global-rules.ps1'
 $normalizedHosts = New-Object System.Collections.Generic.List[string]
 
 foreach ($item in $Hosts) {

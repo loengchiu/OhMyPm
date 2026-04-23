@@ -1,11 +1,10 @@
-param(
-    [string]$Path = ".ohmypm/status.json"
+﻿param(
+    [string]$Path = '.ohmypm/status.json'
 )
 
 if (-not (Test-Path -LiteralPath $Path)) {
-    Write-Host "[OhMyPm] ohmypm-status.json not found." -ForegroundColor Yellow
+    Write-Host '[OhMyPm] 状态文件不存在：.ohmypm/status.json' -ForegroundColor Yellow
     exit 1
 }
 
 Get-Content -Raw -LiteralPath $Path
-

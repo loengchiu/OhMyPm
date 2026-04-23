@@ -1,5 +1,5 @@
-param(
-    [string]$Path = ".ohmypm/memory.md",
+﻿param(
+    [string]$Path = '.ohmypm/memory.md',
     [string]$SectionTitle,
     [int]$SectionNumber = 0,
     [Parameter(Mandatory = $true)]
@@ -13,13 +13,12 @@ function Fail {
 }
 
 if (-not (Test-Path -LiteralPath $Path)) {
-    Fail "ohmypm-memory.md not found."
+    Fail '项目记忆文件不存在：.ohmypm/memory.md'
 }
 
 $lines = Get-Content -LiteralPath $Path
 $startIndex = -1
 $endIndex = $lines.Count
-$headingPattern = '^##\s+\d+\.\s+(.+)$'
 $numberPattern = '^##\s+(\d+)\.\s+(.+)$'
 
 for ($i = 0; $i -lt $lines.Count; $i++) {
@@ -50,10 +49,10 @@ for ($i = 0; $i -lt $lines.Count; $i++) {
 
 if ($startIndex -lt 0) {
     if ($SectionNumber -gt 0) {
-        Fail "section not found: $SectionNumber"
+        Fail "项目记忆章节不存在：$SectionNumber"
     }
 
-    Fail "section not found: $SectionTitle"
+    Fail "项目记忆章节不存在：$SectionTitle"
 }
 
 $before = @()
@@ -70,11 +69,10 @@ if ($endIndex -lt $lines.Count) {
 $updated = @()
 $updated += $before
 $updated += $contentLines
-$updated += ""
+$updated += ''
 $updated += $after
 
 $content = ($updated -join [Environment]::NewLine)
 $utf8Bom = New-Object System.Text.UTF8Encoding($true)
 [System.IO.File]::WriteAllText((Resolve-Path -LiteralPath $Path), $content, $utf8Bom)
-Write-Host "[OhMyPm] ohmypm-memory.md updated: $SectionTitle" -ForegroundColor Green
-
+Write-Host '[OhMyPm] 项目记忆已更新。' -ForegroundColor Green

@@ -1,4 +1,4 @@
-param(
+﻿param(
     [string]$AffectedUpstreamJson = '[]',
     [ValidateSet('missing_scope', 'missing_rule', 'structure_conflict', 'baseline_stale', 'review_reversal')]
     [string]$ConflictType = 'missing_rule',
