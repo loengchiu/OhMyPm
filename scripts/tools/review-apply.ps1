@@ -75,7 +75,7 @@ switch ($result) {
         $forward.FallbackReason = 'review_result=rework_required'
     }
     'defer' {
-        $forward.Stage = 'omp-check'
+        $forward.Stage = 'omp-disc'
         $forward.FallbackType = 'need_materials'
         $forward.FallbackReason = 'review_result=defer'
     }

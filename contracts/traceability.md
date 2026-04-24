@@ -165,9 +165,8 @@ OMP 的最小强追溯元数据固定分三部分：
 
 本契约优先约束以下动作：
 
-- `omp-listen`
-- `omp-reply`
-- `omp-ready`
+- `omp-disc`
+- `omp-solution`
 - `omp-proto`
 - `omp-prd`
 - `omp-review`

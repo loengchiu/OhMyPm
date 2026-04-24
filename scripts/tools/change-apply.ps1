@@ -65,23 +65,23 @@ switch ($change.change_category) {
         }
     }
     'new_module' {
-        $stage = 'omp-align'
+        $stage = 'omp-disc'
         $mode = 'alignment_loop'
         $fallbackType = 'reopen_alignment'
         $fallbackReason = 'change_category=new_module'
         $roundResult = 'continue_alignment'
         if (-not $nextAction) {
-            $nextAction = '下一步：重开对齐，按新模块重建范围和交付边界。'
+        $nextAction = '下一步：回到调研，按新模块重建范围和交付边界。'
         }
     }
     'structural_change' {
-        $stage = 'omp-align'
+        $stage = 'omp-disc'
         $mode = 'alignment_loop'
         $fallbackType = 'reopen_alignment'
         $fallbackReason = 'change_category=structural_change'
         $roundResult = 'continue_alignment'
         if (-not $nextAction) {
-            $nextAction = '下一步：重开对齐，按结构性变化重建范围和交付边界。'
+        $nextAction = '下一步：回到调研，按结构性变化重建范围和交付边界。'
         }
     }
 }

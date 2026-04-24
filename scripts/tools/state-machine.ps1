@@ -1,4 +1,4 @@
-﻿param(
+param(
     [string]$Path = '.ohmypm/status.json'
 )
 
@@ -35,10 +35,6 @@ function HasMinimalContextPackage {
 function Get-PreferredSkill {
     param([object]$Status)
 
-    if (-not (HasMinimalContextPackage $Status)) {
-        return 'omp-listen'
-    }
-
     if ($Status.current_mode -eq 'change_control' -or $Status.current_stage -eq 'omp-change') {
         return 'omp-change'
     }
@@ -51,25 +47,19 @@ function Get-PreferredSkill {
         return 'omp-fix'
     }
 
+    if (-not (HasMinimalContextPackage $Status)) {
+        return 'omp-disc'
+    }
+
     if (HasItems $Status.pending_confirmations) {
-        return 'omp-check'
+        return 'omp-disc'
     }
 
     if (HasText $Status.fallback_state.fallback_type) {
-        return 'omp-align'
+        return 'omp-disc'
     }
 
     if ($Status.current_stage -eq 'omp-review') {
-        return 'omp-review'
-    }
-
-    if ($Status.current_stage -eq 'omp-ready') {
-        if (-not (HasText $Status.baselines.prototype)) {
-            return 'omp-proto'
-        }
-        if (-not (HasText $Status.baselines.prd)) {
-            return 'omp-prd'
-        }
         return 'omp-review'
     }
 
@@ -85,21 +75,31 @@ function Get-PreferredSkill {
     }
 
     if ($Status.alignment_state.round_result -eq 'ready_for_preflight') {
-        return 'omp-ready'
+        if (-not (HasText $Status.baselines.prototype)) {
+            return 'omp-proto'
+        }
+        if (-not (HasText $Status.baselines.prd)) {
+            return 'omp-prd'
+        }
+        return 'omp-review'
     }
 
     if ($Status.current_mode -eq 'alignment_loop') {
         if ($Status.alignment_state.round_number -ge 1) {
-            return 'omp-align'
+            return 'omp-solution'
         }
-        return 'omp-reply'
+        return 'omp-disc'
     }
 
-    if ($Status.current_stage -eq 'omp-listen') {
-        return 'omp-reply'
+    if ($Status.current_stage -in @('omp-listen', 'omp-disc')) {
+        return 'omp-disc'
     }
 
-    return 'omp-reply'
+    if ($Status.current_stage -in @('omp-reply', 'omp-align', 'omp-solution')) {
+        return 'omp-solution'
+    }
+
+    return 'omp-disc'
 }
 
 if (-not (Test-Path -LiteralPath $Path)) {
@@ -121,4 +121,3 @@ $result = [ordered]@{
 }
 
 $result | ConvertTo-Json -Depth 10
-

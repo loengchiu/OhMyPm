@@ -1,0 +1,30 @@
+{
+  "solution_shape": "",
+  "current_version": "",
+  "locked_by_pm": false,
+  "lock_scope_summary": "",
+  "modules": [
+    {
+      "module_id": "",
+      "module_name": "",
+      "module_goal": "",
+      "module_outcomes": [],
+      "pages": [
+        {
+          "page_id": "",
+          "page_name": "",
+          "page_type": "",
+          "page_goal": "",
+          "layout_blocks": [],
+          "outcomes": [],
+          "key_elements": [],
+          "key_actions": [],
+          "constraints": []
+        }
+      ]
+    }
+  ],
+  "out_of_scope": [],
+  "non_blocking_todos": [],
+  "notes": []
+}

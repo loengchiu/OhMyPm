@@ -1,6 +1,6 @@
 ﻿param(
     [Parameter(Mandatory = $true)]
-    [ValidateSet('omp-reply', 'omp-align', 'omp-ready', 'omp-deliver', 'omp-change')]
+    [ValidateSet('omp-disc', 'omp-solution', 'omp-preflight', 'omp-deliver', 'omp-change')]
     [string]$Gate,
 
     [string]$Path = '.ohmypm/status.json'
@@ -200,14 +200,14 @@ if (HasConfirmedFactsBoundaryLeak $status) { $errors.Add('confirmed_facts 混入
 if (HasOpenQuestionProgressConflict $status) { $errors.Add('open_questions 未清空但 can_progress=true') }
 
 switch ($Gate) {
-    'omp-reply' {
+    'omp-disc' {
         if (-not (HasMinimalContextPackage $status)) { $errors.Add('context_package 不完整') }
         if (-not (HasText $status.current_version)) { $errors.Add('current_version 为空') }
 if (-not (HasAnchorsStateMeta $status)) { $errors.Add('anchors_state.meta 不完整') }
-        if (-not ((HasText $status.baselines.response_plan) -or (HasItems $status.artifacts.response_notes))) { $errors.Add('缺少回应基线或回应记录') }
+        if (-not ((HasText $status.baselines.response_plan) -or (HasItems $status.artifacts.response_notes))) { $errors.Add('缺少调研基线或调研记录') }
         if (-not (HasText $status.context_summary)) { $errors.Add('context_summary 为空') }
     }
-    'omp-align' {
+    'omp-solution' {
         if (-not (HasMinimalContextPackage $status)) { $errors.Add('context_package 不完整') }
 if (-not (HasAnchorsStateMeta $status)) { $errors.Add('anchors_state.meta 不完整') }
         if (-not (HasModuleAnchors $status)) { $errors.Add('anchors_state.anchors.modules 为空') }
@@ -223,22 +223,22 @@ if (-not (HasAnchorsStateMeta $status)) { $errors.Add('anchors_state.meta 不完
         }
         if ($status.fallback_state.fallback_type -eq 'reopen_alignment' -and $status.alignment_state.round_result -eq 'ready_for_preflight') { $errors.Add('reopen_alignment 不能与 ready_for_preflight 同时存在') }
         if (HasItems $status.pending_confirmations -and $status.fallback_state.fallback_type -notin @('internal_repair', 'need_materials')) {
-            AddAskBackError -List $errors -Reason 'pending_confirmations 未清空，且未标为 internal_repair / need_materials' -Question '请先确认当前最阻塞的待确认项，再继续下一轮对齐。'
+            AddAskBackError -List $errors -Reason 'pending_confirmations 未清空，且未标为 internal_repair / need_materials' -Question '请先确认当前最阻塞的待确认项，再继续下一轮调研。'
         }
-        if (-not ((HasText $status.baselines.response_plan) -or (HasItems $status.artifacts.response_notes))) { $errors.Add('缺少回应产物，无法继续对齐') }
+        if (-not ((HasText $status.baselines.response_plan) -or (HasItems $status.artifacts.response_notes))) { $errors.Add('缺少调研产物，无法继续方案阶段') }
         if (-not (HasText $status.next_recommended)) { $errors.Add('next_recommended 为空') }
     }
-    'omp-ready' {
+    'omp-preflight' {
 if (-not (HasAnchorsStateMeta $status)) { $errors.Add('anchors_state.meta 不完整') }
         if (-not (HasModuleAnchors $status)) { $errors.Add('anchors_state.anchors.modules 为空') }
         if (-not (HasPageOrFlowAnchors $status)) { $errors.Add('缺少页面或流程锚点') }
 if (HasAnchorsStateReferenceMismatch $status) { $errors.Add('shared_refs 与动作引用未对齐') }
-if (-not (CanProgressByAnchorsState $status)) { $errors.Add('进入 omp-ready 前 anchors_state.meta.can_progress 必须为 true') }
+        if (-not (CanProgressByAnchorsState $status)) { $errors.Add('进入预检前 anchors_state.meta.can_progress 必须为 true') }
         if (-not (IsOneOf $status.alignment_state.round_result $roundResultEnums)) { AddEnumError -List $errors -FieldName 'alignment_state.round_result' -Value $status.alignment_state.round_result -Allowed $roundResultEnums }
-        if ($status.alignment_state.round_result -ne 'ready_for_preflight') { $errors.Add('进入 omp-ready 前 alignment_state.round_result 必须为 ready_for_preflight') }
+        if ($status.alignment_state.round_result -ne 'ready_for_preflight') { $errors.Add('进入预检前 alignment_state.round_result 必须为 ready_for_preflight') }
         if (HasText $status.fallback_state.fallback_type) {
             if (-not (IsOneOf $status.fallback_state.fallback_type $fallbackEnums)) { AddEnumError -List $errors -FieldName 'fallback_state.fallback_type' -Value $status.fallback_state.fallback_type -Allowed $fallbackEnums }
-            if ($status.fallback_state.fallback_type -eq 'reopen_alignment') { $errors.Add('reopen_alignment 状态下不能直接进入 omp-ready') }
+            if ($status.fallback_state.fallback_type -eq 'reopen_alignment') { $errors.Add('reopen_alignment 状态下不能直接进入预检') }
         }
         if (HasItems $status.pending_confirmations) { AddAskBackError -List $errors -Reason '开工检查前 pending_confirmations 未清空' -Question '请先确认当前仍未闭合的范围或事实边界，再继续开工检查。' }
         if (-not ((HasText $status.baselines.response_plan) -or (HasItems $status.artifacts.response_notes))) { $errors.Add('缺少稳定回应产物') }

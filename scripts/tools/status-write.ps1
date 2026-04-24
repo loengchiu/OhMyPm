@@ -257,10 +257,10 @@ if (($PSBoundParameters.ContainsKey('FallbackType') -or $PSBoundParameters.Conta
 }
 
 $isHeavyChangeCategory = ($status.change_state.change_category -eq 'new_module') -or ($status.change_state.change_category -eq 'structural_change')
-$isChangeDecisionStage = $status.current_stage -in @('omp-change', 'omp-check')
+$isChangeDecisionStage = $status.current_stage -in @('omp-change', 'omp-disc')
 if (($PSBoundParameters.ContainsKey('ChangeCategory') -or $PSBoundParameters.ContainsKey('ChangeCategoryConfirmedByPm')) -and $isHeavyChangeCategory) {
     if ((-not $status.change_state.change_category_confirmed_by_pm) -and (-not $isChangeDecisionStage)) {
-        Fail '重变更在离开 omp-change / omp-check 前必须确认 ChangeCategoryConfirmedByPm'
+        Fail '重变更在离开 omp-change / omp-disc 前必须确认 ChangeCategoryConfirmedByPm'
     }
 }
 

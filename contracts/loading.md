@@ -18,11 +18,8 @@
 
 由宿主根据自然语言判断当前更像哪一个动作：
 
-- `omp-listen`
-- `omp-reply`
-- `omp-align`
-- `omp-check`
-- `omp-ready`
+- `omp-disc`
+- `omp-solution`
 - `omp-proto`
 - `omp-prd`
 - `omp-review`
@@ -35,7 +32,7 @@
 
 - 涉及长材料或长输出时补读 `contracts/context-guard.md`
 - 需要追问时补读 `contracts/ask-back.md`
-- 开工检查或变更判断时补读 `contracts/gates.md`
+- 进入正式交付或做变更判断时补读 `contracts/gates.md`
 - 进入正式交付时补读 `contracts/delivery.md`
 - 写 PRD 详细需求说明时补读 `contracts/anchors.md`
 - 做评审时补读 `contracts/review.md`

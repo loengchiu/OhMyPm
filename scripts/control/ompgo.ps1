@@ -1,6 +1,6 @@
 ﻿param(
     [string]$IntentText = '',
-    [ValidateSet('', 'omp-listen', 'omp-reply', 'omp-check', 'omp-align', 'omp-ready', 'omp-proto', 'omp-prd', 'omp-review', 'omp-change', 'omp-fix')]
+    [ValidateSet('', 'omp-disc', 'omp-solution', 'omp-proto', 'omp-prd', 'omp-review', 'omp-change', 'omp-fix')]
     [string]$ForceSkill = '',
     [string]$StatusPath = '.ohmypm/status.json',
     [string]$MemoryPath = '.ohmypm/memory.md',

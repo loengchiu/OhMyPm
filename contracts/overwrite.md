@@ -68,7 +68,7 @@
   - 保持 `omp-fix`
   - `fallback_type=internal_repair`
 - `restart_alignment`
-  - 转入 `omp-align`
+- 转入 `omp-disc`
   - `current_mode=alignment_loop`
   - `fallback_type=reopen_alignment`
   - `alignment_state.round_result=continue_alignment`

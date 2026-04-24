@@ -54,7 +54,7 @@ $queueItem = @(
     }
 ) | ConvertTo-Json -Depth 10 -Compress
 
-$nextAction = if ($judge.can_continue) { '下一步：留在当前阶段继续处理复写。' } else { '下一步：回到对齐，修正上游产物后再继续。' }
+$nextAction = if ($judge.can_continue) { '下一步：留在当前阶段继续处理复写。' } else { '下一步：回到调研，修正上游产物后再继续。' }
 $stage = 'omp-fix'
 $mode = 'formal_delivery'
 $fallbackType = 'internal_repair'
@@ -73,10 +73,10 @@ switch ($judge.action_level) {
         $fallbackType = 'internal_repair'
     }
     'restart_alignment' {
-        $stage = 'omp-align'
+        $stage = 'omp-disc'
         $mode = 'alignment_loop'
         $fallbackType = 'reopen_alignment'
-        $nextAction = '下一步：回到对齐，修正上游产物后再继续。'
+    $nextAction = '下一步：回到调研，修正上游产物后再继续。'
         $roundResult = 'continue_alignment'
     }
 }

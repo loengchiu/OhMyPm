@@ -1,6 +1,6 @@
 ﻿param(
     [string]$IntentText = '',
-    [ValidateSet('', 'omp-listen', 'omp-reply', 'omp-check', 'omp-align', 'omp-ready', 'omp-proto', 'omp-prd', 'omp-review', 'omp-change', 'omp-fix')]
+    [ValidateSet('', 'omp-disc', 'omp-solution', 'omp-proto', 'omp-prd', 'omp-review', 'omp-change', 'omp-fix')]
     [string]$ForceSkill = '',
     [string]$StatusPath = '.ohmypm/status.json'
 )
@@ -20,11 +20,8 @@ function Get-ActionName {
     param([string]$Skill)
 
     switch ($Skill) {
-        'omp-listen' { return '听需求' }
-        'omp-reply' { return '先回应' }
-        'omp-check' { return '推进检查' }
-        'omp-align' { return '对齐' }
-        'omp-ready' { return '开工检查' }
+        'omp-disc' { return '调研' }
+        'omp-solution' { return '方案' }
         'omp-proto' { return '做原型' }
         'omp-prd' { return '写 PRD' }
         'omp-review' { return '评审' }
@@ -38,9 +35,8 @@ function Get-GateName {
     param([string]$Skill)
 
     switch ($Skill) {
-        'omp-reply' { return 'omp-reply' }
-        'omp-align' { return 'omp-align' }
-        'omp-ready' { return 'omp-ready' }
+        'omp-disc' { return 'omp-disc' }
+        'omp-solution' { return 'omp-solution' }
         'omp-proto' { return 'omp-deliver' }
         'omp-prd' { return 'omp-deliver' }
         'omp-change' { return 'omp-change' }
@@ -52,16 +48,13 @@ function Get-RequiredContracts {
     param([string]$Skill)
 
     switch ($Skill) {
-'omp-listen' { return @('contracts/gates.md', 'contracts/context-guard.md', 'contracts/context-package.md', 'contracts/traceability.md') }
-'omp-reply' { return @('contracts/context-guard.md', 'contracts/context-package.md', 'contracts/traceability.md', 'contracts/boundary-guard.md') }
-        'omp-check' { return @('contracts/gates.md', 'contracts/checkpoint.md', 'contracts/ask-back.md', 'contracts/context-package.md', 'contracts/boundary-guard.md') }
-        'omp-align' { return @('contracts/context-guard.md', 'contracts/ask-back.md', 'contracts/boundary-guard.md') }
-'omp-ready' { return @('contracts/gates.md', 'contracts/checkpoint.md', 'contracts/traceability.md', 'contracts/delivery.md', 'contracts/boundary-guard.md') }
-'omp-proto' { return @('contracts/delivery.md', 'contracts/gates.md', 'contracts/context-guard.md', 'contracts/boundary-guard.md', 'contracts/traceability.md') }
-'omp-prd' { return @('contracts/delivery.md', 'contracts/gates.md', 'contracts/context-guard.md', 'contracts/anchors.md', 'contracts/traceability.md', 'contracts/boundary-guard.md') }
-'omp-review' { return @('contracts/review.md', 'contracts/traceability.md', 'contracts/boundary-guard.md') }
+        'omp-disc' { return @('contracts/gates.md', 'contracts/context-guard.md', 'contracts/context-package.md', 'contracts/traceability.md', 'contracts/boundary-guard.md') }
+        'omp-solution' { return @('contracts/context-guard.md', 'contracts/ask-back.md', 'contracts/traceability.md', 'contracts/boundary-guard.md') }
+        'omp-proto' { return @('contracts/delivery.md', 'contracts/gates.md', 'contracts/context-guard.md', 'contracts/boundary-guard.md', 'contracts/traceability.md') }
+        'omp-prd' { return @('contracts/delivery.md', 'contracts/gates.md', 'contracts/context-guard.md', 'contracts/anchors.md', 'contracts/traceability.md', 'contracts/boundary-guard.md') }
+        'omp-review' { return @('contracts/review.md', 'contracts/traceability.md', 'contracts/boundary-guard.md') }
         'omp-change' { return @('contracts/gates.md', 'contracts/ask-back.md', 'contracts/boundary-guard.md', 'contracts/overwrite.md') }
-'omp-fix' { return @('contracts/overwrite.md', 'contracts/boundary-guard.md', 'contracts/traceability.md') }
+        'omp-fix' { return @('contracts/overwrite.md', 'contracts/boundary-guard.md', 'contracts/traceability.md') }
         default { return @() }
     }
 }
@@ -78,16 +71,16 @@ function Resolve-ExplicitSkill {
         return $PreferredSkill
     }
 
-    if ($text -match '听需求|listen|初始化') { return 'omp-listen' }
     if ($text -match '评审|review') { return 'omp-review' }
     if ($text -match '改需求|需求变更|变更分类|变更处理|change') { return 'omp-change' }
     if ($text -match '修问题|修正|修复|修复问题|处理问题|fix') { return 'omp-fix' }
     if ($text -match '做原型|原型|proto|prototype') { return 'omp-proto' }
     if ($text -match '写\s*prd|\bprd\b') { return 'omp-prd' }
-    if ($text -match '开工检查|预检|preflight|检查能不能进正式交付') { return 'omp-ready' }
-    if ($text -match '推进检查|追问|ask-back|确认的点|唯一问题') { return 'omp-check' }
-    if ($text -match '对齐|调整') { return 'omp-align' }
-    if ($text -match '先回应|回应|回个话|回话|reply|需求|先看|先帮我|新需求') { return 'omp-reply' }
+    if ($text -match '开工检查|预检|preflight|检查能不能进正式交付') { return $PreferredSkill }
+    if ($text -match '方案稿|方案|solution|sol') { return 'omp-solution' }
+    if ($text -match '调研稿|调研|访谈|澄清|discovery|disc') { return 'omp-disc' }
+    if ($text -match '推进检查|追问|ask-back|确认的点|唯一问题') { return 'omp-disc' }
+    if ($text -match '需求|先看|先帮我|新需求|原始材料|资料') { return 'omp-disc' }
     if ($text -match '继续|下一步|继续吧|往下走') { return $PreferredSkill }
 
     return $PreferredSkill
@@ -118,4 +111,3 @@ $result = [ordered]@{
 }
 
 $result | ConvertTo-Json -Depth 10
-
