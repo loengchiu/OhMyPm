@@ -6,8 +6,11 @@ $ErrorActionPreference = 'Stop'
 
 $scriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 $repoRoot = Resolve-Path (Join-Path $scriptRoot '..')
+$encodingCheck = Join-Path $repoRoot 'scripts\tools\assert-encoding.ps1'
 $writer = Join-Path $repoRoot 'scripts\tools\write-global-rules.ps1'
 $normalizedHosts = New-Object System.Collections.Generic.List[string]
+
+& $encodingCheck -Root $repoRoot
 
 foreach ($item in $Hosts) {
     foreach ($part in ($item -split ',')) {

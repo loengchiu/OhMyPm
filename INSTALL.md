@@ -20,9 +20,17 @@ powershell -File D:\work\OhMyPm\scripts\control\init-project.ps1
 
 - `.ohmypm/status.json`
 - `.ohmypm/memory.md`
+- `.ohmypm/alignment`
+- `output/disc`
+- `output/solution`
 - `output/prd`
 - `output/prototype`
 - `output/review`
+
+其中：
+
+- `output/` 只放人读交付物
+- `.ohmypm/` 只放内部状态、机读锚点和运行时文件
 
 ## 使用
 

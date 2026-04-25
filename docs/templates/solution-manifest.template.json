@@ -1,8 +1,14 @@
 {
   "solution_shape": "",
+  "solution_shape_basis": [],
+  "solution_focus_tags": [],
+  "proto_focus_tags": [],
+  "prd_focus_tags": [],
+  "existing_scope_refs": [],
+  "new_scope_refs": [],
   "current_version": "",
   "locked_by_pm": false,
-  "lock_scope_summary": "",
+  "lock_scope_tags": [],
   "modules": [
     {
       "module_id": "",
@@ -12,6 +18,7 @@
       "pages": [
         {
           "page_id": "",
+          "human_page_code": "",
           "page_name": "",
           "page_type": "",
           "page_goal": "",
@@ -19,7 +26,24 @@
           "outcomes": [],
           "key_elements": [],
           "key_actions": [],
-          "constraints": []
+          "constraints": [],
+          "actions": [
+            {
+              "action_id": "",
+              "anchor_id": "",
+              "action_name": "",
+              "human_title": "",
+              "source_facts": [],
+              "prd_locator": {
+                "heading_path": []
+              },
+              "prototype_locator": {
+                "file": "",
+                "page_code": "",
+                "marker": ""
+              }
+            }
+          ]
         }
       ]
     }

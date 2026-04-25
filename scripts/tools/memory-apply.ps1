@@ -4,6 +4,9 @@
     [string]$Path = '.ohmypm/memory.md'
 )
 
+$scriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
+. (Join-Path $scriptRoot 'encoding.ps1')
+
 function Fail {
     param([string]$Message)
     Write-Error "[OhMyPm] $Message"
@@ -77,12 +80,12 @@ if (-not (Test-Path -LiteralPath $Path)) {
     Fail '项目记忆文件不存在：.ohmypm/memory.md'
 }
 
-$payload = Get-Content -Raw -LiteralPath $PayloadPath | ConvertFrom-Json
+$payload = Read-Utf8Json -Path $PayloadPath
 if (-not $payload.updates) {
     Fail '缺少字段：updates'
 }
 
-$lines = @(Get-Content -LiteralPath $Path)
+$lines = @(Read-Utf8Lines -Path $Path)
 foreach ($update in @($payload.updates)) {
     if (-not $update.PSObject.Properties['Content']) {
         Fail '缺少字段：Content'
@@ -92,6 +95,5 @@ foreach ($update in @($payload.updates)) {
 }
 
 $content = ($lines -join [Environment]::NewLine)
-$utf8Bom = New-Object System.Text.UTF8Encoding($true)
-[System.IO.File]::WriteAllText((Resolve-Path -LiteralPath $Path), $content, $utf8Bom)
+Write-Utf8BomText -Path $Path -Content $content
 Write-Host '[OhMyPm] 项目记忆已批量更新。' -ForegroundColor Green

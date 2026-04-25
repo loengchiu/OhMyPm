@@ -2,6 +2,9 @@
     [string]$Path = '.ohmypm/status.json'
 )
 
+$scriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
+. (Join-Path $scriptRoot 'encoding.ps1')
+
 function Fail {
     param([string]$Message)
     Write-Error "[OhMyPm] $Message"
@@ -53,7 +56,7 @@ if (-not (Test-Path -LiteralPath $Path)) {
     Fail '状态文件不存在：.ohmypm/status.json'
 }
 
-$status = Get-Content -Raw -LiteralPath $Path | ConvertFrom-Json
+$status = Read-Utf8Json -Path $Path
 $triggers = New-Object System.Collections.Generic.List[object]
 
 foreach ($fact in @($status.anchors_state.meta.confirmed_facts)) {
@@ -169,4 +172,3 @@ $result = @{
 }
 
 $result | ConvertTo-Json -Depth 10
-

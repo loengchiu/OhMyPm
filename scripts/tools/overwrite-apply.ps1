@@ -3,6 +3,9 @@
     [string]$JudgeJsonPath
 )
 
+$scriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
+. (Join-Path $scriptRoot 'encoding.ps1')
+
 function Fail {
     param([string]$Message)
     Write-Error "[OhMyPm] $Message"
@@ -30,7 +33,7 @@ if (-not (Test-Path -LiteralPath $JudgeJsonPath)) {
     Fail "复写判断文件不存在：$JudgeJsonPath"
 }
 
-$judge = Get-Content -Raw -LiteralPath $JudgeJsonPath | ConvertFrom-Json
+$judge = Read-Utf8Json -Path $JudgeJsonPath
 
 if (-not $judge.conflict_type) {
     Fail '缺少字段：conflict_type'
@@ -85,7 +88,6 @@ if (($judge.action_level -eq 'restart_alignment') -and [bool]$judge.can_continue
     Fail 'restart_alignment 不能设置 can_continue=true'
 }
 
-$scriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 $artifactSync = Join-Path $scriptRoot 'artifact-sync.ps1'
 
 $forward = @{
@@ -103,4 +105,3 @@ if ($null -ne $roundResult) {
 }
 
 & $artifactSync @forward
-

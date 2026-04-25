@@ -48,10 +48,7 @@ description: "处理正式交付后的新增内容或范围变化，判断是否
 - 若变更推翻主结构，应将下一步写为 `reopen_alignment` 或转正式变更流程，而不是直接补 PRD
 - 当 `change_state.change_category_confirmed_by_pm=false` 时，必须停在当前动作内追这一个确认，不得把当前分类当作最终结论继续推进
 - 若当前 `overwrite_queue` 非空，优先转入 `omp-fix`，不得一边带着复写冲突一边继续做变更归类
-- 不得默认同时读取多个 skill
-- 不得为了保险一次读取很多 contract
 - 对外必须把内部分类翻译成人话，不直接把状态字段丢给 PM
-- 输出最后必须只给一个“下一步唯一动作”
 
 ## 回写要求
 

@@ -3,6 +3,9 @@
     [string]$ChangeJsonPath
 )
 
+$scriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
+. (Join-Path $scriptRoot 'encoding.ps1')
+
 function Fail {
     param([string]$Message)
     Write-Error "[OhMyPm] $Message"
@@ -30,7 +33,7 @@ if (-not (Test-Path -LiteralPath $ChangeJsonPath)) {
     Fail "变更结果文件不存在：$ChangeJsonPath"
 }
 
-$change = Get-Content -Raw -LiteralPath $ChangeJsonPath | ConvertFrom-Json
+$change = Read-Utf8Json -Path $ChangeJsonPath
 
 Ensure-OneOf -Value $change.change_category -Allowed @('minor_patch', 'within_module', 'new_module', 'structural_change') -FieldName 'change_category'
 
@@ -111,4 +114,3 @@ if ($null -ne $change.change_record_path -and "$($change.change_record_path)".Tr
 }
 
 & $artifactSync @forward
-

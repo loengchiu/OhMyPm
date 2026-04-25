@@ -3,6 +3,9 @@
     [string]$PayloadPath
 )
 
+$scriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
+. (Join-Path $scriptRoot 'encoding.ps1')
+
 function Fail {
     param([string]$Message)
     Write-Error "[OhMyPm] $Message"
@@ -13,8 +16,7 @@ if (-not (Test-Path -LiteralPath $PayloadPath)) {
     Fail "状态载荷文件不存在：$PayloadPath"
 }
 
-$payload = Get-Content -Raw -LiteralPath $PayloadPath | ConvertFrom-Json
-$scriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
+$payload = Read-Utf8Json -Path $PayloadPath
 $artifactSync = Join-Path $scriptRoot 'artifact-sync.ps1'
 $forward = @{}
 
@@ -57,4 +59,3 @@ foreach ($entry in $fieldMap.GetEnumerator()) {
 }
 
 & $artifactSync @forward
-

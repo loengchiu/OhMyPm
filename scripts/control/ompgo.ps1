@@ -15,13 +15,14 @@ function Fail {
 
 function Read-Json {
     param([string]$Path)
-    return Get-Content -Raw -LiteralPath $Path | ConvertFrom-Json
+    return Read-Utf8Json -Path $Path
 }
 
 $scriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 $repoRoot = Resolve-Path (Join-Path $scriptRoot '..\..')
 $initScript = Join-Path $scriptRoot 'init-project.ps1'
 $toolsRoot = Join-Path $repoRoot 'scripts\tools'
+. (Join-Path $toolsRoot 'encoding.ps1')
 $statusWrite = Join-Path $toolsRoot 'status-write.ps1'
 $askBackPlan = Join-Path $toolsRoot 'ask-back-plan.ps1'
 $stageGate = Join-Path $toolsRoot 'stage-gate.ps1'

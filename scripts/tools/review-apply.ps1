@@ -3,6 +3,9 @@
     [string]$ReviewJsonPath
 )
 
+$scriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
+. (Join-Path $scriptRoot 'encoding.ps1')
+
 function Fail {
     param([string]$Message)
     Write-Error "[OhMyPm] $Message"
@@ -30,7 +33,7 @@ if (-not (Test-Path -LiteralPath $ReviewJsonPath)) {
     Fail "评审结果文件不存在：$ReviewJsonPath"
 }
 
-$review = Get-Content -Raw -LiteralPath $ReviewJsonPath | ConvertFrom-Json
+$review = Read-Utf8Json -Path $ReviewJsonPath
 
 if (-not $review.unified_conclusion) {
     Fail '缺少字段：unified_conclusion'
@@ -47,7 +50,6 @@ if ($null -eq $canContinue) {
     Fail '缺少字段：unified_conclusion.can_continue'
 }
 
-$scriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 $artifactSync = Join-Path $scriptRoot 'artifact-sync.ps1'
 
 $forward = @{
@@ -98,4 +100,3 @@ if (($result -eq 'rework_required' -or $result -eq 'defer') -and [bool]$canConti
 }
 
 & $artifactSync @forward
-

@@ -6,6 +6,9 @@
     [string]$Path = '.ohmypm/status.json'
 )
 
+$scriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
+. (Join-Path $scriptRoot 'encoding.ps1')
+
 function Fail {
     param([string]$Message)
     Write-Error "[OhMyPm] $Message"
@@ -44,6 +47,31 @@ function HasAnchorsStateMeta {
         (HasText $Status.anchors_state.meta.version) -and
         (HasText $Status.anchors_state.meta.scope_summary) -and
         (HasText $Status.anchors_state.meta.business_goal))
+}
+
+function HasSolutionBaseline {
+    param([object]$Status)
+
+    return ($null -ne $Status.baselines -and
+        $null -ne $Status.baselines.PSObject.Properties['solution'] -and
+        (HasText $Status.baselines.solution))
+}
+
+function HasSolutionNotes {
+    param([object]$Status)
+
+    return ($null -ne $Status.artifacts -and
+        $null -ne $Status.artifacts.PSObject.Properties['solution_notes'] -and
+        (HasItems $Status.artifacts.solution_notes))
+}
+
+function HasAnchorManifest {
+    param([object]$Status)
+
+    return ($null -ne $Status.anchors_state -and
+        $null -ne $Status.anchors_state.meta -and
+        $null -ne $Status.anchors_state.meta.PSObject.Properties['anchor_manifest'] -and
+        (HasText $Status.anchors_state.meta.anchor_manifest))
 }
 
 function HasModuleAnchors {
@@ -189,7 +217,7 @@ if (-not (Test-Path -LiteralPath $Path)) {
     Fail '状态文件不存在：.ohmypm/status.json'
 }
 
-$status = Get-Content -Raw -LiteralPath $Path | ConvertFrom-Json
+$status = Read-Utf8Json -Path $Path
 $errors = New-Object System.Collections.Generic.List[string]
 $roundResultEnums = @('continue_alignment', 'need_materials', 'need_internal_repair', 'ready_for_preflight')
 $fallbackEnums = @('internal_repair', 'need_materials', 'reopen_alignment')
@@ -233,6 +261,9 @@ if (-not (HasAnchorsStateMeta $status)) { $errors.Add('anchors_state.meta 不完
         if (-not (HasModuleAnchors $status)) { $errors.Add('anchors_state.anchors.modules 为空') }
         if (-not (HasPageOrFlowAnchors $status)) { $errors.Add('缺少页面或流程锚点') }
 if (HasAnchorsStateReferenceMismatch $status) { $errors.Add('shared_refs 与动作引用未对齐') }
+        if (-not (HasSolutionBaseline $status)) { $errors.Add('baselines.solution 缺失') }
+        if (-not (HasSolutionNotes $status)) { $errors.Add('artifacts.solution_notes 为空') }
+        if (-not (HasAnchorManifest $status)) { $errors.Add('anchors_state.meta.anchor_manifest 缺失') }
         if (-not (CanProgressByAnchorsState $status)) { $errors.Add('进入预检前 anchors_state.meta.can_progress 必须为 true') }
         if (-not (IsOneOf $status.alignment_state.round_result $roundResultEnums)) { AddEnumError -List $errors -FieldName 'alignment_state.round_result' -Value $status.alignment_state.round_result -Allowed $roundResultEnums }
         if ($status.alignment_state.round_result -ne 'ready_for_preflight') { $errors.Add('进入预检前 alignment_state.round_result 必须为 ready_for_preflight') }
@@ -249,6 +280,9 @@ if (-not (HasAnchorsStateMeta $status)) { $errors.Add('anchors_state.meta 不完
         if (-not (HasModuleAnchors $status)) { $errors.Add('anchors_state.anchors.modules 为空') }
         if (-not (HasPageOrFlowAnchors $status)) { $errors.Add('缺少页面或流程锚点') }
 if (HasAnchorsStateReferenceMismatch $status) { $errors.Add('shared_refs 与动作引用未对齐') }
+if (-not (HasSolutionBaseline $status)) { $errors.Add('baselines.solution 缺失') }
+if (-not (HasSolutionNotes $status)) { $errors.Add('artifacts.solution_notes 为空') }
+if (-not (HasAnchorManifest $status)) { $errors.Add('anchors_state.meta.anchor_manifest 缺失') }
 if (-not (CanProgressByAnchorsState $status)) { $errors.Add('正式交付前 anchors_state.meta.can_progress 必须为 true') }
         if (-not (IsOneOf $status.alignment_state.round_result $roundResultEnums)) { AddEnumError -List $errors -FieldName 'alignment_state.round_result' -Value $status.alignment_state.round_result -Allowed $roundResultEnums }
         if ($status.alignment_state.round_result -ne 'ready_for_preflight') { $errors.Add('正式交付前 alignment_state.round_result 必须为 ready_for_preflight') }

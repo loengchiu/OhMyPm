@@ -6,6 +6,9 @@
     [string]$Content
 )
 
+$scriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
+. (Join-Path $scriptRoot 'encoding.ps1')
+
 function Fail {
     param([string]$Message)
     Write-Error "[OhMyPm] $Message"
@@ -16,7 +19,7 @@ if (-not (Test-Path -LiteralPath $Path)) {
     Fail '项目记忆文件不存在：.ohmypm/memory.md'
 }
 
-$lines = Get-Content -LiteralPath $Path
+$lines = Read-Utf8Lines -Path $Path
 $startIndex = -1
 $endIndex = $lines.Count
 $numberPattern = '^##\s+(\d+)\.\s+(.+)$'
@@ -73,6 +76,5 @@ $updated += ''
 $updated += $after
 
 $content = ($updated -join [Environment]::NewLine)
-$utf8Bom = New-Object System.Text.UTF8Encoding($true)
-[System.IO.File]::WriteAllText((Resolve-Path -LiteralPath $Path), $content, $utf8Bom)
+Write-Utf8BomText -Path $Path -Content $content
 Write-Host '[OhMyPm] 项目记忆已更新。' -ForegroundColor Green

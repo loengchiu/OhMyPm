@@ -11,6 +11,7 @@
 状态中的最小上下文包固定放在 `context_package`，至少包含：
 
 - `request_summary`
+- `solution_shape`
 - `business_stage`
 - `system_or_page_clues`
 - `material_paths`
@@ -23,23 +24,44 @@
 - 用人话写一句当前想做什么
 - 不得直接照抄方法论术语
 
-### 3.2 `business_stage`
+### 3.2 `solution_shape`
+
+- 记录当前需求属于哪一类：
+  - `iteration`
+  - `new_build`
+  - `hybrid`
+- 若暂时无法判断，可留空，但必须在 `context_gaps` 里写明原因
+
+判断类型时，优先看：
+
+- 是否具备可直接改造的技术底座
+- 是否存在明确挂载点 / 承接点
+- 是否需要新建独立模块 / 页面 / 主流程
+- 当前工作量主体是改旧还是建新
+
+补充硬规则：
+
+- 业务上有旧系统，不等于 `iteration`
+- 只有技术上可承接、实施上可挂改，才优先判为 `iteration`
+- 若业务上有现网系统，但当前项目实际是照着旧系统重建一套，优先判为 `new_build`
+
+### 3.3 `business_stage`
 
 - 写当前需求大概落在哪个业务环节
 - 例如：申请、审批、登记、查询、报表、通知
 
-### 3.3 `system_or_page_clues`
+### 3.4 `system_or_page_clues`
 
 - 记录现有系统、模块、页面、入口或截图线索
 - 可以为空数组
 - 为空时，不代表阻断，但应优先进入后续补齐判断
 
-### 3.4 `material_paths`
+### 3.5 `material_paths`
 
 - 记录当前已拿到的文档、截图、手册、旧 PRD 等资料路径
 - 可以为空数组
 
-### 3.5 `context_gaps`
+### 3.6 `context_gaps`
 
 - 只记录当前会影响回应质量的缺口
 - 普通优化建议不得写进这里
@@ -49,6 +71,7 @@
 `omp-disc` 前的最小上下文包至少满足：
 
 - `request_summary` 非空
+- `solution_shape` 字段存在
 - `business_stage` 非空
 - `system_or_page_clues` 和 `material_paths` 两个字段都存在
 - `context_gaps` 字段存在

@@ -7,6 +7,7 @@
 $ErrorActionPreference = 'Stop'
 
 $ompRoot = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
+. (Join-Path $PSScriptRoot 'encoding.ps1')
 $userHome = $env:USERPROFILE
 $startMarker = '<!-- OHMYPM GLOBAL RULES START -->'
 $endMarker = '<!-- OHMYPM GLOBAL RULES END -->'
@@ -29,7 +30,7 @@ switch ($HostKind) {
             $endMarker
         ) -join "`r`n"
 
-        $existing = if (Test-Path -LiteralPath $path) { Get-Content -LiteralPath $path -Raw } else { '' }
+        $existing = if (Test-Path -LiteralPath $path) { Read-Utf8Text -Path $path } else { '' }
         if ($existing -match [regex]::Escape($startMarker)) {
             $pattern = "(?s)$([regex]::Escape($startMarker)).*?$([regex]::Escape($endMarker))"
             $updated = [regex]::Replace($existing, $pattern, $block)
@@ -41,7 +42,7 @@ switch ($HostKind) {
             $updated = ($existing.TrimEnd() + "`r`n`r`n" + $block)
         }
 
-        Set-Content -LiteralPath $path -Value $updated -Encoding UTF8
+        Write-Utf8BomText -Path $path -Content $updated
     }
 
     'copilot' {
@@ -62,7 +63,7 @@ switch ($HostKind) {
             'If `.ohmypm/status.json` does not exist, ignore this rule and do not run any OhMyPm workflow.'
         ) -join "`r`n"
 
-        Set-Content -LiteralPath $path -Value $content -Encoding UTF8
+        Write-Utf8BomText -Path $path -Content $content
     }
 
     'cursor' {
@@ -82,7 +83,7 @@ switch ($HostKind) {
             $endMarker
         ) -join "`r`n"
 
-        $existing = if (Test-Path -LiteralPath $path) { Get-Content -LiteralPath $path -Raw } else { '' }
+        $existing = if (Test-Path -LiteralPath $path) { Read-Utf8Text -Path $path } else { '' }
         if ($existing -match [regex]::Escape($startMarker)) {
             $pattern = "(?s)$([regex]::Escape($startMarker)).*?$([regex]::Escape($endMarker))"
             $updated = [regex]::Replace($existing, $pattern, $block)
@@ -94,7 +95,7 @@ switch ($HostKind) {
             $updated = ($existing.TrimEnd() + "`r`n`r`n" + $block)
         }
 
-        Set-Content -LiteralPath $path -Value $updated -Encoding UTF8
+        Write-Utf8BomText -Path $path -Content $updated
     }
 
     'antigravity' {
@@ -112,7 +113,7 @@ switch ($HostKind) {
             'If `.ohmypm/status.json` does not exist, ignore this rule and do not run any OhMyPm workflow.'
         ) -join "`r`n"
 
-        Set-Content -LiteralPath $path -Value $content -Encoding UTF8
+        Write-Utf8BomText -Path $path -Content $content
     }
 
     'trae' {
@@ -133,7 +134,7 @@ switch ($HostKind) {
             'If `.ohmypm/status.json` does not exist, ignore this rule and do not run any OhMyPm workflow.'
         ) -join "`r`n"
 
-        Set-Content -LiteralPath $path -Value $content -Encoding UTF8
+        Write-Utf8BomText -Path $path -Content $content
     }
 
     'trae-cn' {
@@ -154,7 +155,7 @@ switch ($HostKind) {
             'If `.ohmypm/status.json` does not exist, ignore this rule and do not run any OhMyPm workflow.'
         ) -join "`r`n"
 
-        Set-Content -LiteralPath $path -Value $content -Encoding UTF8
+        Write-Utf8BomText -Path $path -Content $content
     }
 }
 

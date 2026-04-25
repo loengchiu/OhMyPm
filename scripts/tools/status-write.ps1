@@ -30,6 +30,9 @@
     $ChangeCategoryConfirmedByPm
 )
 
+$scriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
+. (Join-Path $scriptRoot 'encoding.ps1')
+
 function Fail {
     param([string]$Message)
     Write-Error "[OhMyPm] $Message"
@@ -104,11 +107,30 @@ function Parse-BoolValue {
     }
 }
 
+function Ensure-Property {
+    param(
+        [object]$Object,
+        [string]$Name,
+        $DefaultValue
+    )
+
+    if ($null -eq $Object.PSObject.Properties[$Name]) {
+        $Object | Add-Member -NotePropertyName $Name -NotePropertyValue $DefaultValue
+    }
+}
+
 if (-not (Test-Path -LiteralPath $Path)) {
     Fail '状态文件不存在：.ohmypm/status.json'
 }
 
-$status = Get-Content -Raw -LiteralPath $Path | ConvertFrom-Json
+$status = Read-Utf8Json -Path $Path
+Ensure-Property -Object $status -Name 'baselines' -DefaultValue ([pscustomobject]@{})
+Ensure-Property -Object $status.baselines -Name 'solution' -DefaultValue ''
+Ensure-Property -Object $status -Name 'artifacts' -DefaultValue ([pscustomobject]@{})
+Ensure-Property -Object $status.artifacts -Name 'solution_notes' -DefaultValue @()
+Ensure-Property -Object $status -Name 'anchors_state' -DefaultValue ([pscustomobject]@{})
+Ensure-Property -Object $status.anchors_state -Name 'meta' -DefaultValue ([pscustomobject]@{})
+Ensure-Property -Object $status.anchors_state.meta -Name 'anchor_manifest' -DefaultValue ''
 $roundResultEnums = @('continue_alignment', 'need_materials', 'need_internal_repair', 'ready_for_preflight')
 $fallbackEnums = @('internal_repair', 'need_materials', 'reopen_alignment')
 $changeEnums = @('minor_patch', 'within_module', 'new_module', 'structural_change')
@@ -265,7 +287,6 @@ if (($PSBoundParameters.ContainsKey('ChangeCategory') -or $PSBoundParameters.Con
 }
 
 $json = $status | ConvertTo-Json -Depth 10
-$utf8Bom = New-Object System.Text.UTF8Encoding($true)
-[System.IO.File]::WriteAllText((Resolve-Path -LiteralPath $Path), $json, $utf8Bom)
+Write-Utf8BomText -Path $Path -Content $json
 Write-Host '[OhMyPm] 状态文件已更新。' -ForegroundColor Green
 

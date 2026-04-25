@@ -1,5 +1,5 @@
 /**
- * ShitPM 原型共享交互脚本
+ * OhMyPm 原型共享交互脚本
  * 用途：评审原型的通用交互壳，不承载业务逻辑
  * 原则：壳是通用的，业务逻辑由各页面 HTML 自行实现
  *
@@ -578,7 +578,7 @@
   });
 
   // 暴露到全局，供各页面 HTML 使用
-  window.ShitPM = {
+  window.OhMyPmProto = {
     Nav,
     Modal,
     Tabs,

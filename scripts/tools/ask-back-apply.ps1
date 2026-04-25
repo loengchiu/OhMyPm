@@ -8,6 +8,9 @@
     [string]$ContextSummary
 )
 
+$scriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
+. (Join-Path $scriptRoot 'encoding.ps1')
+
 function Fail {
     param([string]$Message)
     Write-Error "[OhMyPm] $Message"
@@ -48,7 +51,7 @@ if (-not (Test-Path -LiteralPath $Path)) {
     Fail '状态文件不存在：.ohmypm/status.json'
 }
 
-$status = Get-Content -Raw -LiteralPath $Path | ConvertFrom-Json
+$status = Read-Utf8Json -Path $Path
 
 if ($PSBoundParameters.ContainsKey('PendingConfirmationsJson')) {
     $status.pending_confirmations = @(Parse-JsonArray $PendingConfirmationsJson)
@@ -76,7 +79,6 @@ if ($PSBoundParameters.ContainsKey('ContextSummary')) {
 }
 
 $json = $status | ConvertTo-Json -Depth 10
-$utf8Bom = New-Object System.Text.UTF8Encoding($true)
-[System.IO.File]::WriteAllText((Resolve-Path -LiteralPath $Path), $json, $utf8Bom)
+Write-Utf8BomText -Path $Path -Content $json
 Write-Host '[OhMyPm] ask-back 已回写状态。' -ForegroundColor Green
 
