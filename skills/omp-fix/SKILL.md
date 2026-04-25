@@ -10,8 +10,8 @@ description: "修正已有产物缺陷，并在需要时触发下游修正上游
 - 先读 `.ohmypm/status.json`
 - 再读 `.ohmypm/memory.md` 的最小必要摘要
 - 当前只执行 `omp-fix`
-- 默认只补 `contracts/overwrite.md`、`contracts/boundary-guard.md`、`contracts/traceability.md`
-- 涉及评审回流时再补 `contracts/review.md`
+- 默认只补 `contracts/overwrite.md`
+- 涉及锚点补 `contracts/traceability.md`；涉及评审回流补 `contracts/review.md`
 
 ## 目标
 

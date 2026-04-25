@@ -57,5 +57,5 @@
 - 未形成可评审版本时不得评审
 - 评审未通过不得伪装进入正式交付
 - 评审结论必须回写状态文件和项目记忆文件
-- `conditional_pass` 和 `rework_required` 必须转入 `omp-fix`
+- `conditional_pass` 和 `rework_required` 必须转入修复动作
 - `defer` 必须退出当前正式推进，并转入检查或补材料路径

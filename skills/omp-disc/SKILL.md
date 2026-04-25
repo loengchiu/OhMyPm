@@ -18,8 +18,8 @@ description: "调研。根据需求方原话和材料生成会面问题提纲，
 - 先读 `.ohmypm/status.json`
 - 再读 `.ohmypm/memory.md` 的最小必要摘要
 - 当前只执行 `omp-disc`
-- 默认只补 `contracts/context-guard.md`、`contracts/context-package.md`、`contracts/traceability.md`
-- 需要追问时再补 `contracts/ask-back.md`
+- 默认只补 `contracts/context-package.md`
+- 长材料补 `contracts/context-guard.md`；追问补 `contracts/ask-back.md`
 
 ## 目标
 
@@ -37,6 +37,11 @@ description: "调研。根据需求方原话和材料生成会面问题提纲，
 ## 强制规则
 
 - 当前动作一次只推进一件事：生成问题、吸收回答、判断推进、输出调研结论四者不得混在同一轮里乱写
+- 调研稿对外表达必须去 AI 化，不写 `AI`、`AI 当前`、`由 AI 判断`、`AI建议`、`AI提示`、`AI生成`
+- 不写解释模板用途的说明性文字，例如“本文件用于记录”“已区分”“以下是”“当前第几轮已可推进”
+- 资料来源使用人类可读名称，不写绝对路径、机器路径、调试路径
+- `下一步` 一律写成：`下一步：`
+- `当前已确认事实`、`当前未确认内容`、`判断依据` 统一放在文末 `内部依据与未确认内容`
 - 未通过当前动作的最低判断，不得把会面问题包装成稳定方案
 - 若关键事实缺口阻塞推进，在当前动作内只生成最小追问
 - 调研稿必须优先使用 `docs/templates/disc-note.template.md`
@@ -44,6 +49,9 @@ description: "调研。根据需求方原话和材料生成会面问题提纲，
 - PM 填完 `A：` 后，先判断是否足够进入方案阶段；不能推进时生成“第 2 轮会面问题提纲”
 - 第二轮及以后只问差量问题，不重复问已确认事实
 - 只有确认足够进入方案阶段后，才输出调研结论
+- 推进判断由当前动作完成；能推进时生成调研结论，不能推进时生成下一轮差量问题或补材料清单
+- 当前动作结束前必须执行 `scripts/tools/context-lint.ps1 -StatusPath .ohmypm/status.json`
+- `context-lint.ps1` 结果为 `fail` 时不得进入方案阶段，必须先补上下文包、补材料或回到追问
 - `context_package.solution_shape` 必须在离开当前动作前满足以下之一：
   - 已判为 `iteration`
   - 已判为 `new_build`

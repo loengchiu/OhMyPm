@@ -37,6 +37,14 @@
 - 不得让 `OhMyPm` 的中间材料直接污染正式产物树
 - 在 `OhMyPm` 已激活项目里，不得把自然语言“做原型 / 写 PRD / 继续下一步”误路由到非当前动作链的旧命令或同名技能
 
+## 5. 硬门禁
+
+- 调研 / 方案：用 `context-lint.ps1`
+- 原型 / PRD / 评审：用 `trace-lint.ps1`
+- 评审：先生成 `review-pack.json`
+- `pass` 继续，`warn` 记录风险后继续，`fail` 先修复
+- 命令见 `docs/hard-gates.md`
+
 # 长期协作原则
 
 - 稳定且反复使用的执行规则，写进对应 `skills/<skill>/SKILL.md`

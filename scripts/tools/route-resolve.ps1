@@ -48,13 +48,13 @@ function Get-RequiredContracts {
     param([string]$Skill)
 
     switch ($Skill) {
-        'omp-disc' { return @('contracts/gates.md', 'contracts/context-guard.md', 'contracts/context-package.md', 'contracts/traceability.md', 'contracts/boundary-guard.md') }
-        'omp-solution' { return @('contracts/context-guard.md', 'contracts/ask-back.md', 'contracts/traceability.md', 'contracts/boundary-guard.md') }
-        'omp-proto' { return @('contracts/delivery.md', 'contracts/gates.md', 'contracts/context-guard.md', 'contracts/boundary-guard.md', 'contracts/traceability.md') }
-        'omp-prd' { return @('contracts/delivery.md', 'contracts/gates.md', 'contracts/context-guard.md', 'contracts/anchors.md', 'contracts/traceability.md', 'contracts/boundary-guard.md') }
-        'omp-review' { return @('contracts/review.md', 'contracts/traceability.md', 'contracts/boundary-guard.md') }
-        'omp-change' { return @('contracts/gates.md', 'contracts/ask-back.md', 'contracts/boundary-guard.md', 'contracts/overwrite.md') }
-        'omp-fix' { return @('contracts/overwrite.md', 'contracts/boundary-guard.md', 'contracts/traceability.md') }
+        'omp-disc' { return @('contracts/context-package.md') }
+        'omp-solution' { return @('contracts/traceability.md') }
+        'omp-proto' { return @('contracts/delivery.md', 'contracts/traceability.md') }
+        'omp-prd' { return @('contracts/delivery.md', 'contracts/anchors.md', 'contracts/traceability.md') }
+        'omp-review' { return @('contracts/review.md', 'contracts/traceability.md') }
+        'omp-change' { return @('contracts/gates.md') }
+        'omp-fix' { return @('contracts/overwrite.md') }
         default { return @() }
     }
 }

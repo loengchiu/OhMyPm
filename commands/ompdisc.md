@@ -13,4 +13,7 @@
 
 ```powershell
 powershell -File .\scripts\tools\stage-gate.ps1 -Gate omp-disc
+powershell -File .\scripts\tools\context-lint.ps1 -StatusPath .ohmypm/status.json
 ```
+
+`fail` 时先补上下文，不进入方案。

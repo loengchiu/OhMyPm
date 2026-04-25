@@ -15,3 +15,5 @@
 
 - `scripts/control/ompgo.ps1`
 
+硬门禁结果：`pass` 继续，`warn` 记录风险后继续，`fail` 先修复。
+

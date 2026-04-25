@@ -10,8 +10,8 @@ description: "处理正式交付后的新增内容或范围变化，判断是否
 - 先读 `.ohmypm/status.json`
 - 再读 `.ohmypm/memory.md` 的最小必要摘要
 - 当前只执行 `omp-change`
-- 默认只补 `contracts/gates.md`、`contracts/boundary-guard.md`
-- 需要追问或涉及复写时再补 `contracts/ask-back.md`、`contracts/overwrite.md`
+- 默认只补 `contracts/gates.md`
+- 需要追问补 `contracts/ask-back.md`；涉及复写补 `contracts/overwrite.md`
 
 ## 目标
 

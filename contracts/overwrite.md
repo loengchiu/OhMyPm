@@ -62,13 +62,13 @@
 复写判定应用到状态时，至少应满足：
 
 - `patch`
-  - 保持 `omp-fix`
   - `fallback_type=internal_repair`
+  - 当前阶段可保持修复态
 - `rollback_upstream`
-  - 保持 `omp-fix`
   - `fallback_type=internal_repair`
+  - 当前阶段可保持修复态
 - `restart_alignment`
-- 转入 `omp-disc`
+  - 转入对齐链
   - `current_mode=alignment_loop`
   - `fallback_type=reopen_alignment`
   - `alignment_state.round_result=continue_alignment`

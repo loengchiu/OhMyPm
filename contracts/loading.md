@@ -16,15 +16,7 @@
 
 ## 2. 再读什么
 
-由宿主根据自然语言判断当前更像哪一个动作：
-
-- `omp-disc`
-- `omp-solution`
-- `omp-proto`
-- `omp-prd`
-- `omp-review`
-- `omp-change`
-- `omp-fix`
+由宿主根据自然语言和当前状态判断当前唯一动作。
 
 默认只读一个当前动作 skill，只补当前动作真正需要的少量 contract。
 
@@ -34,7 +26,7 @@
 - 需要追问时补读 `contracts/ask-back.md`
 - 进入正式交付或做变更判断时补读 `contracts/gates.md`
 - 进入正式交付时补读 `contracts/delivery.md`
-- 写 PRD 详细需求说明时补读 `contracts/anchors.md`
+- 写详细需求说明时补读 `contracts/anchors.md`
 - 做评审时补读 `contracts/review.md`
 - 涉及复写时补读 `contracts/overwrite.md`
 - 涉及记忆时补读 `contracts/memory.md`

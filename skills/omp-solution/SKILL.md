@@ -20,8 +20,8 @@ description: "方案。基于调研结论生成和迭代当前版本方案稿，
 - 先读 `.ohmypm/status.json`
 - 再读 `.ohmypm/memory.md` 的最小必要摘要
 - 当前只执行 `omp-solution`
-- 默认只补 `contracts/context-guard.md`、`contracts/traceability.md`
-- 需要追问时再补 `contracts/ask-back.md`
+- 默认只补 `contracts/traceability.md`
+- 长材料补 `contracts/context-guard.md`；追问补 `contracts/ask-back.md`
 
 ## 目标
 
@@ -40,6 +40,8 @@ description: "方案。基于调研结论生成和迭代当前版本方案稿，
 ## 强制规则
 
 - 当前动作一次只推进一件事
+- 当前动作开始前必须执行 `scripts/tools/context-lint.ps1 -StatusPath .ohmypm/status.json`
+- `context-lint.ps1` 结果为 `fail` 时，不得生成稳定方案稿，必须先回到调研补齐上下文
 - 当前动作必须先判断调研结论是否足够生成方案稿；不够时明确回到 `omp-disc`
 - 当前动作必须先读取 `context_package.solution_shape`
 - 若 `context_package.solution_shape` 为空或仍为“暂不能判断”，不得假装进入稳定方案，必须明确回到 `omp-disc`

@@ -13,3 +13,12 @@
 - 组织多角色评审团
 - 归并为统一评审结论
 - 必要时把推翻基线的问题转入 `ompfix`
+
+评审开始前必须执行：
+
+```powershell
+powershell -File .\scripts\tools\trace-lint.ps1 -StatusPath .ohmypm/status.json
+powershell -File .\scripts\tools\review-pack.ps1 -StatusPath .ohmypm/status.json -OutputPath .ohmypm/review/review-pack.json
+```
+
+`fail` 时不得给通过结论；`review-pack.json` 是评审冷启动输入。

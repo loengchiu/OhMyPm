@@ -48,13 +48,7 @@
 
 ## 4. 运行时触发
 
-以下位置必须检查 ask-back：
-
-- `scripts/tools/stage-gate.ps1`
-- `omp-disc`
-- `omp-solution`
-- `omp-change`
-- 任何准备进入正式交付的入口
+任何动作在推进前发现关键阻塞时，都必须先判断是否需要 ask-back。
 
 检查到后必须：
 

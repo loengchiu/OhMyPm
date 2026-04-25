@@ -21,3 +21,11 @@
 powershell -File .\scripts\tools\stage-gate.ps1 -Gate omp-deliver
 ```
 
+PRD 回写后必须执行：
+
+```powershell
+powershell -File .\scripts\tools\trace-lint.ps1 -StatusPath .ohmypm/status.json
+```
+
+`fail` 时先修锚点、路径或泄漏问题，不进入评审。
+
