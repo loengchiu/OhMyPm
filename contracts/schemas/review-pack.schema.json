@@ -9,5 +9,62 @@
     "traceability",
     "lint_results",
     "review_inputs"
-  ]
+  ],
+  "properties": {
+    "generated_at": { "type": "string" },
+    "status_summary": {
+      "type": "object",
+      "required": ["current_stage", "current_mode", "current_version", "next_recommended", "blockers", "pending_confirmations"],
+      "properties": {
+        "current_stage": { "type": "string" },
+        "current_mode": { "type": "string" },
+        "current_version": { "type": "string" },
+        "next_recommended": { "type": "string" },
+        "blockers": { "type": "array", "items": { "type": "string" } },
+        "pending_confirmations": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "baselines": { "type": "object" },
+    "traceability": {
+      "type": "object",
+      "required": ["anchor_manifest", "manifest_summary"],
+      "properties": {
+        "anchor_manifest": { "type": "string" },
+        "manifest_summary": {
+          "type": "object",
+          "properties": {
+            "module_count": { "type": "integer" },
+            "page_count": { "type": "integer" },
+            "action_count": { "type": "integer" },
+            "module_names": { "type": "array", "items": { "type": "string" } }
+          }
+        }
+      }
+    },
+    "artifacts": {
+      "type": "object",
+      "properties": {
+        "prototypes": { "type": "array", "items": { "type": "string" } },
+        "prd": { "type": "string" },
+        "review_records": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "lint_results": {
+      "type": "object",
+      "required": ["status_schema", "manifest_schema", "trace_check"],
+      "properties": {
+        "status_schema": { "type": "string", "enum": ["pass", "warn", "fail", "missing"] },
+        "manifest_schema": { "type": "string", "enum": ["pass", "warn", "fail", "missing"] },
+        "trace_check": { "type": "string", "enum": ["pass", "warn", "fail", "missing"] }
+      }
+    },
+    "review_inputs": {
+      "type": "object",
+      "required": ["use_this_pack_only", "instruction"],
+      "properties": {
+        "use_this_pack_only": { "type": "boolean" },
+        "instruction": { "type": "string" }
+      }
+    }
+  }
 }

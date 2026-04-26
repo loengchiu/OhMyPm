@@ -22,7 +22,7 @@
 
 最小补读规则：
 
-- 涉及长材料或长输出时补读 `contracts/context-guard.md`
+- 涉及长材料、长输出、跨模块联动、多轮反复修改时补读 `contracts/context-guard.md`
 - 需要追问时补读 `contracts/ask-back.md`
 - 进入正式交付或做变更判断时补读 `contracts/gates.md`
 - 进入正式交付时补读 `contracts/delivery.md`
@@ -39,3 +39,4 @@
 - 让 PM 自己决定该走哪个命令
 - 直接把内部状态字段丢给 PM
 - 把长材料整篇整包塞进活跃上下文
+- 只按字数判断是否防爆，不看文件类型、任务复杂度和轮次状态

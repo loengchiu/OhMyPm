@@ -38,6 +38,7 @@ description: "修正已有产物缺陷，并在需要时触发下游修正上游
 - `artifacts.fix_records`
 - `alignment_state`
 - `fallback_state`
+- `context_risk`
 
 ## 阻断条件
 
@@ -71,6 +72,11 @@ description: "修正已有产物缺陷，并在需要时触发下游修正上游
   - `last_action`
   - `next_recommended`
   - `overwrite_queue`
+  - 必要时 `context_risk.level`
+  - 必要时 `context_risk.length_signals`
+  - 必要时 `context_risk.complexity_signals`
+  - 必要时 `context_risk.decision`
+  - 必要时 `context_risk.last_updated`
   - 必要时 `baselines.*`
 
 

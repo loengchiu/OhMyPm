@@ -20,9 +20,10 @@ description: "调研。根据需求方原话和材料生成会面问题提纲，
 - 若 `.ohmypm/alignment/`、`output/disc`、`output/solution`、`output/prd`、`output/prototype`、`output/review` 不存在，先创建目录
 - 先读 `.ohmypm/status.json`
 - 再读 `.ohmypm/memory.md` 的最小必要摘要
+- 若 `context_risk` 不存在，先按最小结构补齐后再继续
 - 当前只执行 `omp-disc`
 - 默认只补 `contracts/context-package.md`
-- 长材料补 `contracts/context-guard.md`；追问补 `contracts/ask-back.md`
+- 命中长材料、文件类型高成本、多轮累积或复杂度升高时补 `contracts/context-guard.md`；追问补 `contracts/ask-back.md`
 
 ## 目标
 
@@ -61,9 +62,27 @@ description: "调研。根据需求方原话和材料生成会面问题提纲，
   - 已判为 `hybrid`
   - 明确记录“暂不能判断”以及阻塞原因
 - 调研结论不是方案稿，不冻结模块、页面、关键元素、关键动作或关键约束
+- 若对齐已超过 4 轮，必须先生成轮次摘要再继续吸收新增信息
+- 若对齐已超过 6 轮，必须先冻结当前状态，再决定继续追问还是允许推进
+- `context_risk` 的 `length_signals / complexity_signals / decision` 必须使用 `contracts/context-guard.md` 中的标准口径
 - 当 `solution_shape` 为 `iteration` 时，必须优先问清挂载点、改造入口、存量约束
 - 当 `solution_shape` 为 `new_build` 时，必须优先问清模块边界、主流程、角色边界
 - 当 `solution_shape` 为 `hybrid` 时，必须优先问清哪些沿用、哪些新建、两者怎么衔接
 - 模块级粗估只给区间，不给伪精确数字
 - 粗估必须带出复杂度来源、关键风险和排期影响
 - 最终对外承诺仍由 PM 拍板
+
+## 回写要求
+
+- 更新 `.ohmypm/status.json` 中的：
+  - `current_stage`
+  - `current_mode`
+  - `last_action`
+  - `next_recommended`
+  - `alignment_state.*`
+  - `context_package.*`
+  - `context_risk.level`
+  - `context_risk.length_signals`
+  - `context_risk.complexity_signals`
+  - `context_risk.decision`
+  - `context_risk.last_updated`

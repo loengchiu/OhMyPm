@@ -19,9 +19,10 @@ description: "方案。基于调研结论生成和迭代当前版本方案稿，
 
 - 先读 `.ohmypm/status.json`
 - 再读 `.ohmypm/memory.md` 的最小必要摘要
+- 读取 `context_risk`；若不存在，先按最小结构补齐
 - 当前只执行 `omp-solution`
 - 默认只补 `contracts/traceability.md`
-- 长材料补 `contracts/context-guard.md`；追问补 `contracts/ask-back.md`
+- 命中长材料、跨模块、跨产物或多轮累积时补 `contracts/context-guard.md`；追问补 `contracts/ask-back.md`
 
 ## 目标
 
@@ -47,6 +48,8 @@ description: "方案。基于调研结论生成和迭代当前版本方案稿，
 - 方案稿是当前版本的唯一人读真值；PM 对方案的修改优先落在方案稿，不要求手改上游调研稿
 - 每次重跑当前动作时，必须先吸收已有方案稿修改，再判断是继续补方案、回到 `omp-disc`，还是进入 `omp-proto` / `omp-prd`
 - 当前动作不得把“PM 看着满意”直接等同于“已满足进入下一步条件”
+- 当前动作不得只按字数判断是否防爆；必须同时看文件类型、模块范围、产物范围和轮次复杂度
+- `context_risk` 的 `length_signals / complexity_signals / decision` 必须使用 `contracts/context-guard.md` 中的标准口径
 - 方案稿使用完整列举和明确边界来表达范围；已确认内容写完整，未确认内容单独标注待补
 - 只有在方案范围、模块、页面、关键元素、关键动作、关键约束已经足够稳定时，才能把当前方案作为稳定锚点
 - 当 `solution_shape=iteration` 时，方案稿必须显式写出存量承接、改造入口和兼容约束
@@ -66,3 +69,8 @@ description: "方案。基于调研结论生成和迭代当前版本方案稿，
   - `artifacts.solution_notes`
   - `anchors_state.meta.anchor_manifest`
   - `alignment_state.current_output`
+  - `context_risk.level`
+  - `context_risk.length_signals`
+  - `context_risk.complexity_signals`
+  - `context_risk.decision`
+  - `context_risk.last_updated`

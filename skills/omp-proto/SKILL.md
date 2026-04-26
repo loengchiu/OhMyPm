@@ -9,9 +9,10 @@ description: "做原型。生成交付型原型，作为当前最小主链中的
 
 - 先读 `.ohmypm/status.json`
 - 再读 `.ohmypm/memory.md` 的最小必要摘要
+- 读取 `context_risk`；若不存在，先按最小结构补齐
 - 当前只执行 `omp-proto`
 - 默认只补 `contracts/delivery.md`、`contracts/traceability.md`
-- 门禁异常补 `contracts/gates.md`；长材料补 `contracts/context-guard.md`
+- 门禁异常补 `contracts/gates.md`；命中长材料、长输出或跨模块联动时补 `contracts/context-guard.md`
 - 外部知识只允许局部回查
 
 ## 目标
@@ -63,6 +64,8 @@ description: "做原型。生成交付型原型，作为当前最小主链中的
 - 原型正文不写方法论说明、内部术语、契约说明
 - 列表页 / 详情页 / 弹窗或抽屉 / 结果页中，至少要有当前需求真正需要的页面承接位
 - 原型不得脱离当前追溯元数据和锚点生成
+- `context_risk` 的 `length_signals / complexity_signals / decision` 必须使用 `contracts/context-guard.md` 中的标准口径
+- 若原型范围同时覆盖多个模块、多个页面组，或同时联动 PRD 判断，必须按 `contracts/context-guard.md` 先做分块计划
 - 原型生成时必须读取内部 `anchor_manifest`；页面可见区域只显示页面编号和标注小数字，完整组合锚点只写入隐藏属性或内部 manifest
 - 原型生成后必须执行 `python scripts/python/omp-lint.py trace-check --status-path .ohmypm/status.json`；结果为 `fail` 时不得进入 PRD，必须先修正 manifest、路径或机读字段泄漏
 - 原型必须让研发只看原型即可先理解页面位置、主流程、关键动作、状态变化和联动关系
@@ -84,4 +87,9 @@ description: "做原型。生成交付型原型，作为当前最小主链中的
   - `next_recommended`
   - `baselines.prototype`
   - `artifacts.prototypes`
+  - `context_risk.level`
+  - `context_risk.length_signals`
+  - `context_risk.complexity_signals`
+  - `context_risk.decision`
+  - `context_risk.last_updated`
 

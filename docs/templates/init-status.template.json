@@ -13,6 +13,13 @@
     "material_paths": [],
     "context_gaps": []
   },
+  "context_risk": {
+    "level": "low",
+    "length_signals": [],
+    "complexity_signals": [],
+    "decision": "",
+    "last_updated": ""
+  },
   "baselines": {
     "response_plan": "",
     "solution": "",
