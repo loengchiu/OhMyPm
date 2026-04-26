@@ -37,10 +37,10 @@ powershell -File D:\work\OhMyPm\scripts\control\init-project.ps1
 ## 运行入口
 
 默认通过自然语言使用。  
-如需强制走主控脚本：
+如需强制走主控入口：
 
 ```powershell
-powershell -File D:\work\OhMyPm\scripts\control\ompgo.ps1
+python D:\work\OhMyPm\scripts\python\ohmypm_tools.py ompgo
 ```
 
 ## 当前约束

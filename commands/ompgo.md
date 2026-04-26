@@ -11,9 +11,9 @@
 - 不存在时初始化项目
 - 存在时根据当前状态恢复到正确动作
 
-建议脚本：
+建议入口：
 
-- `scripts/control/ompgo.ps1`
+- `python D:\work\OhMyPm\scripts\python\ohmypm_tools.py ompgo`
 
 硬门禁结果：`pass` 继续，`warn` 记录风险后继续，`fail` 先修复。
 

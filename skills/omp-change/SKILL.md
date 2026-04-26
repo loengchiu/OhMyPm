@@ -65,8 +65,8 @@ description: "处理正式交付后的新增内容或范围变化，判断是否
   - `artifacts.change_records`
   - 必要时 `overwrite_queue`
 
-## 建议脚本
+## 建议入口
 
-- `scripts/tools/change-apply.ps1`
+- `change-apply`
 
 

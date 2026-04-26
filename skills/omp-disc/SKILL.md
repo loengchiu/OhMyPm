@@ -50,8 +50,8 @@ description: "调研。根据需求方原话和材料生成会面问题提纲，
 - 第二轮及以后只问差量问题，不重复问已确认事实
 - 只有确认足够进入方案阶段后，才输出调研结论
 - 推进判断由当前动作完成；能推进时生成调研结论，不能推进时生成下一轮差量问题或补材料清单
-- 当前动作结束前必须执行 `scripts/tools/context-lint.ps1 -StatusPath .ohmypm/status.json`
-- `context-lint.ps1` 结果为 `fail` 时不得进入方案阶段，必须先补上下文包、补材料或回到追问
+- 当前动作结束前必须执行 `context-lint`
+- `context-lint` 结果为 `fail` 时不得进入方案阶段，必须先补上下文包、补材料或回到追问
 - `context_package.solution_shape` 必须在离开当前动作前满足以下之一：
   - 已判为 `iteration`
   - 已判为 `new_build`

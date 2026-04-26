@@ -39,8 +39,8 @@
 
 ## 5. 硬门禁
 
-- 调研 / 方案：用 `context-lint.ps1`
-- 原型 / PRD / 评审：用 `trace-lint.ps1`
+- 调研 / 方案：执行 `context-lint`
+- 原型 / PRD / 评审：执行 `trace-lint`
 - 评审：先生成 `review-pack.json`
 - `pass` 继续，`warn` 记录风险后继续，`fail` 先修复
 - 命令见 `docs/hard-gates.md`

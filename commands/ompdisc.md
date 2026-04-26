@@ -12,8 +12,8 @@
 建议先执行：
 
 ```powershell
-powershell -File .\scripts\tools\stage-gate.ps1 -Gate omp-disc
-powershell -File .\scripts\tools\context-lint.ps1 -StatusPath .ohmypm/status.json
+python D:\work\OhMyPm\scripts\python\ohmypm_tools.py stage-gate --gate omp-disc
+python D:\work\OhMyPm\scripts\python\ohmypm_tools.py context-lint --status-path .ohmypm/status.json
 ```
 
 `fail` 时先补上下文，不进入方案。

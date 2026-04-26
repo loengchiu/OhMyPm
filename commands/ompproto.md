@@ -17,13 +17,13 @@
 建议先执行：
 
 ```powershell
-powershell -File .\scripts\tools\stage-gate.ps1 -Gate omp-deliver
+python D:\work\OhMyPm\scripts\python\ohmypm_tools.py stage-gate --gate omp-deliver
 ```
 
 原型回写后必须执行：
 
 ```powershell
-powershell -File .\scripts\tools\trace-lint.ps1 -StatusPath .ohmypm/status.json
+python D:\work\OhMyPm\scripts\python\ohmypm_tools.py trace-lint --status-path .ohmypm/status.json
 ```
 
 `fail` 时先修锚点、路径或泄漏问题，不进入 PRD。

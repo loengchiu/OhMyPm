@@ -13,8 +13,8 @@
 建议先执行：
 
 ```powershell
-powershell -File .\scripts\tools\context-lint.ps1 -StatusPath .ohmypm/status.json
-powershell -File .\scripts\tools\stage-gate.ps1 -Gate omp-solution
+python D:\work\OhMyPm\scripts\python\ohmypm_tools.py context-lint --status-path .ohmypm/status.json
+python D:\work\OhMyPm\scripts\python\ohmypm_tools.py stage-gate --gate omp-solution
 ```
 
 `fail` 时先补上下文，不生成稳定方案稿。

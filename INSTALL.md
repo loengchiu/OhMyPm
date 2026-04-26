@@ -35,4 +35,4 @@ powershell -File D:\work\OhMyPm\scripts\control\init-project.ps1
 ## 使用
 
 - 默认自然语言触发
-- 必要时可强制执行 `ompgo.ps1`
+- 必要时可强制执行 `ompgo`

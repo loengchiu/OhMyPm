@@ -23,5 +23,5 @@
 建议先执行：
 
 ```powershell
-powershell -File .\scripts\tools\stage-gate.ps1 -Gate omp-change
+python D:\work\OhMyPm\scripts\python\ohmypm_tools.py stage-gate --gate omp-change
 ```

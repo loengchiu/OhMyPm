@@ -177,9 +177,9 @@
 ## 4. 强制规则
 
 - 门禁不过时，不得用“先出一版再说”伪装推进
-- `context-lint.ps1`、`trace-lint.ps1`、`review-pack.ps1` 是硬门禁输入，不是建议检查
-- `context-lint.ps1` 失败时，不得从调研进入方案
-- `trace-lint.ps1` 失败时，不得从原型或 PRD 进入下一阶段，也不得给评审通过结论
+- `context-lint`、`trace-lint`、`review-pack` 是硬门禁输入，不是建议检查
+- `context-lint` 失败时，不得从调研进入方案
+- `trace-lint` 失败时，不得从原型或 PRD 进入下一阶段，也不得给评审通过结论
 - 评审前必须生成 `review-pack.json`，评审基于冷启动评审包重新判断
 - 轮次结果、回退类型、变更分类不得混用
 - 任何会影响正式交付范围的新增内容，都必须先过变更门禁

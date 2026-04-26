@@ -4,11 +4,11 @@
 
 当前只固定三类硬门禁：
 
-| 脚本 | 使用时机 | 作用 |
+| 工具 | 使用时机 | 作用 |
 | --- | --- | --- |
-| `scripts/tools/context-lint.ps1` | 调研结束前、方案开始前 | 检查上下文包是否足够进入方案 |
-| `scripts/tools/trace-lint.ps1` | 原型结束后、PRD 结束后、评审开始前 | 检查 manifest、PRD、原型是否断链或泄漏机读字段 |
-| `scripts/tools/review-pack.ps1` | 评审开始前 | 生成冷启动评审包 |
+| `context-lint` | 调研结束前、方案开始前 | 检查上下文包是否足够进入方案 |
+| `trace-lint` | 原型结束后、PRD 结束后、评审开始前 | 检查 manifest、PRD、原型是否断链或泄漏机读字段 |
+| `review-pack` | 评审开始前 | 生成冷启动评审包 |
 
 ## 2. 结果解释
 
@@ -25,9 +25,9 @@
 在已初始化 OMP 的项目根目录执行：
 
 ```powershell
-powershell -File D:\work\OhMyPm\scripts\tools\context-lint.ps1 -StatusPath .ohmypm/status.json
-powershell -File D:\work\OhMyPm\scripts\tools\trace-lint.ps1 -StatusPath .ohmypm/status.json
-powershell -File D:\work\OhMyPm\scripts\tools\review-pack.ps1 -StatusPath .ohmypm/status.json -OutputPath .ohmypm/review/review-pack.json
+python D:\work\OhMyPm\scripts\python\ohmypm_tools.py context-lint --status-path .ohmypm/status.json
+python D:\work\OhMyPm\scripts\python\ohmypm_tools.py trace-lint --status-path .ohmypm/status.json
+python D:\work\OhMyPm\scripts\python\ohmypm_tools.py review-pack --status-path .ohmypm/status.json --output-path .ohmypm/review/review-pack.json
 ```
 
 ## 4. 回归检查
