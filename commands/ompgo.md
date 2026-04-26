@@ -8,12 +8,11 @@
 本命令只负责：
 
 - 检查 `.ohmypm/status.json` 是否存在
-- 不存在时初始化项目
+- 不存在时按模板创建最小运行时
 - 存在时根据当前状态恢复到正确动作
 
-建议入口：
+执行原则：
 
-- `python D:\work\OhMyPm\scripts\python\ohmypm_tools.py ompgo`
-
-硬门禁结果：`pass` 继续，`warn` 记录风险后继续，`fail` 先修复。
+- 默认由 AI 直接读取 `.ohmypm/status.json` 后恢复正确动作
+- 不通过额外脚本做路由、状态推进或下一步建议
 

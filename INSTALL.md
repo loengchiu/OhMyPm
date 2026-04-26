@@ -1,22 +1,15 @@
-# 安装说明
+# 使用说明
 
-## 安装
+## 零配置
 
-在 `D:\work\OhMyPm` 执行：
+- clone / 打开仓库后，IDE 直接读取 `AGENTS.md`
+- 不需要执行安装器
+- 不需要向 IDE 配置目录写全局规则
+- 不需要预创建 `.ohmypm/status.json`
 
-```powershell
-powershell -File .\installers\install.ps1
-```
+## 首次运行
 
-## 项目启用
-
-在目标项目根目录执行：
-
-```powershell
-powershell -File D:\work\OhMyPm\scripts\control\init-project.ps1
-```
-
-启用后项目内会有：
+首次在目标项目中提出 PM 主线请求时，AI 自动创建：
 
 - `.ohmypm/status.json`
 - `.ohmypm/memory.md`
@@ -32,7 +25,7 @@ powershell -File D:\work\OhMyPm\scripts\control\init-project.ps1
 - `output/` 只放人读交付物
 - `.ohmypm/` 只放内部状态、机读锚点和运行时文件
 
-## 使用
+## 需要手动执行的只有 Python lint
 
 - 默认自然语言触发
-- 必要时可强制执行 `ompgo`
+- 需要结构校验、关系校验或内部评审包时，执行 `python scripts/python/omp-lint.py ...`

@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OhMyPm Solution Manifest",
+  "type": "object",
+  "required": [
+    "solution_shape",
+    "current_version",
+    "modules"
+  ]
+}

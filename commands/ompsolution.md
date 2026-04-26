@@ -10,11 +10,5 @@
 - 吸收 PM 对方案稿的修改
 - 判断当前方案是否足够进入原型或 PRD
 
-建议先执行：
-
-```powershell
-python D:\work\OhMyPm\scripts\python\ohmypm_tools.py context-lint --status-path .ohmypm/status.json
-python D:\work\OhMyPm\scripts\python\ohmypm_tools.py stage-gate --gate omp-solution
-```
-
-`fail` 时先补上下文，不生成稳定方案稿。
+- 执行前先确认调研结论已足够支撑方案生成
+- 生成 `solution.manifest.json` 后执行 `schema-check --target manifest`

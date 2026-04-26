@@ -17,8 +17,8 @@
 评审开始前必须执行：
 
 ```powershell
-python D:\work\OhMyPm\scripts\python\ohmypm_tools.py trace-lint --status-path .ohmypm/status.json
-python D:\work\OhMyPm\scripts\python\ohmypm_tools.py review-pack --status-path .ohmypm/status.json --output-path .ohmypm/review/review-pack.json
+python scripts/python/omp-lint.py trace-check --status-path .ohmypm/status.json
+python scripts/python/omp-lint.py build-review-pack --status-path .ohmypm/status.json --output-path .ohmypm/review/review-pack.json
 ```
 
 `fail` 时不得给通过结论；`review-pack.json` 是评审冷启动输入。

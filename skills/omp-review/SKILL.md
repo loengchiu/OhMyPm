@@ -36,9 +36,9 @@ description: "组织评审会材料、执行多角色评审团、输出评审结
 ## 强制规则
 
 - 评审会是正式流程节点，不是普通聊天确认
-- 评审开始前必须执行 `trace-lint`
-- 评审开始前必须执行 `review-pack`
-- `trace-lint` 结果为 `fail` 时不得直接给通过结论，必须先进入修复
+- 评审开始前必须执行 `python scripts/python/omp-lint.py trace-check --status-path .ohmypm/status.json`
+- 评审开始前必须执行 `python scripts/python/omp-lint.py build-review-pack --status-path .ohmypm/status.json --output-path .ohmypm/review/review-pack.json`
+- `trace-check` 结果为 `fail` 时不得直接给通过结论，必须先进入修复
 - 评审必须基于 `review-pack.json`、PRD、原型和 manifest 冷启动判断，不沿用 writer 长上下文惯性
 - 评审记录直接记录问题和结论，不写流程说明或方法论说明
 - 评审记录不出现 `AI`、绝对路径、调试路径、内部状态字段

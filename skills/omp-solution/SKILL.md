@@ -40,8 +40,7 @@ description: "方案。基于调研结论生成和迭代当前版本方案稿，
 ## 强制规则
 
 - 当前动作一次只推进一件事
-- 当前动作开始前必须执行 `context-lint`
-- `context-lint` 结果为 `fail` 时，不得生成稳定方案稿，必须先回到调研补齐上下文
+- 当前动作开始前必须先完成调研结论充分性自检；若结论仍不足以稳定生成方案稿，必须先回到 `omp-disc`
 - 当前动作必须先判断调研结论是否足够生成方案稿；不够时明确回到 `omp-disc`
 - 当前动作必须先读取 `context_package.solution_shape`
 - 若 `context_package.solution_shape` 为空或仍为“暂不能判断”，不得假装进入稳定方案，必须明确回到 `omp-disc`
@@ -57,6 +56,8 @@ description: "方案。基于调研结论生成和迭代当前版本方案稿，
 - 人读版只允许落在 `solution.md` 与“建设类型差异说明表”里，不得写机读字段名、JSON 键名、绝对路径或调度说明
 - 机读版只允许落在 `solution.manifest.json` 里，必须以稳定字段、短标签和结构化列表表达，不得把整段人话分析直接复制进去
 - `solution.manifest.json` 重点是锚定建设类型、模块、页面、元素、动作、约束和范围标签，不是重复写一份人读方案稿
+- `solution.md` 与 `solution.manifest.json` 必须同轮生成、同轮修改；禁止从人读稿反推机读稿
+- 生成 `solution.manifest.json` 后，必须执行 `python scripts/python/omp-lint.py schema-check --target manifest --file <manifest-path>`
 - `output/solution` 只放 PM 可直接阅读的方案产物
 - `.ohmypm/alignment` 只放当前方案的内部机读锚点、状态快照和供后续动作读取的结构化文件
 - 因此“建设类型差异说明表”留在 `output/solution`，`solution.manifest.json` 必须落在 `.ohmypm/alignment`

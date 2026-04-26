@@ -15,6 +15,9 @@ description: "调研。根据需求方原话和材料生成会面问题提纲，
 
 ## 最小读取
 
+- 若 `.ohmypm/status.json` 不存在，先按 `docs/templates/init-status.template.json` 创建 `.ohmypm/status.json`
+- 若 `.ohmypm/memory.md` 不存在，先按 `docs/templates/init-memory.template.md` 创建 `.ohmypm/memory.md`
+- 若 `.ohmypm/alignment/`、`output/disc`、`output/solution`、`output/prd`、`output/prototype`、`output/review` 不存在，先创建目录
 - 先读 `.ohmypm/status.json`
 - 再读 `.ohmypm/memory.md` 的最小必要摘要
 - 当前只执行 `omp-disc`
@@ -50,8 +53,8 @@ description: "调研。根据需求方原话和材料生成会面问题提纲，
 - 第二轮及以后只问差量问题，不重复问已确认事实
 - 只有确认足够进入方案阶段后，才输出调研结论
 - 推进判断由当前动作完成；能推进时生成调研结论，不能推进时生成下一轮差量问题或补材料清单
-- 当前动作结束前必须执行 `context-lint`
-- `context-lint` 结果为 `fail` 时不得进入方案阶段，必须先补上下文包、补材料或回到追问
+- 当前动作结束前必须直接完成上下文包自检：`request_summary / solution_shape / business_stage / material_paths / context_gaps` 至少要能支撑“能否进入方案”的判断
+- 上下文自检不过时，不得进入方案阶段，必须先补上下文包、补材料或回到追问
 - `context_package.solution_shape` 必须在离开当前动作前满足以下之一：
   - 已判为 `iteration`
   - 已判为 `new_build`

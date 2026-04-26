@@ -9,11 +9,5 @@
 - 强制进入当前调研轮次
 - 形成会面问题提纲、会后判断和调研结论
 
-建议先执行：
-
-```powershell
-python D:\work\OhMyPm\scripts\python\ohmypm_tools.py stage-gate --gate omp-disc
-python D:\work\OhMyPm\scripts\python\ohmypm_tools.py context-lint --status-path .ohmypm/status.json
-```
-
-`fail` 时先补上下文，不进入方案。
+- 执行前先由当前 skill 自检上下文包是否足够支撑本轮调研结论
+- 未通过时先补材料、补回答或生成下一轮差量问题，不进入方案

@@ -1,16 +1,26 @@
 # OhMyPm 全局规则
 
-当当前项目根目录存在 `.ohmypm/status.json` 时，OhMyPm 工作流激活。
+当用户在当前项目里提出 PM 主线工作请求时，OhMyPm 工作流可激活；若 `.ohmypm/status.json` 不存在，先初始化最小运行时，再进入主线动作。
 
 ## 1. 激活条件
 
-- `.ohmypm/status.json` 存在：进入 OhMyPm 工作流
-- `.ohmypm/status.json` 不存在：只允许初始化、纯咨询或创建初始化文件
+- `.ohmypm/status.json` 存在：直接进入 OhMyPm 工作流
+- `.ohmypm/status.json` 不存在且用户提出 PM 主线请求：先按模板创建最小运行时，再进入 `omp-disc`
+- `.ohmypm/status.json` 不存在且只是纯咨询：允许只回答，不创建运行时
 
 ## 2. 默认入口
 
 - 用户默认通过自然语言使用 OhMyPm
-- 先读 `.ohmypm/status.json` 与 `.ohmypm/memory.md` 的最小必要摘要
+- 若 `.ohmypm/status.json` 不存在，先创建：
+  - `.ohmypm/status.json`（来自 `docs/templates/init-status.template.json`）
+  - `.ohmypm/memory.md`（来自 `docs/templates/init-memory.template.md`）
+  - `.ohmypm/alignment/`
+  - `output/disc`
+  - `output/solution`
+  - `output/prd`
+  - `output/prototype`
+  - `output/review`
+- 再读 `.ohmypm/status.json` 与 `.ohmypm/memory.md` 的最小必要摘要
 - 再判断当前更像哪个动作，只读取一个对应 skill
 - 若存在待确认项、门禁缺口或真实项目阻塞，优先停在当前主动作内处理，不额外暴露机制型 skill
 - 每次输出最后只能收口为：
@@ -39,13 +49,24 @@
 
 ## 5. 硬门禁
 
-- 调研 / 方案：执行 `context-lint`
-- 原型 / PRD / 评审：执行 `trace-lint`
+- 调研 / 方案：由当前 skill 直接完成上下文充分性自检
+- 原型 / PRD / 评审：执行 `trace-check`
 - 评审：先生成 `review-pack.json`
 - `pass` 继续，`warn` 记录风险后继续，`fail` 先修复
 - 命令见 `docs/hard-gates.md`
 
 # 长期协作原则
+
+- `AI / Markdown` 负责主流程动作、产物生成、普通状态回写
+- `Schema` 只负责形状校验：字段、类型、枚举、必填项
+- `Python lint` 只负责关系校验：引用、存在性、一致性、泄漏检查
+- Python 默认只读不写、只查不改；唯一允许生成的新文件是内部 `review-pack.json`
+- Python 不得改写 `status.json`、`.ohmypm/memory.md`、`solution.manifest.json`、PRD、原型等主产物
+- `solution.md` 与 `solution.manifest.json` 必须同轮生成、同轮修改，禁止从人读稿反推机读稿
+- OMP 默认坚持“规则驱动，脚本兜底”；默认由 AI 直接按 skill 执行动作，不得把脚本当主流程驱动层
+- 高频动作不得依赖包装脚本；OMP 仓库不再保留任何运行时 `ps1`
+- `omp-lint.py` 只承接 `schema-check / trace-check / build-review-pack / encoding`；若明显超过 `200-300` 行职责边界，应优先判定为职责漂移
+- 若规则、skill、contract 三处同时描述同一件事，优先把动作规则收回 `SKILL.md`，`contracts/` 只保留跨动作底层约束
 
 - 稳定且反复使用的执行规则，写进对应 `skills/<skill>/SKILL.md`
 - 只跨多个 skill 复用的底层约束，才写进 `contracts/`
@@ -56,5 +77,6 @@
 - 对外稿件默认去 AI 化：不写 AI 痕迹、绝对路径、解释性引用块
 - 对外资料来源用人类可读名称；机器路径只放内部状态、证据或调试文件
 - 若模板、skill、contract 三处同时描述同一件事，优先收敛到 skill；避免规则分散
-- Windows 环境下，`.ps1` 一律使用 `UTF-8 with BOM`；脚本读写 `.md/.json/.txt` 必须使用显式 UTF-8 读写函数，不得依赖 `Get-Content` / `Set-Content` 默认编码；出现中文乱码、解析报错或异常 token 时，先跑 `scripts/tools/assert-encoding.ps1`
+- OMP 默认零配置生效：依赖仓库内 `AGENTS.md`、`skills/`、`contracts/`、`templates/` 直接工作，不向 IDE 配置目录写额外全局规则
+- 若遇到编码问题，优先用 `python scripts/python/omp-lint.py encoding --root <project>` 检查 `.ohmypm/` 和 `output/`
 - 先质疑再设计：不要把用户刚提出的结构默认当成正确方向；先检查是否重复、过度设计或只是新增层级，优先给更小、更稳的方案，只有在简化方案不够时才接受更复杂的结构

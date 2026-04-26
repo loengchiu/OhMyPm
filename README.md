@@ -6,19 +6,20 @@ OhMyPm 是一个给 PM 用的需求对齐与正式交付辅助器。
 
 - `skills/`：动作级执行规则
 - `contracts/`：跨动作底层规则
+- `contracts/schemas/`：结构校验基准
 - `docs/templates/`：初始化模板、PRD 模板、原型模板、评审模板
-- `scripts/control/`：项目初始化与主控入口
-- `scripts/tools/`：状态、门禁、回写工具
+- `scripts/python/omp-lint.py`：结构校验、关系校验与内部 `review-pack` 聚合
 
-## 项目初始化
+## 生效方式
 
-在目标项目根目录执行：
+- 零配置生效：clone / 打开仓库后，IDE 直接读取 `AGENTS.md`
+- 不写 IDE 配置目录
+- 不依赖安装器
+- 不要求预先手动初始化项目
 
-```powershell
-powershell -File D:\work\OhMyPm\scripts\control\init-project.ps1
-```
+## 首次运行初始化
 
-初始化后会生成：
+首次在项目中提出 PM 主线请求时，AI 自动创建：
 
 - `.ohmypm/status.json`
 - `.ohmypm/memory.md`
@@ -34,18 +35,16 @@ powershell -File D:\work\OhMyPm\scripts\control\init-project.ps1
 - `output/` 只放人读交付物
 - `.ohmypm/` 只放内部状态、机读锚点和运行时文件
 
-## 运行入口
+## 运行方式
 
-默认通过自然语言使用。  
-如需强制走主控入口：
-
-```powershell
-python D:\work\OhMyPm\scripts\python\ohmypm_tools.py ompgo
-```
+- 默认通过自然语言使用，由 AI 直接按 skill 规则执行
+- 只有结构校验、关系校验和内部 `review-pack.json` 聚合时才调用 `scripts/python/omp-lint.py`
 
 ## 当前约束
 
 - 模板管文风和版式
 - skill 管流程、门禁、回写
 - contracts 管跨动作底层规则
+- Schema 管字段、枚举、类型
+- Python lint 管引用、存在性、一致性与 `review-pack`
 - 对外稿件默认去 AI 化

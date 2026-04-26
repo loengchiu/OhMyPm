@@ -20,8 +20,7 @@
 - 下一步应写成 `reopen_alignment` 或正式变更流程
 - 不应直接继续补原 PRD
 
-建议先执行：
+执行原则：
 
-```powershell
-python D:\work\OhMyPm\scripts\python\ohmypm_tools.py stage-gate --gate omp-change
-```
+- 变更分类和处理路径由当前 skill 直接判断
+- 不通过额外脚本做范围决策或推进建议

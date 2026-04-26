@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OhMyPm Review Pack",
+  "type": "object",
+  "required": [
+    "generated_at",
+    "status_summary",
+    "baselines",
+    "traceability",
+    "lint_results",
+    "review_inputs"
+  ]
+}

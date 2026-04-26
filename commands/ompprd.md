@@ -15,16 +15,9 @@
 - 写入 `baselines.prd`
 - 让当前主链停在“可判断模板和规则是否够用”的状态
 
-建议先执行：
-
-```powershell
-python D:\work\OhMyPm\scripts\python\ohmypm_tools.py stage-gate --gate omp-deliver
-```
-
 PRD 回写后必须执行：
-
 ```powershell
-python D:\work\OhMyPm\scripts\python\ohmypm_tools.py trace-lint --status-path .ohmypm/status.json
+python scripts/python/omp-lint.py trace-check --status-path .ohmypm/status.json
 ```
 
 `fail` 时先修锚点、路径或泄漏问题，不进入评审。

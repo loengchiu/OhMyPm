@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OhMyPm Status",
+  "type": "object",
+  "required": [
+    "current_mode",
+    "current_stage",
+    "context_package",
+    "baselines",
+    "artifacts",
+    "alignment_state",
+    "fallback_state",
+    "change_state",
+    "review_state",
+    "anchors_state"
+  ]
+}
