@@ -11,6 +11,7 @@
 ## 2. 默认入口
 
 - 用户默认通过自然语言使用 OhMyPm
+- OhMyPm 的 skill 不是单独的 Tool 按钮，但也绝不是“直接读模板生成”；正确顺序必须是：先读 `.ohmypm/status.json` → 判断当前动作 → 只读一个对应 `skills/omp-*/SKILL.md` → 再读取该动作需要的模板和 contract
 - 若 `.ohmypm/status.json` 不存在，先创建：
   - `.ohmypm/status.json`（来自 `docs/templates/init-status.template.json`）
   - `.ohmypm/memory.md`（来自 `docs/templates/init-memory.template.md`）
@@ -22,6 +23,8 @@
   - `output/review`
 - 再读 `.ohmypm/status.json` 与 `.ohmypm/memory.md` 的最小必要摘要
 - 再判断当前更像哪个动作，只读取一个对应 skill
+- 模板不是入口；任何 `solution / proto / prd / review` 产物都不得在未读取对应 skill 的前提下直接按模板生成
+- 除首次初始化外，未先读取 `.ohmypm/status.json` 不得开始 `omp-solution / omp-proto / omp-prd / omp-review / omp-change / omp-fix`
 - 若存在待确认项、门禁缺口或真实项目阻塞，优先停在当前主动作内处理，不额外暴露机制型 skill
 - 每次输出最后只能收口为：
   - `下一步：...`
@@ -46,6 +49,7 @@
 - 不得把未确认内容伪装成已确认事实
 - 不得让 `OhMyPm` 的中间材料直接污染正式产物树
 - 在 `OhMyPm` 已激活项目里，不得把自然语言“做原型 / 写 PRD / 继续下一步”误路由到非当前动作链的旧命令或同名技能
+- 不得跳过“读状态 → 判动作 → 读 skill”这条主链，直接根据模板文件名或上一轮产物名生成新产物
 
 ## 5. 硬门禁
 

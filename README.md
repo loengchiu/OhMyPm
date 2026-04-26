@@ -43,6 +43,8 @@ OhMyPm 是一个给 PM 用的需求对齐与正式交付辅助器。
 ## 运行方式
 
 - 默认通过自然语言使用，由 AI 直接按 skill 规则执行
+- 正确执行顺序是：先读 `.ohmypm/status.json` 判断当前动作，再读取对应 `skills/omp-*/SKILL.md`，最后才读取该动作需要的模板与 contract
+- 模板只负责产物骨架，不是独立入口；不得跳过 skill 直接按模板生成 `solution / prototype / prd / review`
 - 只有结构校验、关系校验和内部 `review-pack.json` 聚合时才调用 `scripts/python/omp-lint.py`
 - 不需要执行安装器
 - 不需要向 IDE 配置目录写全局规则

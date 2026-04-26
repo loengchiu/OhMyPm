@@ -11,6 +11,7 @@
 - 读取 `__OHMYPM_RULES_PATH__/AGENTS.md`
 - 遵循其中全部规则
 - 若 `.ohmypm/status.json` 不存在，则按该规则中的初始化方式先创建最小运行时
+- 除首次初始化外，先读 `.ohmypm/status.json` 判断当前动作，再读取一个对应 `skills/omp-*/SKILL.md` 执行；不得跳过 skill 直接按模板生成产物
 
 <!-- OHMYPM PROJECT BRIDGE END -->
 ```

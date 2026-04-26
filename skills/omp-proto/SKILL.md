@@ -43,7 +43,7 @@ description: "做原型。生成交付型原型，作为当前最小主链中的
 5. 长文或长说明生成后，只保留摘要、索引和稳定路径
 6. 回写原型基线与原型产物路径
 7. 执行 `trace-check`
-8. 下一步直接承接到 `omp-prd`
+8. 停在当前阶段，等待 PM 确认是否进入 `omp-prd`
 
 ## 最低输出
 
@@ -78,7 +78,7 @@ description: "做原型。生成交付型原型，作为当前最小主链中的
 - 当 `solution_shape=new_build` 时，原型必须优先讲清完整页面承接和主流程
 - 当 `solution_shape=hybrid` 时，原型必须明确区分存量承接页面和新建页面
 - 若 `fallback_state.fallback_type` 非空，不得伪装进入交付型原型
-- 当前版本完成原型后，默认直接进入 `omp-prd`
+- 原型完成后默认停在当前阶段；除非 PM 明确确认“原型可以进入 PRD”或明确要求“继续写 PRD / 直接跑完整链路”，否则不得自动进入 `omp-prd`
 - 原型生成后必须自检页面主体是否优先、必要页面承接位是否完整、标注是否贴着元素走
 
 ## 回写要求
@@ -87,7 +87,7 @@ description: "做原型。生成交付型原型，作为当前最小主链中的
   - `current_stage`
   - `current_mode`
   - `last_action`
-  - `next_recommended`
+  - `next_recommended` 默认写成：`下一步：请确认当前原型是否进入 PRD。`
   - `baselines.prototype`
   - `artifacts.prototypes`
   - `context_risk.level`
