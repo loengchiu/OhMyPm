@@ -25,6 +25,7 @@
 - 再判断当前更像哪个动作，只读取一个对应 skill
 - 模板不是入口；任何 `solution / proto / prd / review` 产物都不得在未读取对应 skill 的前提下直接按模板生成
 - 除首次初始化外，未先读取 `.ohmypm/status.json` 不得开始 `omp-solution / omp-proto / omp-prd / omp-review / omp-change / omp-fix`
+- PM 明确说“继续更新 PRD / 继续做原型 / 进入评审”这类话，只代表允许切换到目标动作；不代表可以跳过 `读状态 → 读目标 skill → 执行最小读取与门禁` 直接生成产物
 - 若存在待确认项、门禁缺口或真实项目阻塞，优先停在当前主动作内处理，不额外暴露机制型 skill
 - 每次输出最后只能收口为：
   - `下一步：...`

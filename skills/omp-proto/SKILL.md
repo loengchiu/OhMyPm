@@ -79,6 +79,7 @@ description: "做原型。生成交付型原型，作为当前最小主链中的
 - 当 `solution_shape=hybrid` 时，原型必须明确区分存量承接页面和新建页面
 - 若 `fallback_state.fallback_type` 非空，不得伪装进入交付型原型
 - 原型完成后默认停在当前阶段；除非 PM 明确确认“原型可以进入 PRD”或明确要求“继续写 PRD / 直接跑完整链路”，否则不得自动进入 `omp-prd`
+- PM 明确说“继续写 PRD”只代表允许切换到 `omp-prd`；切换后仍必须重新读取 `.ohmypm/status.json`、只加载 `skills/omp-prd/SKILL.md` 并执行 `omp-prd` 的最小读取与门禁，不得直接沿用当前原型上下文写 PRD
 - 原型生成后必须自检页面主体是否优先、必要页面承接位是否完整、标注是否贴着元素走
 
 ## 回写要求
