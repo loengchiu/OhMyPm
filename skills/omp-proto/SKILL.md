@@ -65,6 +65,9 @@ description: "做原型。生成交付型原型，作为当前最小主链中的
 - 列表页 / 详情页 / 弹窗或抽屉 / 结果页中，至少要有当前需求真正需要的页面承接位
 - 原型不得脱离当前追溯元数据和锚点生成
 - `context_risk` 的 `length_signals / complexity_signals / decision` 必须使用 `contracts/context-guard.md` 中的标准口径
+- 不得为了完整感擅自新增模块、页面、流程、规则、字段、验收项
+- 只能补“当前范围内必需内容”；其余标为待确认或不写
+- 模块、页面、动作的新增、删除或范围扩张必须由 PM 确认，不得自行扩充
 - 若原型范围同时覆盖多个模块、多个页面组，或同时联动 PRD 判断，必须按 `contracts/context-guard.md` 先做分块计划
 - 原型生成时必须读取内部 `anchor_manifest`；页面可见区域只显示页面编号和标注小数字，完整组合锚点只写入隐藏属性或内部 manifest
 - 原型生成后必须执行 `python scripts/python/omp-lint.py trace-check --status-path .ohmypm/status.json`；结果为 `fail` 时不得进入 PRD，必须先修正 manifest、路径或机读字段泄漏
