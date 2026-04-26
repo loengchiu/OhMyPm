@@ -21,7 +21,7 @@ description: "方案。基于调研结论生成和迭代当前版本方案稿，
 - 再读 `.ohmypm/memory.md` 的最小必要摘要
 - 读取 `context_risk`；若不存在，先按最小结构补齐
 - 当前只执行 `omp-solution`
-- 默认只补 `contracts/traceability.md`
+- 默认只补 `contracts/anchors-and-trace.md`
 - 命中长材料、跨模块、跨产物或多轮累积时补 `contracts/context-guard.md`；追问补 `contracts/ask-back.md`
 
 ## 目标

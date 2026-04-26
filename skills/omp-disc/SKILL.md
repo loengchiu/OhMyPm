@@ -22,7 +22,7 @@ description: "调研。根据需求方原话和材料生成会面问题提纲，
 - 再读 `.ohmypm/memory.md` 的最小必要摘要
 - 若 `context_risk` 不存在，先按最小结构补齐后再继续
 - 当前只执行 `omp-disc`
-- 默认只补 `contracts/context-package.md`
+- 默认只补 `contracts/intake-context.md`
 - 命中长材料、文件类型高成本、多轮累积或复杂度升高时补 `contracts/context-guard.md`；追问补 `contracts/ask-back.md`
 
 ## 目标

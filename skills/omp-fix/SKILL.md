@@ -11,7 +11,7 @@ description: "修正已有产物缺陷，并在需要时触发下游修正上游
 - 再读 `.ohmypm/memory.md` 的最小必要摘要
 - 当前只执行 `omp-fix`
 - 默认只补 `contracts/overwrite.md`
-- 涉及锚点补 `contracts/traceability.md`；涉及评审回流补 `contracts/review.md`
+- 涉及锚点补 `contracts/anchors-and-trace.md`；涉及评审回流补 `contracts/review.md`
 
 ## 目标
 
@@ -78,5 +78,3 @@ description: "修正已有产物缺陷，并在需要时触发下游修正上游
   - 必要时 `context_risk.decision`
   - 必要时 `context_risk.last_updated`
   - 必要时 `baselines.*`
-
-

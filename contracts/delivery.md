@@ -92,7 +92,7 @@
 
 ### 可复用骨架
 
-- PRD 骨架模板：`docs/templates/prd-outline.template.md`
+- PRD 骨架模板：`docs/templates/prd-skeleton.template.md`
 
 ### 原则
 

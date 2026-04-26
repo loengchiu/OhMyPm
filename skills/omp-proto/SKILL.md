@@ -11,7 +11,7 @@ description: "做原型。生成交付型原型，作为当前最小主链中的
 - 再读 `.ohmypm/memory.md` 的最小必要摘要
 - 读取 `context_risk`；若不存在，先按最小结构补齐
 - 当前只执行 `omp-proto`
-- 默认只补 `contracts/delivery.md`、`contracts/traceability.md`
+- 默认只补 `contracts/delivery.md`、`contracts/anchors-and-trace.md`
 - 门禁异常补 `contracts/gates.md`；命中长材料、长输出或跨模块联动时补 `contracts/context-guard.md`
 - 外部知识只允许局部回查
 
@@ -92,4 +92,3 @@ description: "做原型。生成交付型原型，作为当前最小主链中的
   - `context_risk.complexity_signals`
   - `context_risk.decision`
   - `context_risk.last_updated`
-

@@ -14,7 +14,7 @@ description: "组织评审会材料、执行多角色评审团、输出评审结
 - 先读 `.ohmypm/status.json`
 - 再读 `.ohmypm/memory.md` 的最小必要摘要
 - 当前只执行 `omp-review`
-- 默认只补 `contracts/review.md`、`contracts/traceability.md`
+- 默认只补 `contracts/review.md`、`contracts/anchors-and-trace.md`
 - 涉及交付分工补 `contracts/delivery.md`；涉及复写补 `contracts/overwrite.md`
 
 ## 目标

@@ -16,6 +16,12 @@ OhMyPm 是一个给 PM 用的需求对齐与正式交付辅助器。
 - 但不是跨项目自动挂载：在业务项目里使用时，目标项目根目录必须有一个轻量 `AGENTS.md`，指向本仓库规则
 - 轻量接入模板见 `docs/templates/project-agents.template.md`
 
+## 接入步骤
+
+1. 在目标项目根目录放置一个轻量 `AGENTS.md`
+2. 内容模板使用 `docs/templates/project-agents.template.md`
+3. 该 `AGENTS.md` 只做一件事：把业务项目里的 PM 请求路由到本仓库 `AGENTS.md`
+
 ## 首次运行初始化
 
 首次在项目中提出 PM 主线请求时，AI 自动创建：
@@ -38,6 +44,9 @@ OhMyPm 是一个给 PM 用的需求对齐与正式交付辅助器。
 
 - 默认通过自然语言使用，由 AI 直接按 skill 规则执行
 - 只有结构校验、关系校验和内部 `review-pack.json` 聚合时才调用 `scripts/python/omp-lint.py`
+- 不需要执行安装器
+- 不需要向 IDE 配置目录写全局规则
+- 不需要预创建 `.ohmypm/status.json`
 
 ## 当前约束
 
