@@ -16,6 +16,7 @@ description: "组织评审会材料、执行多角色评审团、输出评审结
 - 当前只执行 `omp-review`
 - 默认只补 `contracts/review.md`、`contracts/anchors-and-trace.md`
 - 涉及交付分工补 `contracts/delivery.md`；涉及复写补 `contracts/overwrite.md`
+- 只有在判断问题归并方式、风险表达或结论写法时，才补读 `reference/review-writing.md`
 
 ## 目标
 

@@ -70,9 +70,3 @@ description: "处理正式交付后的新增内容或范围变化，判断是否
   - 必要时 `context_risk.decision`
   - 必要时 `context_risk.last_updated`
   - 必要时 `overwrite_queue`
-
-## 建议入口
-
-- `change-apply`
-
-

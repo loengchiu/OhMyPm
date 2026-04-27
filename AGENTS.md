@@ -1,87 +1,43 @@
-# OhMyPm 全局规则
+# OhMyPm 入口规则
 
-当用户在当前项目里提出 PM 主线工作请求时，OhMyPm 工作流可激活；若 `.ohmypm/status.json` 不存在，先初始化最小运行时，再进入主线动作。
+当当前项目根目录存在 `.ohmypm/status.json` 时，启用 OhMyPm。
+当 `.ohmypm/status.json` 不存在但用户显式执行 `/disc` 或明确说“初始化 OMP”时，也启用 OhMyPm。
 
-## 1. 激活条件
+## 1. 激活与初始化
 
-- `.ohmypm/status.json` 存在：直接进入 OhMyPm 工作流
-- `.ohmypm/status.json` 不存在且用户提出 PM 主线请求：先按模板创建最小运行时，再进入 `omp-disc`
-- `.ohmypm/status.json` 不存在且只是纯咨询：允许只回答，不创建运行时
+- `.ohmypm/status.json` 已存在：先读状态，再进入 OhMyPm 主线
+- `.ohmypm/status.json` 不存在且用户显式执行 `/disc` 或明确说“初始化 OMP”：先按 `docs/templates/init-status.template.json` 和 `docs/templates/init-memory.template.md` 初始化最小运行时，再进入 `omp-disc`
+- `.ohmypm/status.json` 不存在且只是纯咨询：只回答，不初始化
 
-## 2. 默认入口
+## 2. 执行顺序
 
-- 用户默认通过自然语言使用 OhMyPm
-- OhMyPm 的 skill 不是单独的 Tool 按钮，但也绝不是“直接读模板生成”；正确顺序必须是：先读 `.ohmypm/status.json` → 判断当前动作 → 只读一个对应 `skills/omp-*/SKILL.md` → 再读取该动作需要的模板和 contract
-- 若 `.ohmypm/status.json` 不存在，先创建：
-  - `.ohmypm/status.json`（来自 `docs/templates/init-status.template.json`）
-  - `.ohmypm/memory.md`（来自 `docs/templates/init-memory.template.md`）
-  - `.ohmypm/alignment/`
-  - `output/disc`
-  - `output/solution`
-  - `output/prd`
-  - `output/prototype`
-  - `output/review`
-- 再读 `.ohmypm/status.json` 与 `.ohmypm/memory.md` 的最小必要摘要
-- 再判断当前更像哪个动作，只读取一个对应 skill
-- 模板不是入口；任何 `solution / proto / prd / review` 产物都不得在未读取对应 skill 的前提下直接按模板生成
-- 除首次初始化外，未先读取 `.ohmypm/status.json` 不得开始 `omp-solution / omp-proto / omp-prd / omp-review / omp-change / omp-fix`
-- PM 明确说“继续更新 PRD / 继续做原型 / 进入评审”这类话，只代表允许切换到目标动作；不代表可以跳过 `读状态 → 读目标 skill → 执行最小读取与门禁` 直接生成产物
-- 若存在待确认项、门禁缺口或真实项目阻塞，优先停在当前主动作内处理，不额外暴露机制型 skill
-- 每次输出最后只能收口为：
-  - `下一步：...`
-  - `现在只需要你回答的唯一问题是：...`
+- 正确顺序固定为：读 `.ohmypm/status.json` → 判断当前动作 → 只读一个对应 `skills/omp-*/SKILL.md` → 再读取该动作需要的模板与 `contracts/`
+- 模板不是入口；不得跳过 skill 直接按模板生成 `solution / prototype / prd / review`
+- 除首次初始化外，未先读取 `.ohmypm/status.json`，不得开始任何 `omp-*` 主动作
 
-## 3. 路由边界
+## 3. 主线入口
 
-- 只要当前项目根目录存在 `.ohmypm/status.json`，该项目内的 PM 主线动作统一由 `OhMyPm` 接管
-- `OhMyPm` 项目中的正式阶段主线推进，仍然只能落到 `omp-disc / omp-solution / omp-proto / omp-prd / omp-review / omp-change / omp-fix`
-- 外部成熟做法只允许作为参考，不得在 `OhMyPm` 已激活项目里被直接路由成执行技能
-- 外部固定动作只保留：调研、方案、做原型、写 PRD、评审、改需求、修问题
-- 短命令只作为调试入口、强制入口和高级用户入口
+- 默认使用显式命令推进主线：`/disc`、`/solution`、`/proto`、`/prd`、`/review`、`/change`、`/fix`
+- 自然语言只用于补材料、回答待确认项、询问当前阶段或当前阻塞
+- `继续`、`下一步` 不负责跨阶段推进；只允许汇报当前阶段并给出唯一下一步命令
+- 跨阶段只认显式命令；`继续做原型`、`继续写 PRD`、`进入评审` 这类自然语言不再作为切阶段入口
 
-## 4. 强禁止项
+## 4. 跨阶段规则
 
-- 不得替用户拍板范围
-- 不得跳过当前门槛直接进入更重交付
-- 不得默认同时读取多个 skill
-- 不得为了保险一次读取很多 contract
-- 不得把长版记忆、外部知识或长材料整篇整包塞进活跃上下文
-- 不得把虚构业务问题伪装成真实项目问题抛给 PM
-- 不得把未确认内容伪装成已确认事实
-- 不得让 `OhMyPm` 的中间材料直接污染正式产物树
-- 在 `OhMyPm` 已激活项目里，不得把自然语言“做原型 / 写 PRD / 继续下一步”误路由到非当前动作链的旧命令或同名技能
-- 不得跳过“读状态 → 判动作 → 读 skill”这条主链，直接根据模板文件名或上一轮产物名生成新产物
+- 切换到目标动作，只代表允许进入该动作
+- 进入新动作后，必须重新执行：读状态 → 读目标 skill → 执行该动作的最小读取与门禁
+- 不得沿用上一动作的上下文直接生成下一阶段产物
 
 ## 5. 硬门禁
 
-- 调研 / 方案：由当前 skill 直接完成上下文充分性自检
-- 原型 / PRD / 评审：执行 `trace-check`
-- 评审：先生成 `review-pack.json`
-- `pass` 继续，`warn` 记录风险后继续，`fail` 先修复
-- 命令见 `docs/runtime-checks.md`
+- `omp-proto`、`omp-prd`、`omp-review` 进入正式产出前执行 `trace-check`
+- `omp-review` 开始前先生成 `.ohmypm/review/review-pack.json`
+- `pass` 可继续，`warn` 记录风险后继续，`fail` 先修复
+- 具体校验方式见 `docs/runtime-checks.md`
 
-# 长期协作原则
+## 6. 运行边界
 
 - `AI / Markdown` 负责主流程动作、产物生成、普通状态回写
-- `Schema` 只负责形状校验：字段、类型、枚举、必填项
-- `Python lint` 只负责关系校验：引用、存在性、一致性、泄漏检查
-- Python 默认只读不写、只查不改；唯一允许生成的新文件是内部 `review-pack.json`
-- Python 不得改写 `status.json`、`.ohmypm/memory.md`、`solution.manifest.json`、PRD、原型等主产物
-- `solution.md` 与 `solution.manifest.json` 必须同轮生成、同轮修改，禁止从人读稿反推机读稿
-- OMP 默认坚持“规则驱动，脚本兜底”；默认由 AI 直接按 skill 执行动作，不得把脚本当主流程驱动层
-- 高频动作不得依赖包装脚本；OMP 仓库不再保留任何运行时 `ps1`
-- `omp-lint.py` 只承接 `schema-check / trace-check / build-review-pack / encoding`；若明显超过 `200-300` 行职责边界，应优先判定为职责漂移
-- 若规则、skill、contract 三处同时描述同一件事，优先把动作规则收回 `SKILL.md`，`contracts/` 只保留跨动作底层约束
-
-- 稳定且反复使用的执行规则，写进对应 `skills/<skill>/SKILL.md`
-- 只跨多个 skill 复用的底层约束，才写进 `contracts/`
-- 模板只负责产物格式，不承载大段解释性规则
-- 一次性讨论、临时决策背景、只需告诉用户一遍的话，不写进 `SKILL.md`
-- `SKILL.md` 只保留执行时必须依赖、否则会跑偏的规则
-- `SKILL.md` 中的写作与产物规则，优先描述目标状态和正确形态，不用基于上一个错误的补救式表述；只有门禁、安全、越界、防幻觉这类规则才优先使用禁止式写法
-- 对外稿件默认去 AI 化：不写 AI 痕迹、绝对路径、解释性引用块
-- 对外资料来源用人类可读名称；机器路径只放内部状态、证据或调试文件
-- 若模板、skill、contract 三处同时描述同一件事，优先收敛到 skill；避免规则分散
-- OMP 默认零脚本接入，但不是跨项目自动挂载；若在业务项目中使用，目标项目根目录必须有一个轻量 `AGENTS.md` 指向本仓库规则
-- 若遇到编码问题，优先用 `python scripts/python/omp-lint.py encoding --root <project>` 检查 `.ohmypm/` 和 `output/`
-- 先质疑再设计：不要把用户刚提出的结构默认当成正确方向；先检查是否重复、过度设计或只是新增层级，优先给更小、更稳的方案，只有在简化方案不够时才接受更复杂的结构
+- `Schema` 负责字段、类型、枚举、必填项
+- `scripts/python/omp-lint.py` 只负责 `schema-check / trace-check / build-review-pack / encoding`
+- `solution.md` 与 `solution.manifest.json` 必须同轮生成、同轮修改

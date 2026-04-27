@@ -14,6 +14,7 @@ description: "做原型。生成交付型原型，作为当前最小主链中的
 - 默认只补 `contracts/delivery.md`、`contracts/anchors-and-trace.md`
 - 门禁异常补 `contracts/gates.md`；命中长材料、长输出或跨模块联动时补 `contracts/context-guard.md`
 - 外部知识只允许局部回查
+- 只有在判断页面展开粒度、标注方式或页面表达取舍时，才补读 `reference/prototype-writing.md`
 
 ## 目标
 
@@ -43,7 +44,7 @@ description: "做原型。生成交付型原型，作为当前最小主链中的
 5. 长文或长说明生成后，只保留摘要、索引和稳定路径
 6. 回写原型基线与原型产物路径
 7. 执行 `trace-check`
-8. 停在当前阶段，等待 PM 确认是否进入 `omp-prd`
+8. 停在当前阶段，等待 PM 显式执行 `/prd`
 
 ## 最低输出
 
@@ -72,14 +73,15 @@ description: "做原型。生成交付型原型，作为当前最小主链中的
 - 原型生成时必须读取内部 `anchor_manifest`；页面可见区域只显示页面编号和标注小数字，完整组合锚点只写入隐藏属性或内部 manifest
 - 原型生成后必须执行 `python scripts/python/omp-lint.py trace-check --status-path .ohmypm/status.json`；结果为 `fail` 时不得进入 PRD，必须先修正 manifest、路径或机读字段泄漏
 - 原型必须让研发只看原型即可先理解页面位置、主流程、关键动作、状态变化和联动关系
+- 原型像真实页面，不像讲解板；简单页轻写，复杂页重写
 - 编号标注必须能挂到 PRD 对应章节或内部 manifest
 - 原型必须读取“建设类型差异说明表”，按其中的原型重点展示，不得自行脑补另一套展示逻辑
 - 当 `solution_shape=iteration` 时，原型必须优先讲清改造点在哪里、挂在哪个已有页面/流程上
 - 当 `solution_shape=new_build` 时，原型必须优先讲清完整页面承接和主流程
 - 当 `solution_shape=hybrid` 时，原型必须明确区分存量承接页面和新建页面
 - 若 `fallback_state.fallback_type` 非空，不得伪装进入交付型原型
-- 原型完成后默认停在当前阶段；除非 PM 明确确认“原型可以进入 PRD”或明确要求“继续写 PRD / 直接跑完整链路”，否则不得自动进入 `omp-prd`
-- PM 明确说“继续写 PRD”只代表允许切换到 `omp-prd`；切换后仍必须重新读取 `.ohmypm/status.json`、只加载 `skills/omp-prd/SKILL.md` 并执行 `omp-prd` 的最小读取与门禁，不得直接沿用当前原型上下文写 PRD
+- 原型完成后默认停在当前阶段；只有 PM 显式执行 `/prd`，才允许进入 `omp-prd`
+- 进入 `/prd` 后仍必须重新读取 `.ohmypm/status.json`、只加载 `skills/omp-prd/SKILL.md` 并执行 `omp-prd` 的最小读取与门禁，不得直接沿用当前原型上下文写 PRD
 - 原型生成后必须自检页面主体是否优先、必要页面承接位是否完整、标注是否贴着元素走
 
 ## 回写要求
@@ -88,7 +90,7 @@ description: "做原型。生成交付型原型，作为当前最小主链中的
   - `current_stage`
   - `current_mode`
   - `last_action`
-  - `next_recommended` 默认写成：`下一步：请确认当前原型是否进入 PRD。`
+  - `next_recommended` 默认写成：`下一步：如进入 PRD，请执行 /prd。`
   - `baselines.prototype`
   - `artifacts.prototypes`
   - `context_risk.level`

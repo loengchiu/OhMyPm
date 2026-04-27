@@ -22,13 +22,13 @@ Python lint 都按统一口径处理结果：
 
 ## 3. 常用命令
 
-在已初始化 OMP 的项目根目录执行：
+在已初始化 OMP 的项目根目录执行。`omp-lint.py` 使用安装阶段写入的用户级入口 `%USERPROFILE%\.ohmypm\bin\omp-lint.py`：
 
 ```powershell
-python scripts/python/omp-lint.py schema-check --target manifest --file .ohmypm/alignment/solution.manifest.json
-python scripts/python/omp-lint.py trace-check --status-path .ohmypm/status.json
-python scripts/python/omp-lint.py build-review-pack --status-path .ohmypm/status.json --output-path .ohmypm/review/review-pack.json
-python scripts/python/omp-lint.py encoding --root .
+python $env:USERPROFILE\.ohmypm\bin\omp-lint.py schema-check --target manifest --file .ohmypm/alignment/solution.manifest.json
+python $env:USERPROFILE\.ohmypm\bin\omp-lint.py trace-check --status-path .ohmypm/status.json
+python $env:USERPROFILE\.ohmypm\bin\omp-lint.py build-review-pack --status-path .ohmypm/status.json --output-path .ohmypm/review/review-pack.json
+python $env:USERPROFILE\.ohmypm\bin\omp-lint.py encoding --root .
 ```
 
 ## 4. 回归检查
